@@ -15,6 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -46,4 +47,5 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     implementation "org.jetbrains.anko:anko-commons:0.10.5"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 }

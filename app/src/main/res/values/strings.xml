@@ -3,4 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="action_notifications">Notifications</string>
+    <string name="feed_name_text">Living Room</string>
+    <string name="feed_time">16s ago</string>
+    <string name="app_caption">Home on your hands</string>
 </resources>
