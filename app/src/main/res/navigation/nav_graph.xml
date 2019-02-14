@@ -8,4 +8,21 @@
               android:label="AuthentificationFragment"
               tools:layout="@layout/fragment_authentification"
     />
+
+    <fragment android:id="@+id/doorBellFragment"
+              android:name="ke.co.appslab.smarthome.ui.doorbell.DoorBellFragment"
+              android:label="DoorBell Fragment"
+              tools:layout="@layout/fragment_door_bell"
+              />
+
+    <fragment android:id="@+id/accountFragment"
+              android:name="ke.co.appslab.smarthome.ui.account.AccountFragment"
+              android:label="AccountFragment"
+              tools:layout="@layout/fragment_account"/>
+
+    <fragment android:id="@+id/homeFragment"
+              android:name="ke.co.appslab.smarthome.ui.home.HomeFragment"
+              android:label="HomeFragment"
+              tools:layout="@layout/fragment_home"/>
+
 </navigation>
