@@ -5,6 +5,7 @@
     <dimen name="text_size_normal">18sp</dimen>
     <dimen name="text_size_small">16sp</dimen>
     <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_extra_large">30sp</dimen>
     <dimen name="medium_margin">6dp</dimen>
     <dimen name="card_radius">4dp</dimen>
 </resources>
