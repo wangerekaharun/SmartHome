@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "462433982848",
+    "firebase_url": "https://androidthings-310cf.firebaseio.com",
+    "project_id": "androidthings-310cf",
+    "storage_bucket": "androidthings-310cf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:462433982848:android:e32707b9a7c43b02",
+        "android_client_info": {
+          "package_name": "ke.co.appslab.smartthings"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "462433982848-0jcmp1jmh1vjbdmd24abthdc9vj0s7h7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ke.co.appslab.smartthings",
+            "certificate_hash": "c4769f44ba891ff601da36cf04ed9a1e6f717b46"
+          }
+        },
+        {
+          "client_id": "462433982848-fvthhk5h0tt9p2us8msvdofvr37gjb3n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdr8oeOTgvckcnQGsBngrFyQc393rZ4Lw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "462433982848-fvthhk5h0tt9p2us8msvdofvr37gjb3n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
