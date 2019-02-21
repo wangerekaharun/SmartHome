@@ -8,22 +8,23 @@ import ke.co.appslab.smarthome.models.Weather
 
 class WeatherDataRepo {
 
-    fun getWeatherData(dayNumber: String, sessionId: Int): LiveData<WeatherDataState> {
-        val sessionsModelMutableLiveData = MutableLiveData<WeatherDataState>()
+    fun getWeatherData(): LiveData<WeatherDataState> {
+        val weatherDataMutableLiveData = MutableLiveData<WeatherDataState>()
         val firebaseFirestore = FirebaseFirestore.getInstance()
-        firebaseFirestore.collection(dayNumber)
-            .whereEqualTo("id", sessionId)
+        firebaseFirestore.collection("weather")
             .get()
-            .addOnCompleteListener {
+            .addOnSuccessListener {
                 when {
-                    it.isSuccessful -> for (queryDocumentSnapshot in it.result!!) {
-                        val weatherModel = queryDocumentSnapshot.toObject(Weather::class.java)
-                        sessionsModelMutableLiveData.value = WeatherDataState(weatherModel, null)
+                    !it.isEmpty -> {
+                        val weatherModel = it.toObjects(Weather::class.java)
+                        weatherDataMutableLiveData.value = WeatherDataState(weatherModel, null)
                     }
-                    else -> sessionsModelMutableLiveData.value = WeatherDataState(null, "Error getting session details")
                 }
-            }
 
-        return sessionsModelMutableLiveData
+            }
+            .addOnFailureListener {
+                weatherDataMutableLiveData.value = WeatherDataState(null,it.message)}
+
+        return weatherDataMutableLiveData
     }
 }

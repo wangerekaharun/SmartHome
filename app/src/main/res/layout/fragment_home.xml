@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="true"
+            android:scrollbarThumbVertical="@android:color/transparent"
+>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,17 +36,17 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="140dp"
         android:layout_margin="@dimen/medium_margin"
     >
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="140dp"
         >
             <LinearLayout
                 android:id="@+id/cameraFeedLinear"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
                 android:orientation="vertical"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
@@ -104,7 +112,7 @@
                             android:text="@string/visitors_label"
                             android:textColor="@color/colorDarkPink"
                             android:layout_marginTop="@dimen/medium_margin"
-                            android:textSize="@dimen/text_size_normal"
+                            android:textSize="@dimen/text_size_extra_small"
                         />
                     </LinearLayout>
                     <LinearLayout
@@ -126,7 +134,7 @@
                             android:text="@string/streams_label"
                             android:textColor="@color/colorDarkPink"
                             android:layout_marginTop="@dimen/medium_margin"
-                            android:textSize="@dimen/text_size_normal"
+                            android:textSize="@dimen/text_size_extra_small"
                         />
                     </LinearLayout>
                     <LinearLayout
@@ -148,7 +156,7 @@
                             android:text="@string/motion_label"
                             android:textColor="@color/colorDarkPink"
                             android:layout_marginTop="@dimen/medium_margin"
-                            android:textSize="@dimen/text_size_normal"
+                            android:textSize="@dimen/text_size_extra_small"
                         />
                     </LinearLayout>
                 </LinearLayout>
@@ -269,9 +277,10 @@
                     android:textSize="@dimen/text_size_normal"
                 />
                 <TextView
+                    android:id="@+id/temperatureText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/temparature"
+                    tools:text="@string/temperature"
                     android:textSize="@dimen/text_size_normal"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
                 />
@@ -305,9 +314,10 @@
                     android:textSize="@dimen/text_size_normal"
                 />
                 <TextView
+                    android:id="@+id/pressureText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/pressure"
+                    tools:text="@string/pressure"
                     android:textSize="@dimen/text_size_normal"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
                 />
@@ -316,5 +326,5 @@
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

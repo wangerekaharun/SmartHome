@@ -4,32 +4,26 @@ import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_home -> {
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_camera_feed -> {
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_account -> {
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        setupNavigation()
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
-    private fun setupBottomNaveMenu(navController : NavController){
+    private fun setupNavigation() {
+        val navController = Navigation.findNavController(this, R.id.navHostFragment)
+        setupActionBarWithNavController(this, navController)
+        NavigationUI.setupWithNavController(navigation, navController)
     }
+
+    override fun onSupportNavigateUp() =
+        Navigation.findNavController(this, R.id.navHostFragment).navigateUp()
 }

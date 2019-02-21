@@ -32,7 +32,7 @@
     <string name="power_status_desc">Power has been off for 30 minutes</string>
     <string name="temp_pressure_label">Climate</string>
     <string name="temperature_label">Temperature</string>
-    <string name="temparature">100 °C</string>
+    <string name="temperature">%1$f °C</string>
     <string name="pressure_label">Pressure</string>
-    <string name="pressure">30 Pa</string>
+    <string name="pressure">%1$f Pa</string>
 </resources>
