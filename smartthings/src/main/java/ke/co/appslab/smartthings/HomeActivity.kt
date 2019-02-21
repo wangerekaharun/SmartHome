@@ -33,6 +33,9 @@ class HomeActivity : FragmentActivity() {
         ViewModelProviders.of(this).get(WeatherViewModel::class.java)
     }
     private var isWeatherSent = false
+    private val delayUpdate = 900
+    private var lastTemperatureTime = 0L
+    private var lastPressureTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +73,6 @@ class HomeActivity : FragmentActivity() {
         } catch (e: IOException) {
             throw RuntimeException("Error initializing BMP280", e)
         }
-
         observerLiveData()
 
 
@@ -78,15 +80,12 @@ class HomeActivity : FragmentActivity() {
 
     private fun observerLiveData() {
         weatherViewModel.getSendWeatherResponse().nonNull().observe(this) {
-            isWeatherSent = when {
+            when {
                 it.responseString == "Weather updated" -> {
                     Log.d(TAG, "true")
-                    true
                 }
-
                 else -> {
                     Log.d(TAG, it.responseString)
-                    false
 
                 }
             }
@@ -99,13 +98,23 @@ class HomeActivity : FragmentActivity() {
         override fun onSensorChanged(event: SensorEvent) {
             val value = event.values[0]
             when {
-                event.sensor.type == Sensor.TYPE_AMBIENT_TEMPERATURE -> {
-                    updateTemperatureDisplay(value)
-                    sendValue(value)
+                event.sensor.type == Sensor.TYPE_AMBIENT_TEMPERATURE -> when {
+                    System.currentTimeMillis() > lastTemperatureTime + delayUpdate -> {
+                        Log.d(TAG, "Temperature Sensor changed: $value and time is ${lastTemperatureTime + delayUpdate}")
+                        lastTemperatureTime = System.currentTimeMillis()
+                        updateTemperatureDisplay(value)
+                        sendValue(value)
+                    }
                 }
             }
             when {
-                event.sensor.type == Sensor.TYPE_PRESSURE -> updateBarometerDisplay(value)
+                event.sensor.type == Sensor.TYPE_PRESSURE -> when {
+                    System.currentTimeMillis() > lastPressureTime + delayUpdate -> {
+                        Log.d(TAG, "Pressure Sensor changed $value and time is ${lastPressureTime + delayUpdate}")
+                        updateBarometerDisplay(value)
+                    }
+
+                }
             }
         }
 
@@ -119,9 +128,7 @@ class HomeActivity : FragmentActivity() {
             temperature = value,
             pressure = value
         )
-        when {
-            !isWeatherSent -> weatherViewModel.sendWeatherData(weather)
-        }
+        weatherViewModel.sendWeatherData(weather)
 
     }
 

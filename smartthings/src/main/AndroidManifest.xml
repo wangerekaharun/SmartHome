@@ -13,16 +13,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
+                <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <!-- Make this the first activity that is displayed when the device boots. -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.HOME"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
     </application>
 
