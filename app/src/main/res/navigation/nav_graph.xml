@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph" app:startDestination="@+id/homeFragment">
+
+    <fragment android:id="@+id/authentificationFragment"
+              android:name="ke.co.appslab.smarthome.ui.authentification.AuthentificationFragment"
+              android:label="AuthentificationFragment"
+              tools:layout="@layout/fragment_authentification"
+    />
+
+    <fragment android:id="@+id/doorBellFragment"
+              android:name="ke.co.appslab.smarthome.ui.doorbell.DoorBellFragment"
+              android:label="DoorBell Fragment"
+              tools:layout="@layout/fragment_door_bell"
+              />
+
+    <fragment android:id="@+id/accountFragment"
+              android:name="ke.co.appslab.smarthome.ui.account.AccountFragment"
+              android:label="AccountFragment"
+              tools:layout="@layout/fragment_account"/>
+
+    <fragment android:id="@+id/homeFragment"
+              android:name="ke.co.appslab.smarthome.ui.home.HomeFragment"
+              android:label="HomeFragment"
+              tools:layout="@layout/fragment_home"/>
+
+</navigation>
