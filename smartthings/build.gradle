@@ -35,4 +35,10 @@ dependencies {
     compileOnly 'com.google.android.things:androidthings:1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.android.things.contrib:driver-rainbowhat:1.0'
+    implementation 'com.google.firebase:firebase-firestore:18.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
 }
+apply plugin: 'com.google.gms.google-services'

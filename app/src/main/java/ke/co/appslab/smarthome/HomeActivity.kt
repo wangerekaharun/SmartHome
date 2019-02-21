@@ -31,6 +31,5 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNaveMenu(navController : NavController){
-        val bottomNav =
     }
 }
