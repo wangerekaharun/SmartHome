@@ -35,4 +35,7 @@
     <string name="temperature">%1$f °C</string>
     <string name="pressure_label">Pressure</string>
     <string name="pressure">%1$f Pa</string>
+    <string name="authentificationFragment">AuthentificationFragment</string>
+    <string name="homeFragment">HomeFragment</string>
+    <string name="authenticating">Waiting to connect</string>
 </resources>

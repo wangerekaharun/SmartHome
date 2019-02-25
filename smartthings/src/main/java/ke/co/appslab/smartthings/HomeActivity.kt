@@ -1,6 +1,8 @@
 package ke.co.appslab.smartthings
 
 import android.app.Activity
+import android.app.IntentService
+import android.content.Intent
 import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -15,10 +17,12 @@ import com.google.android.things.contrib.driver.bmx280.Bmx280SensorDriver
 import com.google.android.things.contrib.driver.ht16k33.AlphanumericDisplay
 import com.google.android.things.contrib.driver.rainbowhat.RainbowHat
 import ke.co.appslab.smartthings.models.Weather
+import ke.co.appslab.smartthings.ui.auth.ThingsConnectionActivity
 import ke.co.appslab.smartthings.ui.weather.WeatherViewModel
 import ke.co.appslab.smartthings.utils.RainbowUtil
 import ke.co.appslab.smartthings.utils.nonNull
 import ke.co.appslab.smartthings.utils.observe
+import kotlinx.android.synthetic.main.activity_home.*
 import java.io.IOException
 import java.util.*
 
@@ -72,6 +76,10 @@ class HomeActivity : FragmentActivity() {
             Log.d(TAG, "Initialized I2C BMP280")
         } catch (e: IOException) {
             throw RuntimeException("Error initializing BMP280", e)
+        }
+        imageView.setOnClickListener {
+            val connectionIntent = Intent(this,ThingsConnectionActivity::class.java)
+            startActivity(connectionIntent)
         }
         observerLiveData()
 
@@ -128,7 +136,7 @@ class HomeActivity : FragmentActivity() {
             temperature = value,
             pressure = value
         )
-        weatherViewModel.sendWeatherData(weather)
+//        weatherViewModel.sendWeatherData(weather)
 
     }
 

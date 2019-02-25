@@ -49,3 +49,11 @@ r
 Bapp/src/main/java/ke/co/appslab/smarthome/ui/home/HomeViewModel.kt,5/6/56918683a2ba24cc33f106ab2af798200905aeba
 z
 Japp/src/main/java/ke/co/appslab/smarthome/utils/NonNullMediatorLiveData.kt,5/9/596baa2b51ec0f691692f5b19199ec93bb63f74d
+P
+ app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
+H
+app/google-services.json,f/d/fd8d34b142d02ec743a8efefefd2c097961666e9
+‡
+Wsmartthings/src/main/java/ke/co/appslab/smartthings/ui/auth/ThingsConnectionActivity.kt,2/1/21aefbac2f0ebe1bb630ac5db7dacf51e56c1326
+ƒ
+Sapp/src/main/java/ke/co/appslab/smarthome/ui/authentification/ThingsAuthFragment.kt,b/7/b7eafa3ce2aa72e5ff6841a467caefbec90d9f7a
