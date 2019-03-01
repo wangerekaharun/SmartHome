@@ -13,11 +13,8 @@ import kotlin.collections.HashMap
 
 object CloudVisionUtils {
     val TAG = CloudVisionUtils::class.java.simpleName
-
-    private val CLOUD_VISION_API_KEY = "<ENTER VISION API KEY>"
-
+    private val CLOUD_VISION_API_KEY = "AIzaSyA9_g92bVyPIc6GPtR5ZrOulWQlLMdYKkk"
     private val LABEL_DETECTION = "LABEL_DETECTION"
-
     private val MAX_LABEL_RESULTS = 10
 
     /**
@@ -41,7 +38,7 @@ object CloudVisionUtils {
         val imageRequest = AnnotateImageRequest()
         val img = Image()
         img.encodeContent(imageBytes)
-        imageRequest.setImage(img)
+        imageRequest.image = img
 
         // Add the features we want
         val labelDetection = Feature()

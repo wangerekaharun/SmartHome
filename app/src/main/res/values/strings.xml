@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">SmartHome</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_dashboard">Doorbell</string>
+    <string name="title_notifications">Account</string>
     <string name="action_notifications">Notifications</string>
     <string name="feed_name_text">Living Room</string>
     <string name="feed_time">16s ago</string>

@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <ImageView
+                android:id="@+id/doorbellImg"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:src="@drawable/livingroom"
@@ -36,6 +37,7 @@
                     android:textSize="@dimen/text_size_normal"
                 />
                 <TextView
+                    android:id="@+id/timestampText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/feed_time"

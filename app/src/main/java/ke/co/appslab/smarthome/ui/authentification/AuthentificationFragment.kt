@@ -97,7 +97,7 @@ class AuthentificationFragment : Fragment() {
     }
 
     private fun navigateThingsAuth() {
-        findNavController().navigate(R.id.thingsAuthFragment, null)
+        findNavController().navigate(R.id.homeFragment, null)
 
     }
 
