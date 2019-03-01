@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/nav_graph" app:startDestination="@+id/homeFragment">
+            android:id="@+id/nav_graph" app:startDestination="@+id/authentificationFragment">
+
+    <action
+        android:id="@+id/action_global_authentificationFragment"
+        app:destination="@id/authentificationFragment"
+        app:launchSingleTop="false"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true" />
 
     <fragment android:id="@+id/authentificationFragment"
               android:name="ke.co.appslab.smarthome.ui.authentification.AuthentificationFragment"
-              android:label="AuthentificationFragment"
+              android:label="@string/authentificationFragment"
               tools:layout="@layout/fragment_authentification"
     />
 
@@ -17,12 +24,17 @@
 
     <fragment android:id="@+id/accountFragment"
               android:name="ke.co.appslab.smarthome.ui.account.AccountFragment"
-              android:label="AccountFragment"
+              android:label="Account Fragment"
               tools:layout="@layout/fragment_account"/>
 
     <fragment android:id="@+id/homeFragment"
               android:name="ke.co.appslab.smarthome.ui.home.HomeFragment"
-              android:label="HomeFragment"
+              android:label="@string/homeFragment"
               tools:layout="@layout/fragment_home"/>
+
+    <fragment android:id="@+id/thingsAuthFragment"
+              android:name="ke.co.appslab.smarthome.ui.authentification.ThingsAuthFragment"
+              android:label="@string/thingsAuthFragment"
+              tools:layout="@layout/fragment_things_auth"/>
 
 </navigation>

@@ -41,8 +41,8 @@
             android:layout_gravity="center_horizontal"
         />
         <com.google.android.gms.common.SignInButton
-            android:layout_width="300dp"
             android:id="@+id/googleSignInBtn"
+            android:layout_width="300dp"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -52,6 +52,15 @@
             android:layout_gravity="center_horizontal"
         >
         </com.google.android.gms.common.SignInButton>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:visibility="gone"
+        />
 
     </LinearLayout>
 
