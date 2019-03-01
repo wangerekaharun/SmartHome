@@ -25,7 +25,10 @@
                 <!--<category android:name="android.intent.category.DEFAULT"/>-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".ui.auth.ThingsConnectionActivity">
+        <activity
+            android:name=".ui.auth.ThingsConnectionActivity"
+            android:parentActivityName=".ui.auth.WelcomeActivity"
+        >
         </activity>
         <activity android:name=".HomeActivity">
             <intent-filter>

@@ -53,6 +53,15 @@
         >
         </com.google.android.gms.common.SignInButton>
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:visibility="gone"
+        />
+
     </LinearLayout>
 
 

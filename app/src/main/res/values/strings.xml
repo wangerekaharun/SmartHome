@@ -36,6 +36,8 @@
     <string name="pressure_label">Pressure</string>
     <string name="pressure">%1$f Pa</string>
     <string name="authentificationFragment">AuthentificationFragment</string>
-    <string name="homeFragment">HomeFragment</string>
+    <string name="homeFragment">Home</string>
+    <string name="thingsAuthFragment">Setup kit</string>
     <string name="authenticating">Waiting to connect</string>
+    <string name="things_auth_desc">Kindly wait as you phone pairs with the SmartHome AndroidThings Kit</string>
 </resources>

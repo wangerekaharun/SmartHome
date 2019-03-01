@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -25,6 +27,9 @@ import org.jetbrains.anko.toast
 class AuthentificationFragment : Fragment() {
     private lateinit var googleSignInClient: GoogleSignInClient
     lateinit var auth: FirebaseAuth
+    lateinit var googleSignInBtn : SignInButton
+    lateinit var progressBar : ProgressBar
+
     private val authenticateUserViewModel: AuthenticateUserViewModel by lazy {
         ViewModelProviders.of(this).get(AuthenticateUserViewModel::class.java)
     }
@@ -34,6 +39,8 @@ class AuthentificationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_authentification, container, false)
+        googleSignInBtn = view.googleSignInBtn
+        progressBar = view.progressBar
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -65,6 +72,7 @@ class AuthentificationFragment : Fragment() {
 
     private fun handleAuthenticateUserResponse(it: AuthenticateUserState) {
         val authSuccess = it.authSuccess
+        hideDialog()
         when (authSuccess) {
             true -> {
                 navigateThingsAuth()
@@ -78,6 +86,7 @@ class AuthentificationFragment : Fragment() {
     private fun showUI(googleSignInBtn: SignInButton) {
         googleSignInBtn.setOnClickListener {
             signInUser()
+            showDialog()
         }
     }
 
@@ -115,5 +124,15 @@ class AuthentificationFragment : Fragment() {
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         authenticateUserViewModel.firebaseAuthWithGoogle(account)
+    }
+
+    private fun showDialog(){
+        progressBar.visibility = View.VISIBLE
+        googleSignInBtn.visibility = View.GONE
+    }
+
+    private fun hideDialog(){
+        progressBar.visibility = View.GONE
+        googleSignInBtn.visibility = View.VISIBLE
     }
 }

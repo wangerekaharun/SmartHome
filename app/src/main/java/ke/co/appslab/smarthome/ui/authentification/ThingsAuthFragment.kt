@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
@@ -141,7 +142,7 @@ class ThingsAuthFragment : Fragment() {
 
         override fun onDisconnected(endpointId: String) {
             Log.d(TAG, "onDisconnected $endpointId")
-//            activity?.finish()
+            activity?.finish()
         }
     }
 
@@ -168,7 +169,8 @@ class ThingsAuthFragment : Fragment() {
             if (update.status == PayloadTransferUpdate.Status.SUCCESS) {
                 Log.d(TAG, "Disconnecting")
                 connectionsClient.disconnectFromEndpoint(endpointId)
-//                activity?.finish()
+
+                findNavController().navigate(R.id.homeFragment, null)
             }
         }
     }
