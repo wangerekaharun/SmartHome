@@ -18,9 +18,7 @@ import kotlinx.android.synthetic.main.fragment_door_bell.view.*
 import org.jetbrains.anko.toast
 
 class DoorBellFragment : Fragment() {
-    private val doorbellViewModel: DoorbellViewModel by lazy {
-        ViewModelProviders.of(this).get(DoorbellViewModel::class.java)
-    }
+    private lateinit var doorbellViewModel: DoorbellViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +26,7 @@ class DoorBellFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_door_bell, container, false)
 
+        doorbellViewModel = ViewModelProviders.of(this).get(DoorbellViewModel::class.java)
         doorbellViewModel.getDoorBellEntries()
 
         observeLiveData(view.cameraFeedRv)
@@ -36,27 +35,14 @@ class DoorBellFragment : Fragment() {
     }
 
     private fun observeLiveData(cameraFeedRv: RecyclerView) {
-//        doorbellViewModel.getDoorbellEntriesResponse().observe(this, Observer {
-//            when {
-//                it.entriesList != null -> {
-//                    context?.toast(it.entriesList.size.toString())
-//                    initView(cameraFeedRv, it.entriesList)
-//                }
-//            }
-//        } )
-        val firebaseFirestore = FirebaseFirestore.getInstance()
-        firebaseFirestore.collection("logs")
-            .get()
-            .addOnSuccessListener {
-                it?.let {
-                    val entriesList = it.toObjects(DoorbellEntry::class.java)
-                    initView(cameraFeedRv, entriesList)
+        doorbellViewModel.getDoorbellEntriesResponse().observe(this, Observer {
+            when {
+                it.entriesList != null -> {
+                    context?.toast(it.entriesList.size.toString())
+                    initView(cameraFeedRv, it.entriesList)
                 }
-
             }
-            .addOnFailureListener {
-                context?.toast(it.message.toString())
-            }
+        })
     }
 
     private fun initView(cameraFeedRv: RecyclerView, entriesList: List<DoorbellEntry>) {

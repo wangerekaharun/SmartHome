@@ -17,7 +17,7 @@ class DoorbellViewModel : ViewModel() {
     fun getDoorBellEntries() {
         val doorEntriesLiveData = doorbellRepo.getDoorBellEntries()
         doorEntriesMediatorLiveData.addSource(
-            doorEntriesMediatorLiveData
+            doorEntriesLiveData
         ) { doorEntriesMediatorLiveData ->
             when {
                 this.doorEntriesMediatorLiveData.hasActiveObservers() -> this.doorEntriesMediatorLiveData.removeSource(

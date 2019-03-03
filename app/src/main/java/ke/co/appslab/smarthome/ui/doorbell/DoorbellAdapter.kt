@@ -24,14 +24,6 @@ class DoorbellAdapter(
             with(doorbellEntry) {
                 timestampText.text = timestamp
 
-                // Display the image
-                val mFirebaseStorage = FirebaseStorage.getInstance()
-                val imageRef = mFirebaseStorage.getReferenceFromUrl(image)
-
-
-                GlideApp.with(itemView.context)
-                    .load(imageRef)
-                    .into(doorbellImg)
             }
         }
 
