@@ -26,21 +26,14 @@ class DoorBellFragment : Fragment() {
     private fun observeLiveData() {
         doorbellViewModel.getDoorbellEntriesResponse().observe(this, Observer {
             when {
+                it.entriesList != null -> {
+                    swipeRefreshLayout.isRefreshing = false
+                    initView(it.entriesList)
+                }
                 it.responseString != null -> {
                     swipeRefreshLayout.isRefreshing = false
                     context?.toast(it.responseString)
                 }
-                else -> when {
-                    it.entriesList != null -> {
-                        swipeRefreshLayout.isRefreshing = false
-                        initView(it.entriesList)
-                    }
-                    else -> {
-                        cameraFeedRv.visibility = View.GONE
-                        emptyViewLinear.visibility = View.VISIBLE
-                    }
-                }
-
             }
         })
     }
@@ -58,14 +51,16 @@ class DoorBellFragment : Fragment() {
     }
 
     private fun initView(entriesList: List<DoorbellEntry>) {
-        when(entriesList){
+        when{
             entriesList.isEmpty() ->{
-
+                cameraFeedRv.visibility = View.GONE
+                emptyViewLinear.visibility = View.VISIBLE
             }
-        }
-        cameraFeedRv.layoutManager = LinearLayoutManager(activity!!)
-        cameraFeedRv.adapter = DoorbellAdapter(entriesList) {
-
+            else ->{
+                cameraFeedRv.layoutManager = LinearLayoutManager(activity!!)
+                cameraFeedRv.adapter = DoorbellAdapter(entriesList) {
+                }
+            }
         }
     }
 

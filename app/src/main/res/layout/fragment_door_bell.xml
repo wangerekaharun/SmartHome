@@ -32,12 +32,12 @@
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
                 android:gravity="center_horizontal"
-                android:visibility="gone"
+                android:visibility="visible"
             >
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     app:srcCompat="@drawable/ic_image"
                 />
 
@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/empty_view_label"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_small"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
                 />
 
@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/empty_view_desc"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_small"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
                 />
 
