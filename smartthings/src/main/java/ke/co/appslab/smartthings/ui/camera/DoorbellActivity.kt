@@ -21,6 +21,10 @@ import ke.co.appslab.smartthings.R
 import ke.co.appslab.smartthings.models.ImagesDoorbell
 import kotlinx.android.synthetic.main.activity_doorbell.*
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class DoorbellActivity : Activity() {
@@ -146,14 +150,17 @@ class DoorbellActivity : Activity() {
      */
     private fun onPictureTaken(imageBytes: ByteArray?) {
         if (imageBytes != null) {
-            val log = firestore.collection("logs")
+            val log = firestore.collection("doorbell")
             val imageRef = firebaseStorage.reference.child(log.path)
 
             // upload image to storage
             val task = imageRef.putBytes(imageBytes)
             task.addOnSuccessListener(OnSuccessListener<Any> { taskSnapshot ->
                 // mark image in the database
-                image = imageRef.downloadUrl.toString()
+                imageRef.downloadUrl
+                    .addOnSuccessListener {
+                        image = it.toString()
+                    }
                 Log.i(TAG, "Image upload successful")
                 // process image annotations
                 annotateImage(log, imageBytes)
@@ -174,8 +181,11 @@ class DoorbellActivity : Activity() {
             try {
                 val annotations = CloudVisionUtils.annotateImage(imageBytes!!)
                 Log.d(TAG, "cloud vision annotations:$annotations")
+
+                val currentTime =LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm:ss")
                 val imagesDoorbell = ImagesDoorbell(
-                    timestamp = "now",
+                    timestamp = currentTime.format(formatter),
                     image = image!!,
                     annotations = annotations
                 )

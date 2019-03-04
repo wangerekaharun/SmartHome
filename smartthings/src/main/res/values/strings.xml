@@ -7,4 +7,5 @@
     <string name="welcome_text">Welcome</string>
     <string name="welcome__desc_text">Get updates real time updates of your home in your mobile phone</string>
     <string name="get_started">Get Started</string>
+    <string name="door_bell_text">Waiting for doorbell to ring</string>
 </resources>
