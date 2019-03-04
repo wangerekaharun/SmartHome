@@ -21,47 +21,22 @@ import ke.co.appslab.smartthings.R
 import ke.co.appslab.smartthings.models.ImagesDoorbell
 import kotlinx.android.synthetic.main.activity_doorbell.*
 import java.io.IOException
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 
 class DoorbellActivity : Activity() {
-
-    lateinit var firestore: FirebaseFirestore
-    lateinit var firebaseStorage: FirebaseStorage
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var firebaseStorage: FirebaseStorage
     private var mCamera: DoorbellCamera? = null
     private var image: String? = null
-
-    /**
-     * Driver for the doorbell button;
-     */
     private var mButtonInputDriver: ButtonInputDriver? = null
-
-    /**
-     * A [Handler] for running Camera tasks in the background.
-     */
     private var mCameraHandler: Handler? = null
-
-    /**
-     * An additional thread for running Camera tasks that shouldn't block the UI.
-     */
     private var mCameraThread: HandlerThread? = null
-
-    /**
-     * A [Handler] for running Cloud tasks in the background.
-     */
     private var mCloudHandler: Handler? = null
-
-    /**
-     * An additional thread for running Cloud tasks that shouldn't block the UI.
-     */
     private var mCloudThread: HandlerThread? = null
 
-    /**
-     * Listener for new camera images.
-     */
+
     private val mOnImageAvailableListener = OnImageAvailableListener { reader ->
         val image = reader.acquireLatestImage()
         // get image bytes
@@ -78,11 +53,11 @@ class DoorbellActivity : Activity() {
         setContentView(R.layout.activity_doorbell)
         Log.d(TAG, "Doorbell Activity created.")
 
-        // We need permission to access the camera
-        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            // A problem occurred auto-granting the permission
-            Log.e(TAG, "No permission")
-            return
+        when {
+            checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED -> {
+                Log.e(TAG, "No permission")
+                return
+            }
         }
 
         firestore = FirebaseFirestore.getInstance()
@@ -90,19 +65,19 @@ class DoorbellActivity : Activity() {
 
         // Creates new handlers and associated threads for camera and networking operations.
         mCameraThread = HandlerThread("CameraBackground")
-        mCameraThread!!.start()
-        mCameraHandler = Handler(mCameraThread!!.looper)
+        mCameraThread?.start()
+        mCameraHandler = Handler(mCameraThread?.looper)
 
         mCloudThread = HandlerThread("CloudThread")
-        mCloudThread!!.start()
-        mCloudHandler = Handler(mCloudThread!!.looper)
+        mCloudThread?.start()
+        mCloudHandler = Handler(mCloudThread?.looper)
 
         // Initialize the doorbell button driver
         initPIO()
 
         // Camera code is complicated, so we've shoved it all in this closet class for you.
         mCamera = DoorbellCamera.instance
-        mCamera!!.initializeCamera(this, mCameraHandler!!, mOnImageAvailableListener)
+        mCamera?.initializeCamera(this, mCameraHandler!!, mOnImageAvailableListener)
     }
 
     private fun initPIO() {
@@ -122,12 +97,12 @@ class DoorbellActivity : Activity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mCamera!!.shutDown()
+        mCamera?.shutDown()
 
-        mCameraThread!!.quitSafely()
-        mCloudThread!!.quitSafely()
+        mCameraThread?.quitSafely()
+        mCloudThread?.quitSafely()
         try {
-            mButtonInputDriver!!.close()
+            mButtonInputDriver?.close()
         } catch (e: IOException) {
             Log.e(TAG, "button driver error", e)
         }
@@ -135,38 +110,43 @@ class DoorbellActivity : Activity() {
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_ENTER) {
-            // Doorbell rang!
-            Log.d(TAG, "button pressed")
-            statusText.text = "Doorbell ringing"
-            mCamera!!.takePicture()
-            return true
+        return when (keyCode) {
+            KeyEvent.KEYCODE_ENTER -> {
+                // Doorbell rang!
+                Log.d(TAG, "button pressed")
+                statusText.text = getString(R.string.door_bell_ringing)
+                mCamera?.takePicture()
+                true
+            }
+            else -> super.onKeyUp(keyCode, event)
         }
-        return super.onKeyUp(keyCode, event)
     }
 
     /**
      * Upload image data to Firebase as a doorbell event.
      */
     private fun onPictureTaken(imageBytes: ByteArray?) {
-        if (imageBytes != null) {
-            val log = firestore.collection("doorbell")
-            val imageRef = firebaseStorage.reference.child(log.path)
+        when {
+            imageBytes != null -> {
+                val doorbellCollection = firestore.collection("doorbell")
+                val imageRef = firebaseStorage.reference.child(doorbellCollection.path)
 
-            // upload image to storage
-            val task = imageRef.putBytes(imageBytes)
-            task.addOnSuccessListener(OnSuccessListener<Any> { taskSnapshot ->
-                // mark image in the database
-                imageRef.downloadUrl
-                    .addOnSuccessListener {
-                        image = it.toString()
+                // upload image to storage
+                val task = imageRef.putBytes(imageBytes)
+                task.addOnSuccessListener { taskSnapshot ->
+                    imageRef.downloadUrl
+                        .addOnSuccessListener {
+                            image = it.toString()
+                        }
+                    Log.i(TAG, "Image upload successful")
+                    runOnUiThread {
+                        statusText.text = getString(R.string.image_uploaded)
                     }
-                Log.i(TAG, "Image upload successful")
-                // process image annotations
-                annotateImage(log, imageBytes)
-            }).addOnFailureListener {
-                // clean up this entry
-                Log.w(TAG, "Unable to upload image to Firebase")
+                    // process image annotations
+                    annotateImage(doorbellCollection, imageBytes)
+                }.addOnFailureListener {
+                    Log.w(TAG, "Unable to upload image to Firebase")
+                }
             }
         }
     }
@@ -175,7 +155,7 @@ class DoorbellActivity : Activity() {
      * Process image contents with Cloud Vision.
      */
     private fun annotateImage(ref: CollectionReference, imageBytes: ByteArray?) {
-        mCloudHandler!!.post(Runnable {
+        mCloudHandler?.post {
             Log.d(TAG, "sending image to cloud vision")
             // annotate image by uploading to Cloud Vision API
             try {
@@ -193,7 +173,7 @@ class DoorbellActivity : Activity() {
             } catch (e: IOException) {
                 Log.e(TAG, "Cloud Vision API error: ", e)
             }
-        })
+        }
     }
 
     companion object {

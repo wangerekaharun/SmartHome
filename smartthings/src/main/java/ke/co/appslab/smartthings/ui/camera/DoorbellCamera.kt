@@ -25,12 +25,7 @@ import java.util.*
 class DoorbellCamera {
 
     private var mCameraDevice: CameraDevice? = null
-
     private var mCaptureSession: CameraCaptureSession? = null
-
-    /**
-     * An [ImageReader] that handles still image capture.
-     */
     private var mImageReader: ImageReader? = null
 
     /**
@@ -64,13 +59,16 @@ class DoorbellCamera {
     private val mSessionCallback = object : CameraCaptureSession.StateCallback() {
         override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
             // The camera is already closed
-            if (mCameraDevice == null) {
-                return
+            when (mCameraDevice) {
+                null -> return
+
+                // When the session is ready, we start capture.
+                else -> {
+                    mCaptureSession = cameraCaptureSession
+                    triggerImageCapture()
+                }
             }
 
-            // When the session is ready, we start capture.
-            mCaptureSession = cameraCaptureSession
-            triggerImageCapture()
         }
 
         override fun onConfigureFailed(cameraCaptureSession: CameraCaptureSession) {
@@ -124,9 +122,11 @@ class DoorbellCamera {
             Log.e(TAG, "Cam access exception getting IDs", e)
         }
 
-        if (camIds.isEmpty()) {
-            Log.e(TAG, "No cameras found")
-            return
+        when {
+            camIds.isEmpty() -> {
+                Log.e(TAG, "No cameras found")
+                return
+            }
         }
         val id = camIds[0]
         Log.d(TAG, "Using camera id $id")
@@ -153,11 +153,12 @@ class DoorbellCamera {
      * Begin a still image capture
      */
     fun takePicture() {
-        if (mCameraDevice == null) {
-            Log.e(TAG, "Cannot capture image. Camera not initialized.")
-            return
+        when (mCameraDevice) {
+            null -> {
+                Log.e(TAG, "Cannot capture image. Camera not initialized.")
+                return
+            }
         }
-
         // Here, we create a CameraCaptureSession for capturing still images.
         try {
             mCameraDevice!!.createCaptureSession(
@@ -191,14 +192,13 @@ class DoorbellCamera {
      * Close the camera resources
      */
     fun shutDown() {
-        if (mCameraDevice != null) {
-            mCameraDevice!!.close()
+        when {
+            mCameraDevice != null -> mCameraDevice?.close()
         }
     }
 
     companion object {
         private val TAG = DoorbellCamera::class.java.simpleName
-
         private val IMAGE_WIDTH = 320
         private val IMAGE_HEIGHT = 240
         private val MAX_IMAGES = 1
@@ -220,9 +220,12 @@ class DoorbellCamera {
                 Log.d(TAG, "Cam access exception getting IDs")
             }
 
-            if (camIds.isEmpty()) {
-                Log.d(TAG, "No cameras found")
+            when {
+                camIds.isEmpty() -> {
+                    Log.d(TAG, "No cameras found")
+                }
             }
+
             val id = camIds[0]
             Log.d(TAG, "Using camera id $id")
             try {
@@ -230,14 +233,14 @@ class DoorbellCamera {
                 val configs = characteristics.get(
                     CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP
                 )
-                for (format in configs!!.outputFormats) {
+                configs!!.outputFormats.forEach { format ->
                     Log.d(TAG, "Getting sizes for format: $format")
-                    for (s in configs.getOutputSizes(format)) {
+                    configs.getOutputSizes(format).forEach { s ->
                         Log.d(TAG, "\t" + s.toString())
                     }
                 }
                 val effects = characteristics.get(CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS)
-                for (effect in effects!!) {
+                effects?.forEach { effect ->
                     Log.d(TAG, "Effect available: $effect")
                 }
             } catch (e: CameraAccessException) {
