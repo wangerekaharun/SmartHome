@@ -163,7 +163,7 @@ class DoorbellActivity : Activity() {
                 Log.d(TAG, "cloud vision annotations:$annotations")
 
                 val currentTime =LocalDateTime.now()
-                val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm:ss")
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss")
                 val imagesDoorbell = ImagesDoorbell(
                     timestamp = currentTime.format(formatter),
                     image = image!!,
