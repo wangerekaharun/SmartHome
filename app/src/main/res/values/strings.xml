@@ -4,7 +4,7 @@
     <string name="title_dashboard">Doorbell</string>
     <string name="title_notifications">Account</string>
     <string name="action_notifications">Notifications</string>
-    <string name="feed_name_text">Living Room</string>
+    <string name="feed_name_text">Doorbell</string>
     <string name="feed_time">16s ago</string>
     <string name="app_caption">Home on your hands</string>
     <string name="home_owner_name">John Doe</string>

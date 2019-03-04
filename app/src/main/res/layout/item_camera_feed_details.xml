@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/card_radius"
         android:layout_marginStart="@dimen/card_margin"
-        android:layout_marginEnd="@dimen/card_margin"
+        android:layout_margin="@dimen/medium_margin"
     >
 
         <LinearLayout

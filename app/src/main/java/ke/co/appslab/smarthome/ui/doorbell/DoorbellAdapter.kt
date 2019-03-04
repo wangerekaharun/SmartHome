@@ -8,6 +8,9 @@ import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 import ke.co.appslab.smarthome.models.DoorbellEntry
 import kotlinx.android.synthetic.main.item_camera_feed_details.view.*
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class DoorbellAdapter(
@@ -17,12 +20,13 @@ class DoorbellAdapter(
 
     inner class MyViewHolder(itemView: View, itemClickListener: (DoorbellEntry) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
-        val doorbellImg = itemView.doorbellImg
+        private val doorbellImg = itemView.doorbellImg
         private val timestampText = itemView.timestampText
 
         fun bindDoorBell(doorbellEntry: DoorbellEntry) {
             with(doorbellEntry) {
                 timestampText.text = timestamp
+                Glide.with(itemView.context).load(image).into(doorbellImg)
 
             }
         }

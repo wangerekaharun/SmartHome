@@ -11,7 +11,7 @@ class DoorbellRepo {
     fun getDoorBellEntries(): LiveData<DoorBellState> {
         val doorbellMutableStateLiveData = MutableLiveData<DoorBellState>()
         val firebaseFirestore = FirebaseFirestore.getInstance()
-        firebaseFirestore.collection("logs")
+        firebaseFirestore.collection("doorbell")
             .get()
             .addOnSuccessListener { querySnapshot ->
                 querySnapshot?.let {
