@@ -11,14 +11,56 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cameraFeedRv"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            tools:listitem="@layout/item_camera_feed_details"
-        />
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cameraFeedRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                tools:listitem="@layout/item_camera_feed_details"
+                android:visibility="gone"
+            />
+            <LinearLayout
+                android:id="@+id/emptyViewLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+            >
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:srcCompat="@drawable/ic_image"
+                />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty_view_label"
+                    android:textSize="@dimen/text_size_normal"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty_view_desc"
+                    android:textSize="@dimen/text_size_normal"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                />
+
+
+            </LinearLayout>
+        </RelativeLayout>
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
