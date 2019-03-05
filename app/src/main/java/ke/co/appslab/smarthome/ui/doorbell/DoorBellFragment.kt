@@ -57,6 +57,8 @@ class DoorBellFragment : Fragment() {
                 emptyViewLinear.visibility = View.VISIBLE
             }
             else ->{
+                cameraFeedRv.visibility = View.VISIBLE
+                emptyViewLinear.visibility = View.GONE
                 cameraFeedRv.layoutManager = LinearLayoutManager(activity!!)
                 cameraFeedRv.adapter = DoorbellAdapter(entriesList) {
                 }
