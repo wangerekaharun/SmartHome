@@ -58,6 +58,7 @@
 
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
+            android:id="@+id/dashboardCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -152,6 +153,7 @@
         android:layout_margin="@dimen/large_margin"
     >
         <androidx.cardview.widget.CardView
+            android:id="@+id/doorbellCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"

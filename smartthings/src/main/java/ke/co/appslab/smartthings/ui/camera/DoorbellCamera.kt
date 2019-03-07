@@ -4,19 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.params.StreamConfigurationMap
 import android.content.Context.CAMERA_SERVICE
-import androidx.core.content.ContextCompat.getSystemService
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.hardware.camera2.CameraManager
 import android.hardware.camera2.TotalCaptureResult
 import android.hardware.camera2.CaptureRequest
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CaptureResult
 import android.hardware.camera2.CameraDevice
-import java.util.Collections.singletonList
 import android.graphics.ImageFormat
+import android.graphics.Matrix
 import android.media.ImageReader
-import android.media.ImageReader.OnImageAvailableListener
 import android.os.Handler
 import android.util.Log
 import java.util.*
@@ -27,6 +26,12 @@ class DoorbellCamera {
     private var mCameraDevice: CameraDevice? = null
     private var mCaptureSession: CameraCaptureSession? = null
     private var mImageReader: ImageReader? = null
+    private lateinit var imageCapturedListener: ImageCapturedListener
+
+
+    interface ImageCapturedListener {
+        fun onImageCaptured(bitmap: Bitmap)
+    }
 
     /**
      * Callback handling device state changes
@@ -111,7 +116,7 @@ class DoorbellCamera {
     fun initializeCamera(
         context: Context,
         backgroundHandler: Handler,
-        imageAvailableListener: ImageReader.OnImageAvailableListener
+        imageListener: ImageCapturedListener
     ) {
         // Discover the camera instance
         val manager = context.getSystemService(CAMERA_SERVICE) as CameraManager
@@ -136,6 +141,7 @@ class DoorbellCamera {
             IMAGE_WIDTH, IMAGE_HEIGHT,
             ImageFormat.JPEG, MAX_IMAGES
         )
+        imageCapturedListener = imageListener
         mImageReader!!.setOnImageAvailableListener(
             imageAvailableListener, backgroundHandler
         )
@@ -148,6 +154,17 @@ class DoorbellCamera {
         }
 
     }
+
+    private val imageAvailableListener = ImageReader.OnImageAvailableListener { reader ->
+        val image = reader.acquireLatestImage()
+        val imageBuffer = image.planes[0].buffer
+        val imageBytes = ByteArray(imageBuffer.remaining())
+        imageBuffer.get(imageBytes)
+        image.close()
+        val bitmap = getBitmapFromByteArray(imageBytes)
+        imageCapturedListener.onImageCaptured(bitmap)
+    }
+
 
     /**
      * Begin a still image capture
@@ -195,6 +212,14 @@ class DoorbellCamera {
         when {
             mCameraDevice != null -> mCameraDevice?.close()
         }
+    }
+
+    private fun getBitmapFromByteArray(imageBytes: ByteArray): Bitmap {
+        val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+        val matrix = Matrix()
+        //For some reason the bitmap is rotated the incorrect way
+        matrix.postRotate(180f)
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
     companion object {

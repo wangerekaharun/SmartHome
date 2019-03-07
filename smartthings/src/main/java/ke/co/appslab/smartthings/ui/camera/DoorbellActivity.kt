@@ -1,25 +1,27 @@
 package ke.co.appslab.smartthings.ui.camera
 
 import android.Manifest
-import ke.co.appslab.smartthings.utils.CloudVisionUtils
-import com.google.android.gms.tasks.OnSuccessListener
-import android.media.ImageReader.OnImageAvailableListener
-import ke.co.appslab.smartthings.utils.BoardDefaults
-import com.google.android.things.contrib.driver.button.ButtonInputDriver
-import android.os.HandlerThread
-import android.content.pm.PackageManager
-import android.os.Bundle
 import android.app.Activity
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.media.ImageReader.OnImageAvailableListener
+import android.os.Bundle
 import android.os.Handler
+import android.os.HandlerThread
 import android.util.Log
 import android.view.KeyEvent
 import com.google.android.things.contrib.driver.button.Button
+import com.google.android.things.contrib.driver.button.ButtonInputDriver
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import ke.co.appslab.smartthings.R
 import ke.co.appslab.smartthings.models.ImagesDoorbell
+import ke.co.appslab.smartthings.utils.BoardDefaults
+import ke.co.appslab.smartthings.utils.CloudVisionUtils
 import kotlinx.android.synthetic.main.activity_doorbell.*
+import kotlinx.android.synthetic.main.activity_motion_sensor.*
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -36,17 +38,6 @@ class DoorbellActivity : Activity() {
     private var mCloudHandler: Handler? = null
     private var mCloudThread: HandlerThread? = null
 
-
-    private val mOnImageAvailableListener = OnImageAvailableListener { reader ->
-        val image = reader.acquireLatestImage()
-        // get image bytes
-        val imageBuf = image.getPlanes()[0].getBuffer()
-        val imageBytes = ByteArray(imageBuf.remaining())
-        imageBuf.get(imageBytes)
-        image.close()
-
-        onPictureTaken(imageBytes)
-    }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +68,16 @@ class DoorbellActivity : Activity() {
 
         // Camera code is complicated, so we've shoved it all in this closet class for you.
         mCamera = DoorbellCamera.instance
-        mCamera?.initializeCamera(this, mCameraHandler!!, mOnImageAvailableListener)
+        mCamera?.initializeCamera(this, mCameraHandler!!, imageAvailableListener)
+    }
+
+    private val imageAvailableListener = object : DoorbellCamera.ImageCapturedListener {
+        override fun onImageCaptured(bitmap: Bitmap) {
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            viewMotionImage.setImageBitmap(bitmap)
+            onPictureTaken(stream.toByteArray())
+        }
     }
 
     private fun initPIO() {
@@ -162,7 +162,7 @@ class DoorbellActivity : Activity() {
                 val annotations = CloudVisionUtils.annotateImage(imageBytes!!)
                 Log.d(TAG, "cloud vision annotations:$annotations")
 
-                val currentTime =LocalDateTime.now()
+                val currentTime = LocalDateTime.now()
                 val formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss")
                 val imagesDoorbell = ImagesDoorbell(
                     timestamp = currentTime.format(formatter),
