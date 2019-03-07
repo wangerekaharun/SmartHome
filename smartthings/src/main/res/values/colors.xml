@@ -11,4 +11,7 @@
     <color name="colorLightPink">#fce4ec</color>
     <color name="colorDarkPink">#f48fb1</color>
     <color name="colorLightBlue">#e3f2fd</color>
+    <color name="colorRed">#f44336</color>
+    <color name="colorLightGreen">#aed581</color>
+    <color name="colorOrange">#f57c00</color>
 </resources>

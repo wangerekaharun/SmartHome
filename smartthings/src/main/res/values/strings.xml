@@ -10,4 +10,10 @@
     <string name="door_bell_text">Waiting for doorbell to ring</string>
     <string name="door_bell_ringing">Doorbell ringing</string>
     <string name="image_uploaded">Image upload successful</string>
+    <string name="power_label">Power</string>
+    <string name="motion_label">Motion</string>
+    <string name="temparature_label">Temparature</string>
+    <string name="doorbell_label">Doorbell</string>
+    <string name="pressure_label">Pressure</string>
+    <string name="info_label">Info</string>
 </resources>
