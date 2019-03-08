@@ -1,6 +1,7 @@
 package ke.co.appslab.smartthings.repositories
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,7 +25,7 @@ class MotionSensorRepo {
         val uploadTask = imageStorageRef.putBytes(stream.toByteArray())
 
         uploadTask.addOnFailureListener {
-            firebaseStateMutableLiveData.value = FirebaseState("Failed to upload image")
+            firebaseStateMutableLiveData.value = FirebaseState("Failed to upload image : ${it.message}")
         }.addOnSuccessListener {
             val downloadUrl = imageStorageRef.path
 
@@ -36,7 +37,8 @@ class MotionSensorRepo {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss")
             val motionImageLog = MotionImageLog(
                 timestamp = currentTime.format(formatter),
-                imageRef = downloadUrl
+                imageRef = downloadUrl,
+                activityLabel = "Motion"
             )
             motionCollection.add(motionImageLog).addOnCompleteListener {
                 firebaseStateMutableLiveData.value = FirebaseState("Image uploaded successfully")

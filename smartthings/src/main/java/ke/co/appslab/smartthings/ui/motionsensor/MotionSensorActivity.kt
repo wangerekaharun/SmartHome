@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.things.pio.Gpio
 import com.google.android.things.pio.PeripheralManager
@@ -60,13 +61,13 @@ class MotionSensorActivity : AppCompatActivity(), MotionSensor.MotionListener {
     }
 
     private fun observeLiveData() {
-        motionViewModel.getMotionSensorResponse().nonNull().observe(this){
-
-        }
+        motionViewModel.getMotionSensorResponse().observe(this, Observer {
+            Log.d("ImageBitmap", it.responseString)
+        })
     }
 
     private fun setupCamera() {
-        camera = DoorbellCamera.instance
+        camera = DoorbellCamera.getInstance()
         camera.initializeCamera(this, Handler(), imageAvailableListener)
     }
 

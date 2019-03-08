@@ -67,7 +67,7 @@ class DoorbellActivity : Activity() {
         initPIO()
 
         // Camera code is complicated, so we've shoved it all in this closet class for you.
-        mCamera = DoorbellCamera.instance
+        mCamera = DoorbellCamera.getInstance()
         mCamera?.initializeCamera(this, mCameraHandler!!, imageAvailableListener)
     }
 
@@ -97,7 +97,6 @@ class DoorbellActivity : Activity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mCamera?.shutDown()
 
         mCameraThread?.quitSafely()
         mCloudThread?.quitSafely()
