@@ -16,7 +16,7 @@ import java.io.Closeable
 import java.util.*
 
 
-class DoorbellCamera : Closeable{
+class DoorbellCamera : Closeable {
     private var mImageReader: ImageReader? = null
     private var mCameraDevice: CameraDevice? = null
     private var mCaptureSession: CameraCaptureSession? = null
@@ -36,21 +36,27 @@ class DoorbellCamera : Closeable{
             Log.e(TAG, "Cam access exception getting ids", e)
             throw CameraAccessException(CAMERA_ERROR, "Cam access exception getting ids")
         }
-        if (camIds.isEmpty()) {
-            Log.e(TAG, "No cameras found")
-            throw CameraAccessException(CAMERA_ERROR, "No Cameras found")
+        when {
+            camIds.isEmpty() -> {
+                Log.e(TAG, "No cameras found")
+                throw CameraAccessException(CAMERA_ERROR, "No Cameras found")
+            }
         }
-
         val id = camIds[0]
-        mImageReader = ImageReader.newInstance(IMAGE_WIDTH, IMAGE_HEIGHT,
-            ImageFormat.JPEG, MAX_IMAGES)
+        mImageReader = ImageReader.newInstance(
+            IMAGE_WIDTH, IMAGE_HEIGHT,
+            ImageFormat.JPEG, MAX_IMAGES
+        )
         imageCapturedListener = imageListener
         mImageReader?.setOnImageAvailableListener(imageAvailableListener, backgroundHandler)
         try {
             manager.openCamera(id, mStateCallback, backgroundHandler)
         } catch (cae: Exception) {
             Log.e(TAG, "Camera access exception", cae)
+
+
         }
+
     }
 
     private val imageAvailableListener = ImageReader.OnImageAvailableListener { reader ->
@@ -68,14 +74,15 @@ class DoorbellCamera : Closeable{
         mCameraDevice?.createCaptureSession(
             arrayListOf(mImageReader?.surface),
             mSessionCallback,
-            null)
+            null
+        )
     }
 
     private fun getBitmapFromByteArray(imageBytes: ByteArray): Bitmap {
         val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
         val matrix = Matrix()
         //For some reason the bitmap is rotated the incorrect way
-        matrix.postRotate(180f)
+        matrix.postRotate(0f)
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
@@ -91,15 +98,27 @@ class DoorbellCamera : Closeable{
 
     private val mCaptureCallback = object : CameraCaptureSession.CaptureCallback() {
 
-        override fun onCaptureProgressed(session: CameraCaptureSession?, request: CaptureRequest?, partialResult: CaptureResult?) {
+        override fun onCaptureProgressed(
+            session: CameraCaptureSession?,
+            request: CaptureRequest?,
+            partialResult: CaptureResult?
+        ) {
             Log.d(TAG, "Partial result")
         }
 
-        override fun onCaptureFailed(session: CameraCaptureSession?, request: CaptureRequest?, failure: CaptureFailure?) {
+        override fun onCaptureFailed(
+            session: CameraCaptureSession?,
+            request: CaptureRequest?,
+            failure: CaptureFailure?
+        ) {
             Log.d(TAG, "Capture session failed")
         }
 
-        override fun onCaptureCompleted(session: CameraCaptureSession?, request: CaptureRequest?, result: TotalCaptureResult?) {
+        override fun onCaptureCompleted(
+            session: CameraCaptureSession?,
+            request: CaptureRequest?,
+            result: TotalCaptureResult?
+        ) {
             session?.close()
             mCaptureSession = null
             Log.d(TAG, "Capture session closed")
@@ -112,11 +131,13 @@ class DoorbellCamera : Closeable{
         }
 
         override fun onConfigured(cameraCaptureSession: CameraCaptureSession?) {
-            if (mCameraDevice == null) {
-                return
+            when (mCameraDevice) {
+                null -> return
+                else -> {
+                    mCaptureSession = cameraCaptureSession
+                    triggerImageCapture()
+                }
             }
-            mCaptureSession = cameraCaptureSession
-            triggerImageCapture()
         }
 
     }

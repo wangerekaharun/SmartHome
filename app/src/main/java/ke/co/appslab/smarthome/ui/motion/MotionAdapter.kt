@@ -33,6 +33,7 @@ class MotionAdapter(
         RecyclerView.ViewHolder(itemView) {
         private val doorbellImg = itemView.doorbellImg
         private val timestampText = itemView.timestampText
+        private val activityLabelText = itemView.activityLabelText
 
         fun bindMotionLog(motionImageLog: MotionImageLog) {
             with(motionImageLog) {
@@ -41,6 +42,7 @@ class MotionAdapter(
                         DateUtils.getRelativeTimeSpanString(it, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)
                     timestampText.text = timeDifference
                 }
+                activityLabelText.text = activityLabel
                 imageRef?.let {
                     Glide.with(itemView.context).load(it).into(doorbellImg)
 

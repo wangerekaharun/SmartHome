@@ -12,6 +12,7 @@
         app:cardCornerRadius="@dimen/card_radius"
         android:layout_marginStart="@dimen/card_margin"
         android:layout_margin="@dimen/medium_margin"
+        app:cardBackgroundColor="@color/colorWhite"
     >
 
         <LinearLayout
@@ -31,11 +32,12 @@
                 android:layout_margin="@dimen/activity_horizontal_margin"
             >
                 <TextView
+                    android:id="@+id/activityLabelText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/feed_name_text"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_small"
                 />
                 <TextView
                     android:id="@+id/timestampText"
@@ -43,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/feed_time"
                     android:layout_alignParentEnd="true"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_small"
                     android:textColor="@color/colorBlack"
                 />
             </RelativeLayout>
