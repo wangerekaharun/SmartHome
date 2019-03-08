@@ -31,12 +31,8 @@ class MotionSensorRepo {
 
             //upload storage to firebase
             val motionCollection = FirebaseFirestore.getInstance().collection(FIREBASE_MOTION_REF)
-
-            //get current time
-            val currentTime = LocalDateTime.now()
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss")
             val motionImageLog = MotionImageLog(
-                timestamp = currentTime.format(formatter),
+                timestamp = System.currentTimeMillis(),
                 imageRef = downloadUrl,
                 activityLabel = "Motion"
             )

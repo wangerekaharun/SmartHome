@@ -42,4 +42,5 @@
     <string name="things_auth_desc">Kindly wait as you phone pairs with the SmartHome AndroidThings Kit</string>
     <string name="empty_view_label">Woops!</string>
     <string name="empty_view_desc">You have no entries at your door bell</string>
+    <string name="title_motion">Motions</string>
 </resources>
