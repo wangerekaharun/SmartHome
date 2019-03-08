@@ -15,6 +15,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class MotionSensorRepo {
+    lateinit var downloadUrl : String
 
     fun uploadMotionImage(imageBytes: Bitmap): LiveData<FirebaseState> {
         val firebaseStateMutableLiveData = MutableLiveData<FirebaseState>()
@@ -27,18 +28,20 @@ class MotionSensorRepo {
         uploadTask.addOnFailureListener {
             firebaseStateMutableLiveData.value = FirebaseState("Failed to upload image : ${it.message}")
         }.addOnSuccessListener {
-            val downloadUrl = imageStorageRef.path
-
-            //upload storage to firebase
-            val motionCollection = FirebaseFirestore.getInstance().collection(FIREBASE_MOTION_REF)
-            val motionImageLog = MotionImageLog(
-                timestamp = System.currentTimeMillis(),
-                imageRef = downloadUrl,
-                activityLabel = "Motion"
-            )
-            motionCollection.add(motionImageLog).addOnCompleteListener {
-                firebaseStateMutableLiveData.value = FirebaseState("Image uploaded successfully")
-            }
+            imageStorageRef.downloadUrl
+                .addOnSuccessListener {
+                    downloadUrl = it.toString()
+                    //upload storage to firebase
+                    val motionCollection = FirebaseFirestore.getInstance().collection(FIREBASE_MOTION_REF)
+                    val motionImageLog = MotionImageLog(
+                        timestamp = System.currentTimeMillis(),
+                        imageRef = downloadUrl,
+                        activityLabel = "Motion"
+                    )
+                    motionCollection.add(motionImageLog).addOnCompleteListener {
+                        firebaseStateMutableLiveData.value = FirebaseState("Image uploaded successfully")
+                    }
+                }
         }
 
         return firebaseStateMutableLiveData;

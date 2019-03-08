@@ -37,4 +37,11 @@
               android:label="@string/thingsAuthFragment"
               tools:layout="@layout/fragment_things_auth"/>
 
+    <fragment android:id="@+id/motionFragment"
+              android:name="ke.co.appslab.smarthome.ui.motion.MotionFragment"
+              android:label="@string/title_motion"
+              tools:layout="@layout/fragment_motion"
+
+    />
+
 </navigation>
