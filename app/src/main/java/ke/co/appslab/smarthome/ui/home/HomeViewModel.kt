@@ -8,7 +8,7 @@ import ke.co.appslab.smarthome.repositories.WeatherDataRepo
 import ke.co.appslab.smarthome.utils.NonNullMediatorLiveData
 
 class HomeViewModel : ViewModel() {
-    private val weatherDataMediatorLiveData = MediatorLiveData<WeatherDataState>()
+    private val weatherDataMediatorLiveData = NonNullMediatorLiveData<WeatherDataState>()
     private val weatherDataRepo = WeatherDataRepo()
 
     fun getWeatherDataResponse(): LiveData<WeatherDataState> = weatherDataMediatorLiveData
