@@ -14,8 +14,8 @@ class DoorbellViewModel : ViewModel() {
 
     fun getDoorbellLogsResponse(): LiveData<FirebaseState> = doorbellEntriesMediatorLiveData
 
-    fun uploadDoorbellImage(imageBytes: Bitmap) {
-        val doorbellLiveData = doorbellLogsRepo.uploadDoorbellImage(imageBytes)
+    fun uploadDoorbellImage(imageBytes: Bitmap, apiKey: String) {
+        val doorbellLiveData = doorbellLogsRepo.uploadDoorbellImage(imageBytes, apiKey)
         doorbellEntriesMediatorLiveData.addSource(
             doorbellLiveData
         ) { doorbellEntriesMediatorLiveData ->

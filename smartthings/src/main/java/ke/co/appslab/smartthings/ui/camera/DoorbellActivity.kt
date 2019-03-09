@@ -133,7 +133,7 @@ class DoorbellActivity : AppCompatActivity() {
     // Upload image data to Firebase as a doorbell event.
 
     private fun onPictureTaken(imageBytes: Bitmap) {
-        doorbellViewModel.uploadDoorbellImage(imageBytes)
+        doorbellViewModel.uploadDoorbellImage(imageBytes, getString(R.string.cloud_vision_key))
     }
 
     companion object {

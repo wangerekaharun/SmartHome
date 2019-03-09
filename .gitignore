@@ -9,3 +9,4 @@
 app/libs/
 smartthings/libs/
 /.idea/
+src/main/res/values/secrets.xml

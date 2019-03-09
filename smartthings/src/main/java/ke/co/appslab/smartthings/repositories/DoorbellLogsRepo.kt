@@ -9,20 +9,16 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import ke.co.appslab.smartthings.datastates.FirebaseState
 import ke.co.appslab.smartthings.models.ImagesDoorbell
-import ke.co.appslab.smartthings.models.MotionImageLog
-import ke.co.appslab.smartthings.ui.camera.DoorbellActivity
 import ke.co.appslab.smartthings.utils.CloudVisionUtils
 import ke.co.appslab.smartthings.utils.Constants
 import org.jetbrains.anko.doAsync
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class DoorbellLogsRepo {
     private lateinit var downloadUrl: String
 
-    fun uploadDoorbellImage(imageBytes: Bitmap): LiveData<FirebaseState> {
+    fun uploadDoorbellImage(imageBytes: Bitmap,apiKey: String): LiveData<FirebaseState> {
         val firebaseStateMutableLiveData = MutableLiveData<FirebaseState>()
         val storageRef = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_DOORBELL_REF)
         val imageStorageRef = storageRef.child(Constants.DOORBELL_IMAGE_PREFIX + System.currentTimeMillis() + ".jpg")
@@ -38,7 +34,7 @@ class DoorbellLogsRepo {
                     downloadUrl = it.toString()
                     //upload storage to firebase
                     val doorbellCollection = FirebaseFirestore.getInstance().collection(Constants.FIREBASE_DOORBELL_REF)
-                    annotateImage(doorbellCollection, stream.toByteArray())
+                    annotateImage(doorbellCollection, stream.toByteArray(),apiKey)
 
                 }
         }
@@ -46,12 +42,16 @@ class DoorbellLogsRepo {
         return firebaseStateMutableLiveData;
     }
 
-    private fun annotateImage(ref: CollectionReference, imageBytes: ByteArray?) {
+    private fun annotateImage(
+        ref: CollectionReference,
+        imageBytes: ByteArray?,
+        apiKey: String
+    ) {
         doAsync {
             Log.d(TAG, "sending image to cloud vision")
             // annotate image by uploading to Cloud Vision API
             try {
-                val annotations = CloudVisionUtils.annotateImage(imageBytes!!)
+                val annotations = CloudVisionUtils.annotateImage(imageBytes!!,apiKey)
                 Log.d(TAG, "cloud vision annotations:$annotations")
 
                 val imagesDoorbell = ImagesDoorbell(

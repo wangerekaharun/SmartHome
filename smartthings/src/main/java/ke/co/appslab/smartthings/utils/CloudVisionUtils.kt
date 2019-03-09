@@ -6,6 +6,7 @@ import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.vision.v1.Vision
 import com.google.api.services.vision.v1.VisionRequestInitializer
 import com.google.api.services.vision.v1.model.*
+import ke.co.appslab.smartthings.BuildConfig
 import java.io.IOException
 import java.util.*
 import kotlin.collections.HashMap
@@ -13,7 +14,6 @@ import kotlin.collections.HashMap
 
 object CloudVisionUtils {
     val TAG = CloudVisionUtils::class.java.simpleName
-    private val CLOUD_VISION_API_KEY = "AIzaSyA9_g92bVyPIc6GPtR5ZrOulWQlLMdYKkk"
     private val LABEL_DETECTION = "LABEL_DETECTION"
     private val MAX_LABEL_RESULTS = 10
 
@@ -25,11 +25,11 @@ object CloudVisionUtils {
      * @return collection of annotation descriptions and scores.
      */
     @Throws(IOException::class)
-    fun annotateImage(imageBytes: ByteArray): Map<String, Float> {
+    fun annotateImage(imageBytes: ByteArray, apiKey: String): Map<String, Float> {
         // Construct the Vision API instance
         val httpTransport = AndroidHttp.newCompatibleTransport()
         val jsonFactory = GsonFactory.getDefaultInstance()
-        val initializer = VisionRequestInitializer(CLOUD_VISION_API_KEY)
+        val initializer = VisionRequestInitializer(apiKey)
         val vision = Vision.Builder(httpTransport, jsonFactory, null)
             .setVisionRequestInitializer(initializer)
             .build()
@@ -65,12 +65,11 @@ object CloudVisionUtils {
      * @return collection of annotation descriptions and scores.
      */
     private fun convertResponseToMap(response: BatchAnnotateImagesResponse): Map<String, Float> {
-
         // Convert response into a readable collection of annotations
         val annotations = HashMap<String, Float>()
         val labels = response.responses.get(0).labelAnnotations
-        when {
-            labels != null -> labels.forEach { label ->
+        labels?.let {
+            labels.forEach { label ->
                 annotations.put(label.description, label.score)
             }
         }
