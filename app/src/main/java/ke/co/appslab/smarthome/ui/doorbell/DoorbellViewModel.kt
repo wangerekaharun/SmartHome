@@ -8,7 +8,7 @@ import ke.co.appslab.smarthome.repositories.DoorbellRepo
 import ke.co.appslab.smarthome.utils.NonNullMediatorLiveData
 
 class DoorbellViewModel : ViewModel() {
-    private val doorEntriesMediatorLiveData = MediatorLiveData<DoorBellState>()
+    private val doorEntriesMediatorLiveData = NonNullMediatorLiveData<DoorBellState>()
     private val doorbellRepo = DoorbellRepo()
 
 

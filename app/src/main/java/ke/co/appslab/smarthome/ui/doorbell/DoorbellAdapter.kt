@@ -1,5 +1,6 @@
 package ke.co.appslab.smarthome.ui.doorbell
 
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,11 @@ class DoorbellAdapter(
 
         fun bindDoorBell(doorbellEntry: DoorbellEntry) {
             with(doorbellEntry) {
-                timestampText.text = timestamp
+                timestamp?.let {
+                    val timeDifference =
+                        DateUtils.getRelativeTimeSpanString(it, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)
+                    timestampText.text = timeDifference
+                }
                 Glide.with(itemView.context).load(image).into(doorbellImg)
 
             }

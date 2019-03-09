@@ -7,8 +7,8 @@ import ke.co.appslab.smarthome.repositories.MotionLogRepo
 import ke.co.appslab.smarthome.utils.NonNullMediatorLiveData
 
 class MotionLogViewModel : ViewModel() {
-    val motionLogStateMediatorLiveData = NonNullMediatorLiveData<MotionLogState>()
-    val motionLogRepo = MotionLogRepo()
+    private val motionLogStateMediatorLiveData = NonNullMediatorLiveData<MotionLogState>()
+    private val motionLogRepo = MotionLogRepo()
 
     fun getMotionLogResponse(): LiveData<MotionLogState> = motionLogStateMediatorLiveData
 

@@ -25,10 +25,9 @@ class MotionSensor(
         motionSensorGpioPin.registerGpioCallback(object : GpioCallback {
             override fun onGpioEdge(gpio: Gpio?): Boolean {
                 gpio?.let {
-                    if (gpio.value) {
-                        motionListener.onMotionDetected()
-                    } else {
-                        motionListener.onMotionStopped()
+                    when {
+                        gpio.value -> motionListener.onMotionDetected()
+                        else -> motionListener.onMotionStopped()
                     }
                 }
                 return true
