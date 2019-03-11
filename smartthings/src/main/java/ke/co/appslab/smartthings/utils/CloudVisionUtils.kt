@@ -70,7 +70,7 @@ object CloudVisionUtils {
         val labels = response.responses.get(0).labelAnnotations
         labels?.let {
             labels.forEach { label ->
-                annotations.put(label.description, label.score)
+                annotations[label.description] = label.score
             }
         }
 

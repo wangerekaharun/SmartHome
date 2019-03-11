@@ -26,10 +26,11 @@
                 android:src="@drawable/livingroom"
                 android:scaleType="centerCrop"
             />
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_horizontal_margin"
+                android:orientation="vertical"
             >
                 <TextView
                     android:id="@+id/activityLabelText"
@@ -37,18 +38,31 @@
                     android:layout_height="wrap_content"
                     android:text="@string/feed_name_text"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_small"
+                    android:textSize="@dimen/text_size_normal"
+                    android:layout_marginBottom="@dimen/medium_margin"
                 />
-                <TextView
-                    android:id="@+id/timestampText"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/feed_time"
-                    android:layout_alignParentEnd="true"
-                    android:textSize="@dimen/text_size_small"
-                    android:textColor="@color/colorBlack"
-                />
-            </RelativeLayout>
+                    android:layout_marginTop="@dimen/medium_margin"
+                >
+                    <ImageView
+                        android:id="@+id/timerImg"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        app:srcCompat="@drawable/ic_timer_black_24dp"
+                    />
+                    <TextView
+                        android:id="@+id/timestampText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/feed_time"
+                        android:layout_toEndOf="@id/timerImg"
+                        android:textSize="@dimen/text_size_extra_small"
+                        android:layout_marginStart="@dimen/medium_margin"
+                    />
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
 
 
