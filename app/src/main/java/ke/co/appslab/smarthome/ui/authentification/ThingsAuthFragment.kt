@@ -10,13 +10,14 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 import com.google.firebase.auth.FirebaseAuth
 import ke.co.appslab.smarthome.R
-import org.jetbrains.anko.toast
+import kotlinx.android.synthetic.main.fragment_things_auth.*
 
 class ThingsAuthFragment : Fragment() {
     private val firebaseAuth = FirebaseAuth.getInstance()
@@ -33,7 +34,6 @@ class ThingsAuthFragment : Fragment() {
             throw Exception("You can't do that here")
         }
         connectionsClient = Nearby.getConnectionsClient(activity!!)
-        context?.toast("Toast")
 
         return view
     }
@@ -170,11 +170,19 @@ class ThingsAuthFragment : Fragment() {
                 Log.d(TAG, "Disconnecting")
                 connectionsClient.disconnectFromEndpoint(endpointId)
 
-                findNavController().navigate(R.id.homeFragment, null)
+                findNavController().navigate(R.id.action_authFragment_to_homeActivity)
             }
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        proceedBtn.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_authFragment_to_homeActivity)
+
+        }
+    }
 
     companion object {
         private const val MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 0

@@ -6,19 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import ke.co.appslab.smarthome.R
 import ke.co.appslab.smarthome.datastates.WeatherDataState
 import ke.co.appslab.smarthome.utils.nonNull
 import ke.co.appslab.smarthome.utils.observe
+import kotlinx.android.synthetic.main.fragment_authentification.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
     private val homeViewModel: HomeViewModel by lazy { ViewModelProviders.of(this).get(HomeViewModel::class.java) }
+    lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        auth = FirebaseAuth.getInstance()
+        when {
+            auth.currentUser == null ->
+                findNavController().navigate(R.id.action_homeActivity_to_thingsActivity)
+
+        }
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 

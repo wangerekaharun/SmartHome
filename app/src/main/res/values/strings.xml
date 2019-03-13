@@ -44,4 +44,6 @@
     <string name="empty_view_desc">You have no entries at your door bell</string>
     <string name="title_motion">Motions</string>
     <string name="empty__motion_view_desc">You have no motion entries</string>
+    <string name="proceed">Proceed</string>
+    <string name="title_auth_activity">Sign In</string>
 </resources>

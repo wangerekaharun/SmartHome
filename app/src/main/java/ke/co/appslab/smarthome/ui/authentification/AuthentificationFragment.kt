@@ -49,15 +49,10 @@ class AuthentificationFragment : Fragment() {
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(context!!, gso)
-        //check whether the user is signed in first
 
         auth = FirebaseAuth.getInstance()
-        when {
-            auth.currentUser != null -> // already signed in
-                navigateThingsAuth()
-            else -> // not signed in
-                showUI(view.googleSignInBtn)
-        }
+
+        showUI(view.googleSignInBtn)
         //observe livedata emitted by view model
         observeLiveData()
 
@@ -93,11 +88,10 @@ class AuthentificationFragment : Fragment() {
     private fun signInUser() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
-
     }
 
     private fun navigateThingsAuth() {
-        findNavController().navigate(R.id.homeFragment, null)
+        findNavController().navigate(R.id.action_authFragment_to_thingsAuthFragment)
 
     }
 

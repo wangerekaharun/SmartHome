@@ -22,7 +22,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 tools:listitem="@layout/item_camera_feed_details"
-                android:visibility="gone"
+                android:visibility="visible"
             />
             <LinearLayout
                 android:id="@+id/emptyViewLinear"

@@ -1,47 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/nav_graph" app:startDestination="@+id/authentificationFragment">
+            android:id="@+id/nav_graph" app:startDestination="@+id/homeFragment">
 
-    <action
-        android:id="@+id/action_global_authentificationFragment"
-        app:destination="@id/authentificationFragment"
-        app:launchSingleTop="false"
-        app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true" />
 
-    <fragment android:id="@+id/authentificationFragment"
-              android:name="ke.co.appslab.smarthome.ui.authentification.AuthentificationFragment"
-              android:label="@string/authentificationFragment"
-              tools:layout="@layout/fragment_authentification"
-    />
+    <action android:id="@+id/action_homeActivity_to_thingsActivity"
+            app:destination="@id/authActivity"
+            />
 
-    <fragment android:id="@+id/doorBellFragment"
-              android:name="ke.co.appslab.smarthome.ui.doorbell.DoorBellFragment"
-              android:label="DoorBell Fragment"
-              tools:layout="@layout/fragment_door_bell"
-              />
-
-    <fragment android:id="@+id/accountFragment"
-              android:name="ke.co.appslab.smarthome.ui.account.AccountFragment"
-              android:label="Account Fragment"
-              tools:layout="@layout/fragment_account"/>
 
     <fragment android:id="@+id/homeFragment"
               android:name="ke.co.appslab.smarthome.ui.home.HomeFragment"
               android:label="@string/homeFragment"
               tools:layout="@layout/fragment_home"/>
-
-    <fragment android:id="@+id/thingsAuthFragment"
-              android:name="ke.co.appslab.smarthome.ui.authentification.ThingsAuthFragment"
-              android:label="@string/thingsAuthFragment"
-              tools:layout="@layout/fragment_things_auth"/>
-
+    <fragment android:id="@+id/doorBellFragment"
+              android:name="ke.co.appslab.smarthome.ui.doorbell.DoorBellFragment"
+              android:label="DoorBell Fragment"
+              tools:layout="@layout/fragment_door_bell"
+        />
     <fragment android:id="@+id/motionFragment"
               android:name="ke.co.appslab.smarthome.ui.motion.MotionFragment"
               android:label="@string/title_motion"
               tools:layout="@layout/fragment_motion"
 
+        />
+    <fragment android:id="@+id/accountFragment"
+              android:name="ke.co.appslab.smarthome.ui.account.AccountFragment"
+              android:label="Account Fragment"
+              tools:layout="@layout/fragment_account"/>
+
+    <activity android:id="@+id/authActivity"
+              android:name="ke.co.appslab.smarthome.ui.authentification.AuthActivity"
+              android:label="@string/title_auth_activity"
     />
+
 
 </navigation>
