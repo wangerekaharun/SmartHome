@@ -15,7 +15,7 @@
               tools:layout="@layout/fragment_home"/>
     <fragment android:id="@+id/doorBellFragment"
               android:name="ke.co.appslab.smarthome.ui.doorbell.DoorBellFragment"
-              android:label="DoorBell Fragment"
+              android:label="@string/title_doorbell"
               tools:layout="@layout/fragment_door_bell"
         />
     <fragment android:id="@+id/motionFragment"
@@ -26,7 +26,7 @@
         />
     <fragment android:id="@+id/accountFragment"
               android:name="ke.co.appslab.smarthome.ui.account.AccountFragment"
-              android:label="Account Fragment"
+              android:label="@string/title_account"
               tools:layout="@layout/fragment_account"/>
 
     <activity android:id="@+id/authActivity"

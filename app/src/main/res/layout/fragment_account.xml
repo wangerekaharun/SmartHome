@@ -6,6 +6,7 @@
                                        android:clipToPadding="false"
                                        android:scrollbarThumbVertical="@android:color/transparent"
                                        android:fillViewport="true"
+                                       android:background="@color/colorLightGrey"
 
 >
     <LinearLayout
@@ -34,32 +35,25 @@
             android:layout_toEndOf="@id/userProfileImg"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_centerVertical="true"
         >
             <TextView
+                android:id="@+id/ownerNameText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_owner_name"
-                android:textSize="@dimen/text_size_normal"
+                android:textSize="@dimen/text_size_small"
                 android:textColor="@color/colorBlack"
             />
             <TextView
+                android:id="@+id/ownerEmailText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_owner_email"
                 android:layout_marginTop="@dimen/medium_margin"
-                android:textSize="@dimen/text_size_small"
+                android:textSize="@dimen/text_size_extra_small"
                 android:textColor="@color/colorBlack"
                 android:layout_marginBottom="@dimen/medium_margin"
-            />
-            <Button
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:background="@drawable/round_blue_btn"
-                android:text="@string/manage_profile"
-                android:textColor="@color/colorWhite"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:textAllCaps="false"
-                android:textSize="@dimen/text_size_small"
             />
         </LinearLayout>
 
@@ -90,14 +84,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_nickname"
-                android:textSize="@dimen/text_size_normal"
+                android:textSize="@dimen/text_size_small"
                 android:textColor="@color/colorBlack"
             />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_name"
-                android:textSize="@dimen/text_size_small"
+                android:textSize="@dimen/text_size_extra_small"
                 android:layout_marginTop="@dimen/medium_margin"
             />
             <View
@@ -111,15 +105,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_members"
-                android:textSize="@dimen/text_size_normal"
+                android:textSize="@dimen/text_size_small"
                 android:textColor="@color/colorBlack"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
             />
             <TextView
+                android:id="@+id/homeMembersText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_owner_email"
-                android:textSize="@dimen/text_size_small"
+                android:textSize="@dimen/text_size_extra_small"
                 android:layout_marginTop="@dimen/medium_margin"
             />
         </LinearLayout>
@@ -155,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/arm_system"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_small"
                 />
                 <Switch
                     android:layout_width="wrap_content"
@@ -182,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/remote_access"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_small"
                 />
                 <Switch
                     android:layout_width="wrap_content"
@@ -207,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/title_notifications"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_small"
                 />
                 <Switch
                     android:layout_width="wrap_content"

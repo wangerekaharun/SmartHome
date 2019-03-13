@@ -17,7 +17,7 @@
     <string name="home_nickname">Home nickname</string>
     <string name="home_name">John Home</string>
     <string name="home_members">Home members</string>
-    <string name="welcome_greetings">Hi John</string>
+    <string name="welcome_greetings">Hi %1$s</string>
     <string name="welcome_text">Welcome Home</string>
     <string name="camera_feed">Camera \nFeed</string>
     <string name="activity_date">Thur, 14th Feb 2019</string>
@@ -46,4 +46,6 @@
     <string name="empty__motion_view_desc">You have no motion entries</string>
     <string name="proceed">Proceed</string>
     <string name="title_auth_activity">Sign In</string>
+    <string name="title_account">Account</string>
+    <string name="title_doorbell">Doorbell</string>
 </resources>
