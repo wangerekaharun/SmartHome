@@ -27,12 +27,28 @@
     <fragment android:id="@+id/accountFragment"
               android:name="ke.co.appslab.smarthome.ui.account.AccountFragment"
               android:label="@string/title_account"
-              tools:layout="@layout/fragment_account"/>
+              tools:layout="@layout/fragment_account">
+        <action android:id="@+id/action_accountFragment_to_editAccountFragment"
+                app:destination="@id/editAccountFragment"/>
+    </fragment>
+
 
     <activity android:id="@+id/authActivity"
               android:name="ke.co.appslab.smarthome.ui.authentification.AuthActivity"
               android:label="@string/title_auth_activity"
+              tools:layout="@layout/activity_auth"
     />
+    <fragment android:id="@+id/editAccountFragment"
+              android:name="ke.co.appslab.smarthome.ui.account.EditAccountFragment"
+              android:label="@string/title_edit_account"
+              tools:layout="@layout/fragment_edit_account"
+    >
+        <action android:id="@+id/action_editAccountFragment_to_accountFragment"
+                app:destination="@id/accountFragment"
+                app:popUpToInclusive="true"
+                app:popUpTo="@id/accountFragment"
+        />
+    </fragment>
 
 
 </navigation>

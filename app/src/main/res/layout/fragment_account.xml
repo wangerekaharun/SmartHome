@@ -80,20 +80,27 @@
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:orientation="vertical"
         >
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/homeNameLinear"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/home_nickname"
-                android:textSize="@dimen/text_size_small"
-                android:textColor="@color/colorBlack"
-            />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/home_name"
-                android:textSize="@dimen/text_size_extra_small"
-                android:layout_marginTop="@dimen/medium_margin"
-            />
+                android:orientation="vertical"
+            ><TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_nickname"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/colorBlack"
+                />
+                <TextView
+                    android:id="@+id/homeNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_name"
+                    android:textSize="@dimen/text_size_extra_small"
+                    android:layout_marginTop="@dimen/medium_margin"
+                />
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

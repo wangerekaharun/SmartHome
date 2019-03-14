@@ -15,7 +15,7 @@
     <string name="remote_access">Access Remotely</string>
     <string name="account_info">General</string>
     <string name="home_nickname">Home nickname</string>
-    <string name="home_name">John Home</string>
+    <string name="home_name">Not set</string>
     <string name="home_members">Home members</string>
     <string name="welcome_greetings">Hi %1$s</string>
     <string name="welcome_text">Welcome Home</string>
@@ -48,4 +48,8 @@
     <string name="title_auth_activity">Sign In</string>
     <string name="title_account">Account</string>
     <string name="title_doorbell">Doorbell</string>
+    <string name="home_name_hint">Home name</string>
+    <string name="title_save">Save</string>
+    <string name="title_edit_account">Edit name</string>
+    <string name="name_empty_error">Name cannot be empty</string>
 </resources>

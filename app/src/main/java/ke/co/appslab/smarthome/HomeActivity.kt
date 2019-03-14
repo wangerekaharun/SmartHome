@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -38,7 +40,10 @@ class HomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(this, navController)
         NavigationUI.setupWithNavController(navigation, navController)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-
+            when(destination.label){
+                getString(R.string.title_edit_account) -> navigation.visibility = View.GONE
+                else -> navigation.visibility = View.VISIBLE
+            }
         }
     }
 
