@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.*
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ke.co.appslab.smarthome.R
@@ -40,6 +42,7 @@ class EditAccountFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.accountFragment -> {
+                hideKeyboard()
                 val homeName = homeNameEdit.text.toString()
                 saveHomeName(homeName)
                 true
@@ -71,6 +74,16 @@ class EditAccountFragment : Fragment() {
         }
         return valid
     }
+
+    private fun hideKeyboard() {
+        try {
+            val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(activity?.currentFocus!!.windowToken, 0)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 
 
 }
