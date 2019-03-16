@@ -1,6 +1,6 @@
 package ke.co.appslab.smartthings.models
 
 data class ElectricityLog (
-    val timeStampOn : Map<String,String>,
-    val timestampOff : Map<String,String>
+    var timeStampOn : Map<String,String>? = null,
+    var timestampOff : Map<String,String>? = null
 )

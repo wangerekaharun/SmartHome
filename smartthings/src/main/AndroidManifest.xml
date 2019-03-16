@@ -17,6 +17,11 @@
         <uses-library android:name="com.google.android.things"/>
 
         <activity
+            android:name=".ui.electicitymonitor.ElectricityMonitorActivity"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".ui.dashboard.DashboardActivity"
+        />
+        <activity
             android:name=".ui.motionsensor.MotionSensorActivity"
             android:parentActivityName=".ui.dashboard.DashboardActivity"
             android:theme="@style/AppTheme">
@@ -53,7 +58,7 @@
         </activity>
         <activity
             android:name=".ui.camera.DoorbellActivity"
-        android:parentActivityName=".ui.dashboard.DashboardActivity"/>
+            android:parentActivityName=".ui.dashboard.DashboardActivity"/>
     </application>
 
 </manifest>
