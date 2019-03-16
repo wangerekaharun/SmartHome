@@ -39,9 +39,10 @@ class HomeActivity : AppCompatActivity() {
         val navController = Navigation.findNavController(this, R.id.navHostFragment)
         setupActionBarWithNavController(this, navController)
         NavigationUI.setupWithNavController(navigation, navController)
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.label){
                 getString(R.string.title_edit_account) -> navigation.visibility = View.GONE
+                getString(R.string.title_electricity_monitor) -> navigation.visibility = View.GONE
                 else -> navigation.visibility = View.VISIBLE
             }
         }

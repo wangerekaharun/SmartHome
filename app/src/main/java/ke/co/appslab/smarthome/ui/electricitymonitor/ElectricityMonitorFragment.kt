@@ -18,6 +18,8 @@ import org.threeten.bp.Duration
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
+import androidx.appcompat.app.AppCompatActivity
+
 
 
 class ElectricityMonitorFragment : Fragment() {
@@ -73,6 +75,8 @@ class ElectricityMonitorFragment : Fragment() {
                 )
                 electricityStatusImg.setImageResource(R.drawable.lights_on_house)
                 overallStatusText.text = getString(R.string.power_is_on)
+                activity?.window?.statusBarColor= ContextCompat.getColor(activity!!,R.color.colorLightsOnBackgroundDarker)
+
             }
             else -> {
                 constraintLayoutContainer.setBackgroundColor(
@@ -81,8 +85,9 @@ class ElectricityMonitorFragment : Fragment() {
                         R.color.colorLightsOffBackground
                     )
                 )
-                electricityStatusImg.setImageResource(R.drawable.lights_on_house)
+                electricityStatusImg.setImageResource(R.drawable.lights_off_house)
                 overallStatusText.text = getString(R.string.power_is_off)
+                activity?.window?.statusBarColor= ContextCompat.getColor(activity!!,R.color.colorLightsOffBackgroundDarker)
             }
         }
 
@@ -101,8 +106,8 @@ class ElectricityMonitorFragment : Fragment() {
         when {
             duration.toMinutes() < 1 -> text = resources.getString(R.string.few_seconds)
             duration.toMinutes() < 60 -> text = resources.getQuantityString(
-                R.plurals.mins_formatted, duration.toMinutes() as Int,
-                duration.toMinutes() as Int
+                R.plurals.mins_formatted, duration.toMinutes().toInt(),
+                duration.toMinutes().toInt()
             )
             duration.toHours() < 24 -> {
                 val hoursLong = duration.toHours()
@@ -156,5 +161,15 @@ class ElectricityMonitorFragment : Fragment() {
         electricityStatusImg.visibility = View.VISIBLE
         overallStatusText.visibility= View.VISIBLE
         timeElapsedTextView.visibility = View.VISIBLE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar!!.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity).supportActionBar!!.show()
     }
 }
