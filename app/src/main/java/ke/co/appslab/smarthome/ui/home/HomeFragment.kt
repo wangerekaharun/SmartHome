@@ -42,6 +42,14 @@ class HomeFragment : Fragment() {
         getWeatherData()
         observeLiveData()
         firebaseAuth.currentUser?.let { setTextViews(it) }
+
+        clickListeners()
+    }
+
+    private fun clickListeners() {
+        electricityMonitorCardView.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_electricityMonitorFragment)
+        }
     }
 
     private fun observeLiveData() {

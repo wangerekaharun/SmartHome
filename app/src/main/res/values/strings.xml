@@ -52,4 +52,26 @@
     <string name="title_save">Save</string>
     <string name="title_edit_account">Edit name</string>
     <string name="name_empty_error">Name cannot be empty</string>
+    <string name="power_is_on">Power is on!</string>
+    <string name="power_is_off">Power is off…</string>
+    <string name="time_on_formatted" formatted="false">Your power has been on for %s.</string>
+    <string name="time_off_formatted" formatted="false">Oh no. Your power has been off for %s.</string>
+    <string name="power_has_been_on_for">Yay! Your power has been on for %s</string>
+    <string name="power_has_been_off_for">Oh no! Your power has been off for %s</string>
+    <string name="few_seconds">a few seconds</string>
+    <string name="title_electricity_monitor">Electricity</string>
+
+    <plurals name="hours_formatted">
+        <item quantity="one">1 hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="mins_formatted">
+        <item quantity="zero">a few seconds</item>
+        <item quantity="one">1 minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="days_formatted">
+        <item quantity="one">1 day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
 </resources>

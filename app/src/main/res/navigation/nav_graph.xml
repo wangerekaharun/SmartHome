@@ -12,7 +12,12 @@
     <fragment android:id="@+id/homeFragment"
               android:name="ke.co.appslab.smarthome.ui.home.HomeFragment"
               android:label="@string/homeFragment"
-              tools:layout="@layout/fragment_home"/>
+              tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_electricityMonitorFragment"
+            app:destination="@id/electricityMonitorFragment"
+        />
+    </fragment>
     <fragment android:id="@+id/doorBellFragment"
               android:name="ke.co.appslab.smarthome.ui.doorbell.DoorBellFragment"
               android:label="@string/title_doorbell"
@@ -49,6 +54,10 @@
                 app:popUpTo="@id/accountFragment"
         />
     </fragment>
+    <fragment android:id="@+id/electricityMonitorFragment"
+              android:name="ke.co.appslab.smarthome.ui.electricitymonitor.ElectricityMonitorFragment"
+              android:label="@string/title_electricity_monitor"
+              tools:layout="@layout/fragment_electricity_monitor"/>
 
 
 </navigation>

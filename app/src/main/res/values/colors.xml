@@ -13,4 +13,8 @@
     <color name="colorLightBlue">#e3f2fd</color>
     <color name="colorBlue">#4fc3f7</color>
     <color name="colorLightGrey">#f5f5f5</color>
+    <color name="colorLightsOnBackground">#FFC107</color>
+    <color name="colorLightsOnBackgroundDarker">#FFA000</color>
+    <color name="colorLightsOffBackground">#9E9E9E</color>
+    <color name="colorLightsOffBackgroundDarker">#616161</color>
 </resources>
