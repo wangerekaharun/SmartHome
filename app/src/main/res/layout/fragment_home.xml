@@ -171,16 +171,16 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/electricityMonitorCardView"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="150dp"
         android:layout_margin="@dimen/medium_margin"
     >
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="140dp">
+            android:layout_height="150dp">
             <LinearLayout
                 android:id="@+id/electricityMonitorLinear"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:orientation="vertical"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
@@ -209,29 +209,37 @@
                 android:layout_toEndOf="@id/electricityMonitorLinear"
                 android:orientation="vertical"
                 android:layout_centerVertical="true"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
             >
                 <TextView
+                    android:id="@+id/powerStatusTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/power_status"
                     android:layout_gravity="center_horizontal"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_extra_small"
+                    android:layout_marginBottom="@dimen/card_margin"
                 />
                 <ImageView
+                    android:id="@+id/powerStatusImg"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     app:srcCompat="@drawable/ic_idea"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/medium_margin"
+                    android:layout_marginBottom="@dimen/card_margin"
                 />
                 <TextView
+                    android:id="@+id/powerDurationCountTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/power_status_desc"
                     android:layout_gravity="center_horizontal"
-                    android:textSize="@dimen/text_size_small"
-                    android:layout_marginTop="@dimen/medium_margin"
+                    android:textSize="@dimen/text_size_extra_small"
+                    android:layout_marginTop="@dimen/card_margin"
                     android:textAlignment="center"
                 />
             </LinearLayout>

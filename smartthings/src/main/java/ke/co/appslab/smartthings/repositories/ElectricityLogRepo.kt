@@ -27,9 +27,8 @@ class ElectricityLogRepo {
                 val value = dataSnapshot.value as Boolean
                 when {
                     value -> {
-                        val electricityLog = ElectricityLog(
-                            timeStampOn = ServerValue.TIMESTAMP
-                        )
+                        val electricityLog = ElectricityLog()
+                        electricityLog.timeStampOn = ServerValue.TIMESTAMP
                         val currentLogDbRef = databaseKey?.let { firebaseDatabase.child(FIREBASE_LOGS).child(it) }
                         currentLogDbRef?.setValue(electricityLog)
 

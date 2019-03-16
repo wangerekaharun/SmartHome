@@ -19,10 +19,11 @@ import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
 import androidx.appcompat.app.AppCompatActivity
-
+import ke.co.appslab.smarthome.utils.getDurationFormatted
 
 
 class ElectricityMonitorFragment : Fragment() {
+    private var isPowerOn = true
     private val electricityMonitorViewModel: ElectricityMonitorViewModel by lazy {
         ViewModelProviders.of(this).get(ElectricityMonitorViewModel::class.java)
     }
@@ -54,10 +55,10 @@ class ElectricityMonitorFragment : Fragment() {
         hideDialog()
         when (it.timestampOff) {
             null -> timeElapsedTextView.text = getString(R.string.power_has_been_on_for,
-                it.timeStampOn?.let { timeStampOn -> getDurationFormatted(timeStampOn) })
+                it.timeStampOn?.let { timeStampOn -> getDurationFormatted(timeStampOn, context!!) })
             else -> {
                 timeElapsedTextView.text = getString(R.string.power_has_been_off_for,
-                    it.timestampOff?.let { timeStampOff -> getDurationFormatted(timeStampOff) })
+                    it.timestampOff?.let { timeStampOff -> getDurationFormatted(timeStampOff, context!!) })
             }
         }
 
@@ -67,6 +68,7 @@ class ElectricityMonitorFragment : Fragment() {
         hideDialog()
         when {
             it -> {
+                isPowerOn = true
                 constraintLayoutContainer.setBackgroundColor(
                     ContextCompat.getColor(
                         activity!!,
@@ -75,10 +77,12 @@ class ElectricityMonitorFragment : Fragment() {
                 )
                 electricityStatusImg.setImageResource(R.drawable.lights_on_house)
                 overallStatusText.text = getString(R.string.power_is_on)
-                activity?.window?.statusBarColor= ContextCompat.getColor(activity!!,R.color.colorLightsOnBackgroundDarker)
+                activity?.window?.statusBarColor =
+                    ContextCompat.getColor(activity!!, R.color.colorLightsOnBackgroundDarker)
 
             }
             else -> {
+                isPowerOn = false
                 constraintLayoutContainer.setBackgroundColor(
                     ContextCompat.getColor(
                         activity!!,
@@ -87,7 +91,8 @@ class ElectricityMonitorFragment : Fragment() {
                 )
                 electricityStatusImg.setImageResource(R.drawable.lights_off_house)
                 overallStatusText.text = getString(R.string.power_is_off)
-                activity?.window?.statusBarColor= ContextCompat.getColor(activity!!,R.color.colorLightsOffBackgroundDarker)
+                activity?.window?.statusBarColor =
+                    ContextCompat.getColor(activity!!, R.color.colorLightsOffBackgroundDarker)
             }
         }
 
@@ -99,67 +104,19 @@ class ElectricityMonitorFragment : Fragment() {
         electricityMonitorViewModel.fetchElectricityMonitorLogs()
     }
 
-    private fun getDurationFormatted(timestamp: Long): String {
-        val duration = getDifferenceBetweenTimeAndNow(timestamp)
 
-        val text: String
-        when {
-            duration.toMinutes() < 1 -> text = resources.getString(R.string.few_seconds)
-            duration.toMinutes() < 60 -> text = resources.getQuantityString(
-                R.plurals.mins_formatted, duration.toMinutes().toInt(),
-                duration.toMinutes().toInt()
-            )
-            duration.toHours() < 24 -> {
-                val hoursLong = duration.toHours()
-                val minutes = duration.minusHours(hoursLong)
-                val minutesElapsed = minutes.toMinutes()
-                text = resources
-                    .getQuantityString(
-                        R.plurals.hours_formatted,
-                        hoursLong.toInt(),
-                        hoursLong.toInt()
-                    ) + ", " + resources
-                    .getQuantityString(R.plurals.mins_formatted, minutesElapsed.toInt(), minutesElapsed.toInt())
-            }
-            else -> {
-                val days = duration.toDays()
-                val hours = duration.minusDays(days)
-                val hoursLong = hours.toHours()
-                val minutes = hours.minusHours(hoursLong)
-                val minutesElapsed = minutes.toMinutes()
-                text =
-                    resources.getQuantityString(R.plurals.days_formatted, days.toInt(), days.toInt()) + ", " + resources
-                        .getQuantityString(
-                            R.plurals.hours_formatted,
-                            hoursLong.toInt(),
-                            hoursLong.toInt()
-                        ) + ", " + resources
-                        .getQuantityString(R.plurals.mins_formatted, minutesElapsed.toInt(), minutesElapsed.toInt())
-
-            }
-        }
-
-        return text
-    }
-
-    private fun getDifferenceBetweenTimeAndNow(timestamp: Long): Duration {
-        val today = LocalDateTime.now()
-        val otherTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault())
-        return Duration.between(otherTime, today)
-    }
-
-    private fun showDialog(){
+    private fun showDialog() {
         progressBar.visibility = View.VISIBLE
         electricityStatusImg.visibility = View.GONE
-        overallStatusText.visibility= View.GONE
+        overallStatusText.visibility = View.GONE
         timeElapsedTextView.visibility = View.GONE
 
     }
 
-    private fun hideDialog(){
+    private fun hideDialog() {
         progressBar.visibility = View.GONE
         electricityStatusImg.visibility = View.VISIBLE
-        overallStatusText.visibility= View.VISIBLE
+        overallStatusText.visibility = View.VISIBLE
         timeElapsedTextView.visibility = View.VISIBLE
     }
 
@@ -171,5 +128,6 @@ class ElectricityMonitorFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         (activity as AppCompatActivity).supportActionBar!!.show()
+        activity?.window?.statusBarColor = ContextCompat.getColor(activity!!, R.color.colorPrimaryDark)
     }
 }

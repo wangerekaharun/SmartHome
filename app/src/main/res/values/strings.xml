@@ -29,7 +29,7 @@
     <string name="streams_count">4</string>
     <string name="electricity_monitor">Electricity \nMonitor</string>
     <string name="power_status">Power is off</string>
-    <string name="power_status_desc">Power has been off for 30 minutes</string>
+    <string name="power_status_desc">Power has been off for \n%s</string>
     <string name="temp_pressure_label">Climate</string>
     <string name="temperature_label">Temperature</string>
     <string name="temperature">%1$f °C</string>
