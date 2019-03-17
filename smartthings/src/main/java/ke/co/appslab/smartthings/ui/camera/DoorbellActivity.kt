@@ -12,9 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.things.contrib.driver.button.Button
 import com.google.android.things.contrib.driver.button.ButtonInputDriver
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import ke.co.appslab.smartthings.R
 import ke.co.appslab.smartthings.utils.BoardDefaults
 import ke.co.appslab.smartthings.utils.nonNull
