@@ -14,16 +14,19 @@
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
-        android:label="@string/app_name"
         android:name=".utils.SmartThingsApplications"
-    >
+        android:label="@string/app_name">
         <uses-library android:name="com.google.android.things"/>
 
         <activity
-            android:name=".ui.electicitymonitor.ElectricityMonitorActivity"
+            android:name=".ui.weather.WeatherActivity"
             android:theme="@style/AppTheme"
             android:parentActivityName=".ui.dashboard.DashboardActivity"
         />
+        <activity
+            android:name=".ui.electicitymonitor.ElectricityMonitorActivity"
+            android:parentActivityName=".ui.dashboard.DashboardActivity"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ui.motionsensor.MotionSensorActivity"
             android:parentActivityName=".ui.dashboard.DashboardActivity"
@@ -62,8 +65,7 @@
         <activity
             android:name=".ui.camera.DoorbellActivity"
             android:parentActivityName=".ui.dashboard.DashboardActivity"
-            android:theme="@style/AppTheme"
-        />
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

@@ -12,8 +12,11 @@
     <string name="image_uploaded">Image upload successful</string>
     <string name="power_label">Power</string>
     <string name="motion_label">Motion</string>
-    <string name="temparature_label">Temparature</string>
+    <string name="temparature_label">Temperature</string>
     <string name="doorbell_label">Doorbell</string>
     <string name="pressure_label">Pressure</string>
     <string name="info_label">Info</string>
+    <string name="current_temperature">Current %s</string>
+    <string name="temperature">%1$f °C</string>
+    <string name="pressure">%1$f Pa</string>
 </resources>

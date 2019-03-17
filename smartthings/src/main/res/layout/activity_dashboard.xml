@@ -103,6 +103,7 @@
 
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
+            android:id="@+id/temperatureCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -197,6 +198,7 @@
 
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
+            android:id="@+id/pressureCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
