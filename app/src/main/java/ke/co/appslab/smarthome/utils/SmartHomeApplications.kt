@@ -8,8 +8,8 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 class SmartHomeApplications : Application() {
     override fun onCreate() {
         super.onCreate()
-        AndroidThreeTen.init(this);
+        AndroidThreeTen.init(this)
         FirebaseApp.initializeApp(this)
-        FirebaseMessaging.getInstance().subscribeToTopic("Power_Notifications");
+        FirebaseMessaging.getInstance().subscribeToTopic("Power_Notifications")
     }
 }

@@ -14,4 +14,8 @@
     <color name="colorRed">#f44336</color>
     <color name="colorLightGreen">#aed581</color>
     <color name="colorOrange">#f57c00</color>
+    <color name="colorLightsOnBackground">#FFC107</color>
+    <color name="colorLightsOnBackgroundDarker">#FFA000</color>
+    <color name="colorLightsOffBackground">#9E9E9E</color>
+    <color name="colorLightsOffBackgroundDarker">#616161</color>
 </resources>

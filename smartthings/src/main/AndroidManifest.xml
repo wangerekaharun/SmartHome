@@ -20,13 +20,12 @@
 
         <activity
             android:name=".ui.weather.WeatherActivity"
-            android:theme="@style/AppTheme"
             android:parentActivityName=".ui.dashboard.DashboardActivity"
-        />
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ui.electicitymonitor.ElectricityMonitorActivity"
             android:parentActivityName=".ui.dashboard.DashboardActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.motionsensor.MotionSensorActivity"
             android:parentActivityName=".ui.dashboard.DashboardActivity"
