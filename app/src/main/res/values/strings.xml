@@ -60,6 +60,7 @@
     <string name="power_has_been_off_for">Oh no! Your power has been off for %s</string>
     <string name="few_seconds">a few seconds</string>
     <string name="title_electricity_monitor">Electricity</string>
+    <string name="notifications">Notificatons</string>
 
     <plurals name="hours_formatted">
         <item quantity="one">1 hour</item>

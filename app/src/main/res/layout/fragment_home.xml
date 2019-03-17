@@ -7,6 +7,7 @@
             android:clipToPadding="true"
             android:layout_marginBottom="60dp"
             android:clipChildren="false"
+            android:background="@color/colorLightGrey"
             android:scrollbarThumbVertical="@android:color/transparent"
 >
     <LinearLayout
@@ -24,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/welcome_greetings"
-            android:textSize="@dimen/text_size_extra_large"
+            android:textSize="@dimen/text_size_small"
             android:textColor="@color/colorBlack"
         />
         <TextView
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="@string/welcome_text"
             android:layout_marginTop="@dimen/medium_margin"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="@dimen/text_size_extra_small"
         />
 
     </LinearLayout>
@@ -41,6 +42,8 @@
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:layout_margin="@dimen/medium_margin"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="@dimen/card_radius"
     >
         <RelativeLayout
             android:layout_width="match_parent"
@@ -87,7 +90,7 @@
                     android:text="@string/activity_date"
                     android:layout_gravity="center_horizontal"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_small"
                 />
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -173,6 +176,8 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_margin="@dimen/medium_margin"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="@dimen/card_radius"
     >
         <RelativeLayout
             android:layout_width="match_parent"
@@ -266,7 +271,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/medium_margin"
-            android:layout_weight="2">
+            android:layout_weight="2"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="@dimen/card_radius"
+        >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -286,15 +294,17 @@
                     android:text="@string/temperature_label"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
                     android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/colorBlack"
                 />
                 <TextView
                     android:id="@+id/temperatureText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="@string/temperature"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_extra_small"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:textColor="@color/colorBlack"
                 />
             </LinearLayout>
 
@@ -304,7 +314,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/medium_margin"
-            android:layout_weight="2">
+            android:layout_weight="2"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="@dimen/card_radius"
+        >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -323,15 +336,17 @@
                     android:text="@string/pressure_label"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
                     android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/colorBlack"
                 />
                 <TextView
                     android:id="@+id/pressureText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="@string/pressure"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_extra_small"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:textColor="@color/colorBlack"
                 />
             </LinearLayout>
 

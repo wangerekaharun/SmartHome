@@ -10,12 +10,12 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import ke.co.appslab.smarthome.R
-import ke.co.appslab.smarthome.datastates.WeatherDataState
+import ke.co.appslab.smarthome.datastates.PressureState
+import ke.co.appslab.smarthome.datastates.TemperatureState
 import ke.co.appslab.smarthome.models.ElectricityLog
 import ke.co.appslab.smarthome.utils.getDurationFormatted
 import ke.co.appslab.smarthome.utils.nonNull
 import ke.co.appslab.smarthome.utils.observe
-import kotlinx.android.synthetic.main.fragment_authentification.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
@@ -41,7 +41,6 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        getWeatherData()
         fetchElectricityLogs()
         observeLiveData()
         firebaseAuth.currentUser?.let { setTextViews(it) }
@@ -52,6 +51,8 @@ class HomeFragment : Fragment() {
     private fun fetchElectricityLogs() {
         homeViewModel.loadPowerInfo()
         homeViewModel.fetchElectricityMonitorLogs()
+        homeViewModel.getPressureLogs()
+        homeViewModel.getTemperatureLogs()
     }
 
     private fun clickListeners() {
@@ -61,8 +62,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        homeViewModel.getWeatherDataResponse().nonNull().observe(this) {
-            setUpViews(it)
+        homeViewModel.getTemperatureLogResponse().nonNull().observe(this) {
+            showTemperatureReadings(it)
         }
         homeViewModel.getPowerInfoResponse().nonNull().observe(this) {
             handlePowerInfoResponse(it)
@@ -70,6 +71,16 @@ class HomeFragment : Fragment() {
         homeViewModel.getElectricityMonitorLogsResponse().nonNull().observe(this) {
             handleElectricityLogsResponse(it)
         }
+        homeViewModel.getPressureLogResponse().nonNull().observe(this){
+            showPressureReadings(it)
+        }
+    }
+
+    private fun showPressureReadings(it: PressureState) {
+        it.pressureLogList?.let {
+            pressureText.text = getString(R.string.pressure, it.first().pressure)
+        }
+
     }
 
     private fun handleElectricityLogsResponse(it: ElectricityLog) {
@@ -97,15 +108,9 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun setUpViews(it: WeatherDataState) {
-        val weather = it.weather
-        weather?.let {
-            temperatureText.text = getString(R.string.temperature, it[0].temperature)
-            pressureText.text = getString(R.string.pressure, it[0].pressure)
+    private fun showTemperatureReadings(it: TemperatureState) {
+        it.temperatureLogList?.let {
+            temperatureText.text = getString(R.string.temperature, it.first().temperature)
         }
-    }
-
-    private fun getWeatherData() {
-        homeViewModel.getWeatherData()
     }
 }

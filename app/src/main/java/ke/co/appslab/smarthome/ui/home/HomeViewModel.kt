@@ -1,40 +1,43 @@
 package ke.co.appslab.smarthome.ui.home
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import ke.co.appslab.smarthome.datastates.WeatherDataState
+import ke.co.appslab.smarthome.datastates.PressureState
+import ke.co.appslab.smarthome.datastates.TemperatureState
 import ke.co.appslab.smarthome.models.ElectricityLog
 import ke.co.appslab.smarthome.repositories.ElectricityMonitorRepo
 import ke.co.appslab.smarthome.repositories.WeatherDataRepo
 import ke.co.appslab.smarthome.utils.NonNullMediatorLiveData
 
 class HomeViewModel : ViewModel() {
-    private val weatherDataMediatorLiveData = NonNullMediatorLiveData<WeatherDataState>()
+    private val temperatureLogMediatorLiveData = NonNullMediatorLiveData<TemperatureState>()
+    private val pressureLogMediatorLiveData = NonNullMediatorLiveData<PressureState>()
     private val weatherDataRepo = WeatherDataRepo()
     private val electricityMonitorRepo = ElectricityMonitorRepo()
     private val powerInfoMediatorLiveData = NonNullMediatorLiveData<Boolean>()
     private val electricityLogMediatorLiveData = NonNullMediatorLiveData<ElectricityLog>()
 
-    fun getWeatherDataResponse(): LiveData<WeatherDataState> = weatherDataMediatorLiveData
+    fun getTemperatureLogResponse(): LiveData<TemperatureState> = temperatureLogMediatorLiveData
 
 
     fun getPowerInfoResponse(): LiveData<Boolean> = powerInfoMediatorLiveData
 
     fun getElectricityMonitorLogsResponse(): LiveData<ElectricityLog> = electricityLogMediatorLiveData
 
+    fun getPressureLogResponse(): LiveData<PressureState> = pressureLogMediatorLiveData
 
-    fun getWeatherData(){
-        val weatherLiveData = weatherDataRepo.getWeatherData()
-        weatherDataMediatorLiveData.addSource(
-            weatherLiveData
+
+    fun getTemperatureLogs(){
+        val temperatureLogLiveData = weatherDataRepo.getTemperatureLogs()
+        temperatureLogMediatorLiveData.addSource(
+            temperatureLogLiveData
         ) { weatherMediatorLiveData ->
             when {
-                this.weatherDataMediatorLiveData.hasActiveObservers() -> this.weatherDataMediatorLiveData.removeSource(
-                    weatherLiveData
+                this.temperatureLogMediatorLiveData.hasActiveObservers() -> this.temperatureLogMediatorLiveData.removeSource(
+                    temperatureLogLiveData
                 )
             }
-            this.weatherDataMediatorLiveData.setValue(weatherMediatorLiveData)
+            this.temperatureLogMediatorLiveData.setValue(weatherMediatorLiveData)
         }
     }
 
@@ -65,5 +68,19 @@ class HomeViewModel : ViewModel() {
             this.electricityLogMediatorLiveData.setValue(electricityLogMediatorLiveData)
         }
 
+    }
+
+    fun getPressureLogs(){
+        val pressureLogLiveData = weatherDataRepo.getPressureLogs()
+        pressureLogMediatorLiveData.addSource(
+            pressureLogLiveData
+        ) { pressureLogMediatorLiveData ->
+            when {
+                this.pressureLogMediatorLiveData.hasActiveObservers() -> this.pressureLogMediatorLiveData.removeSource(
+                    pressureLogLiveData
+                )
+            }
+            this.pressureLogMediatorLiveData.setValue(pressureLogMediatorLiveData)
+        }
     }
 }
