@@ -18,7 +18,7 @@ import java.io.IOException
 class DoorbellLogsRepo {
     private lateinit var downloadUrl: String
 
-    fun uploadDoorbellImage(imageBytes: Bitmap,apiKey: String): LiveData<FirebaseState> {
+    fun uploadDoorbellImage(imageBytes: Bitmap, apiKey: String): LiveData<FirebaseState> {
         val firebaseStateMutableLiveData = MutableLiveData<FirebaseState>()
         val storageRef = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_DOORBELL_REF)
         val imageStorageRef = storageRef.child(Constants.DOORBELL_IMAGE_PREFIX + System.currentTimeMillis() + ".jpg")
@@ -34,7 +34,12 @@ class DoorbellLogsRepo {
                     downloadUrl = it.toString()
                     //upload storage to firebase
                     val doorbellCollection = FirebaseFirestore.getInstance().collection(Constants.FIREBASE_DOORBELL_REF)
-                    annotateImage(doorbellCollection, stream.toByteArray(),apiKey)
+                    firebaseStateMutableLiveData.value =
+                        annotateImage(
+                            doorbellCollection,
+                            stream.toByteArray(),
+                            apiKey
+                        )?.let { responseString -> FirebaseState(responseString) }
 
                 }
         }
@@ -46,12 +51,13 @@ class DoorbellLogsRepo {
         ref: CollectionReference,
         imageBytes: ByteArray?,
         apiKey: String
-    ) {
+    ): String? {
+        var responseString: String? = null
         doAsync {
             Log.d(TAG, "sending image to cloud vision")
             // annotate image by uploading to Cloud Vision API
             try {
-                val annotations = CloudVisionUtils.annotateImage(imageBytes!!,apiKey)
+                val annotations = CloudVisionUtils.annotateImage(imageBytes!!, apiKey)
                 Log.d(TAG, "cloud vision annotations:$annotations")
 
                 val imagesDoorbell = ImagesDoorbell(
@@ -60,11 +66,12 @@ class DoorbellLogsRepo {
                     annotations = annotations
                 )
                 ref.add(imagesDoorbell)
+                    .addOnSuccessListener { responseString = "Image uploaded successfully" }
             } catch (e: IOException) {
                 Log.e(TAG, "Cloud Vision API error: ", e)
             }
         }
-
+        return responseString
     }
 
     companion object {

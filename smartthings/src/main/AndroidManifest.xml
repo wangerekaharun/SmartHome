@@ -61,7 +61,9 @@
         </activity>
         <activity
             android:name=".ui.camera.DoorbellActivity"
-            android:parentActivityName=".ui.dashboard.DashboardActivity"/>
+            android:parentActivityName=".ui.dashboard.DashboardActivity"
+            android:theme="@style/AppTheme"
+        />
     </application>
 
 </manifest>

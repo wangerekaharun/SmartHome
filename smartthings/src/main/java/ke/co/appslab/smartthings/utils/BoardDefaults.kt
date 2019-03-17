@@ -13,7 +13,7 @@ object BoardDefaults {
         get() {
             when (Build.DEVICE) {
                 DEVICE_RPI3 -> return "BCM21"
-                DEVICE_IMX7D_PICO -> return "GPIO6_IO14"
+                DEVICE_IMX7D_PICO -> return "GPIO2_IO05"
                 else -> throw IllegalStateException("Unknown Build.DEVICE " + Build.DEVICE)
             }
         }

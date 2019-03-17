@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.things.contrib.driver.button.Button
@@ -17,7 +18,6 @@ import ke.co.appslab.smartthings.utils.BoardDefaults
 import ke.co.appslab.smartthings.utils.nonNull
 import ke.co.appslab.smartthings.utils.observe
 import kotlinx.android.synthetic.main.activity_doorbell.*
-import kotlinx.android.synthetic.main.activity_motion_sensor.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
@@ -53,7 +53,9 @@ class DoorbellActivity : AppCompatActivity() {
 
     private fun observerLiveData() {
         doorbellViewModel.getDoorbellLogsResponse().nonNull().observe(this) {
+            statusText.visibility = View.VISIBLE
             statusText.text = it.responseString
+            viewDoorbellImage.visibility = View.GONE
         }
     }
 
@@ -81,7 +83,11 @@ class DoorbellActivity : AppCompatActivity() {
         override fun onImageCaptured(bitmap: Bitmap) {
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-            viewMotionImage.setImageBitmap(bitmap)
+            runOnUiThread {
+                statusText.visibility = View.GONE
+                viewDoorbellImage.visibility = View.VISIBLE
+                viewDoorbellImage.setImageBitmap(bitmap)
+            }
             onPictureTaken(bitmap)
         }
     }
@@ -119,6 +125,8 @@ class DoorbellActivity : AppCompatActivity() {
             KeyEvent.KEYCODE_ENTER -> {
                 // Doorbell rang!
                 Log.d(TAG, "button pressed")
+                statusText.visibility = View.VISIBLE
+                viewDoorbellImage.visibility = View.GONE
                 statusText.text = getString(R.string.door_bell_ringing)
                 mCamera?.takePicture()
                 true
@@ -130,7 +138,9 @@ class DoorbellActivity : AppCompatActivity() {
     // Upload image data to Firebase as a doorbell event.
 
     private fun onPictureTaken(imageBytes: Bitmap) {
-        doorbellViewModel.uploadDoorbellImage(imageBytes, getString(R.string.cloud_vision_key))
+        runOnUiThread {
+            doorbellViewModel.uploadDoorbellImage(imageBytes, getString(R.string.cloud_vision_key))
+        }
     }
 
     companion object {
