@@ -86,9 +86,11 @@ class DoorbellActivity : AppCompatActivity() {
                         //blink led
                         Log.d(TAG, "Changes detected")
                         ledMotionIndicatorGpio.value = true
+                        statusText.text = getString(R.string.access_granted)
                     }
                     else ->{
                         ledMotionIndicatorGpio.value = false
+                        statusText.text = getString(R.string.access_not_granted)
                     }
                 }
             }
@@ -192,7 +194,7 @@ class DoorbellActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
+        ledMotionIndicatorGpio.value = false
         mCameraThread?.quitSafely()
         mCloudThread?.quitSafely()
         try {
@@ -230,4 +232,6 @@ class DoorbellActivity : AppCompatActivity() {
         private val TAG = DoorbellActivity::class.java.simpleName
         val LED_GPIO_PIN = "GPIO6_IO14"
     }
+
+
 }

@@ -39,7 +39,7 @@ class MotionAdapter(
             with(motionImageLog) {
                 timestamp?.let {
                     val timeDifference =
-                        DateUtils.getRelativeTimeSpanString(it, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)
+                        DateUtils.getRelativeTimeSpanString(it, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)
                     timestampText.text = timeDifference
                 }
                 activityLabelText.text = activityLabel

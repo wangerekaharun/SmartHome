@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
+import ke.co.appslab.smarthome.R
 import ke.co.appslab.smarthome.models.DoorbellEntry
 import kotlinx.android.synthetic.main.item_camera_feed_details.view.*
 import java.text.ParseException
@@ -23,17 +24,27 @@ class DoorbellAdapter(
         RecyclerView.ViewHolder(itemView) {
         private val doorbellImg = itemView.doorbellImg
         private val timestampText = itemView.timestampText
+        private val answerImg = itemView.answerImg
 
         fun bindDoorBell(doorbellEntry: DoorbellEntry) {
             with(doorbellEntry) {
                 timestamp?.let {
                     val timeDifference =
-                        DateUtils.getRelativeTimeSpanString(it, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)
+                        DateUtils.getRelativeTimeSpanString(it, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)
                     timestampText.text = timeDifference
                 }
                 Glide.with(itemView.context).load(image).into(doorbellImg)
                 itemView.setOnClickListener {
                     itemClickListener(this)
+                }
+
+                val answer =answer
+                answer?.let {
+                    val disposition = it.disposition
+                    when{
+                        disposition -> answerImg.setImageResource(R.drawable.ic_checked)
+                        else -> answerImg.setImageResource(R.drawable.ic_error)
+                    }
                 }
 
             }

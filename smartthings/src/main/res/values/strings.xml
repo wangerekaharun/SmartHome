@@ -26,6 +26,8 @@
     <string name="power_has_been_on_for">Yay! Your power has been on for %s</string>
     <string name="power_has_been_off_for">Oh no! Your power has been off for %s</string>
     <string name="few_seconds">a few seconds</string>
+    <string name="access_granted">Access granted, you can now enter</string>
+    <string name="access_not_granted">Access not granted, you are not allowed to enter!!</string>
     <plurals name="hours_formatted">
         <item quantity="one">1 hour</item>
         <item quantity="other">%d hours</item>

@@ -22,10 +22,10 @@
     <string name="camera_feed">Camera \nFeed</string>
     <string name="activity_date">Thur, 14th Feb 2019</string>
     <string name="visitors_count">34</string>
-    <string name="visitors_label">visitors</string>
+    <string name="visitors_label">allowed</string>
     <string name="motions_count">12</string>
     <string name="motion_label">motions</string>
-    <string name="streams_label">streams</string>
+    <string name="streams_label">denied</string>
     <string name="streams_count">4</string>
     <string name="electricity_monitor">Electricity \nMonitor</string>
     <string name="power_status">Power is off</string>
