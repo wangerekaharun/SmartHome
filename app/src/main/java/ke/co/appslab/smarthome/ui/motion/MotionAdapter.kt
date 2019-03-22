@@ -34,6 +34,7 @@ class MotionAdapter(
         private val doorbellImg = itemView.doorbellImg
         private val timestampText = itemView.timestampText
         private val activityLabelText = itemView.activityLabelText
+        private val answerImg = itemView.answerImg
 
         fun bindMotionLog(motionImageLog: MotionImageLog) {
             with(motionImageLog) {
@@ -45,6 +46,7 @@ class MotionAdapter(
                 activityLabelText.text = activityLabel
                 imageRef?.let {
                     Glide.with(itemView.context).load(it).into(doorbellImg)
+                    answerImg.visibility = View.GONE
 
                 }
 

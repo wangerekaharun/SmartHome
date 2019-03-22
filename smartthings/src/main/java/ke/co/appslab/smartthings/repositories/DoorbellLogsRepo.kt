@@ -92,31 +92,6 @@ class DoorbellLogsRepo {
         return responseString
     }
 
-    fun observeRingAnswerChanges(ringId: String): LiveData<RingAnswerState> {
-        val ringAnswerMutableLiveData = MutableLiveData<RingAnswerState>()
-        val docRef = doorbellCollection.document(ringId)
-        docRef.addSnapshotListener(EventListener<DocumentSnapshot> { snapshot, e ->
-            if (e != null) {
-                Log.w(TAG, "Listen failed.", e)
-                return@EventListener
-            }
-
-            when {
-                snapshot != null && snapshot.exists() -> {
-                    Log.d(TAG, "Changes Detected")
-                    val doorbelLogs = snapshot.toObject(DoorbelLogs::class.java)
-                    ringAnswerMutableLiveData.value = RingAnswerState(doorbelLogs, null)
-                }
-                else -> {
-                    ringAnswerMutableLiveData.value = RingAnswerState(null, "Current data: null")
-                    Log.d(TAG, "Current data: null")
-                }
-            }
-        })
-
-        return ringAnswerMutableLiveData
-    }
-
     companion object {
         private val TAG = DoorbellLogsRepo::class.java.simpleName
     }
