@@ -61,6 +61,10 @@
     <string name="few_seconds">a few seconds</string>
     <string name="title_electricity_monitor">Electricity</string>
     <string name="notifications">Notificatons</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="doorbell_action_desc">Someone is at the door. Let them in?</string>
+    <string name="doorbell_no">No</string>
+    <string name="doorbell_yes">Yes</string>
 
     <plurals name="hours_formatted">
         <item quantity="one">1 hour</item>

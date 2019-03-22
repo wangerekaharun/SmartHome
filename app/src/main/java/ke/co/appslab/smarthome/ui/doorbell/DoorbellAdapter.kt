@@ -32,6 +32,9 @@ class DoorbellAdapter(
                     timestampText.text = timeDifference
                 }
                 Glide.with(itemView.context).load(image).into(doorbellImg)
+                itemView.setOnClickListener {
+                    itemClickListener(this)
+                }
 
             }
         }

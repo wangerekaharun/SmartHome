@@ -10,4 +10,5 @@
     <dimen name="medium_margin">6dp</dimen>
     <dimen name="card_radius">4dp</dimen>
     <dimen name="card_margin">10dp</dimen>
+    <dimen name="dialog_margin">32dp</dimen>
 </resources>
