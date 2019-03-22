@@ -13,7 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.things.contrib.driver.button.Button
 import com.google.android.things.contrib.driver.button.ButtonInputDriver
+import com.google.android.things.pio.Gpio
+import com.google.android.things.pio.PeripheralManager
 import ke.co.appslab.smartthings.R
+import ke.co.appslab.smartthings.datastates.DoorbellState
+import ke.co.appslab.smartthings.datastates.RingAnswerState
+import ke.co.appslab.smartthings.ui.motionsensor.MotionSensorActivity
 import ke.co.appslab.smartthings.utils.BoardDefaults
 import ke.co.appslab.smartthings.utils.nonNull
 import ke.co.appslab.smartthings.utils.observe
@@ -32,6 +37,7 @@ class DoorbellActivity : AppCompatActivity() {
     private val doorbellViewModel: DoorbellViewModel by lazy {
         ViewModelProviders.of(this).get(DoorbellViewModel::class.java)
     }
+    private lateinit var ledMotionIndicatorGpio: Gpio
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +45,7 @@ class DoorbellActivity : AppCompatActivity() {
 
         checkPermissions()
         initializeHandlers()
+        setupActuators()
 
         //Initialize the doorbell button driver
         initPIO()
@@ -51,12 +58,55 @@ class DoorbellActivity : AppCompatActivity() {
         mCamera?.initializeCamera(this, mCameraHandler!!, imageAvailableListener)
     }
 
+    private fun setupActuators() {
+        val peripheralManagerService = PeripheralManager.getInstance()
+        ledMotionIndicatorGpio = peripheralManagerService.openGpio(LED_GPIO_PIN)
+        ledMotionIndicatorGpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW)
+    }
+
     private fun observerLiveData() {
         doorbellViewModel.getDoorbellLogsResponse().nonNull().observe(this) {
-            statusText.visibility = View.VISIBLE
-            statusText.text = it.responseString
-            viewDoorbellImage.visibility = View.GONE
+            handleDoorbellResponse(it)
+
         }
+        doorbellViewModel.getRingAnswerResponse().nonNull().observe(this){
+            handleRingAnswerResponse(it)
+        }
+    }
+
+    private fun handleRingAnswerResponse(it: RingAnswerState) {
+        it.doorbelLogs?.let {
+            it.answer?.let {
+                val answer = it.disposition
+                when{
+                    answer ->{
+                        //blink led
+                        ledMotionIndicatorGpio.value = true
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun handleDoorbellResponse(it: DoorbellState) {
+        val success = it.success
+        when{
+            success ->{
+                statusText.visibility = View.VISIBLE
+                statusText.text = getString(R.string.image_uploaded)
+                viewDoorbellImage.visibility = View.GONE
+
+                //observe the ring answer changes
+                it.responseString?.let { response -> doorbellViewModel.observeRingAnswerChanges(response) }
+            }
+            else -> {
+                statusText.visibility = View.VISIBLE
+                statusText.text = it.responseString
+                viewDoorbellImage.visibility = View.GONE
+            }
+        }
+
     }
 
     private fun initializeHandlers() {
@@ -145,5 +195,6 @@ class DoorbellActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = DoorbellActivity::class.java.simpleName
+        val LED_GPIO_PIN = "GPIO6_IO14"
     }
 }

@@ -5,10 +5,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import ke.co.appslab.smartthings.datastates.DoorbellState
 import ke.co.appslab.smartthings.datastates.FirebaseState
+import ke.co.appslab.smartthings.models.DoorbelLogs
 import ke.co.appslab.smartthings.models.ImagesDoorbell
+import ke.co.appslab.smartthings.datastates.RingAnswerState
 import ke.co.appslab.smartthings.utils.CloudVisionUtils
 import ke.co.appslab.smartthings.utils.Constants
 import org.jetbrains.anko.doAsync
@@ -17,9 +22,10 @@ import java.io.IOException
 
 class DoorbellLogsRepo {
     private lateinit var downloadUrl: String
+    val doorbellCollection = FirebaseFirestore.getInstance().collection(Constants.FIREBASE_DOORBELL_REF)
 
-    fun uploadDoorbellImage(imageBytes: Bitmap, apiKey: String): LiveData<FirebaseState> {
-        val firebaseStateMutableLiveData = MutableLiveData<FirebaseState>()
+    fun uploadDoorbellImage(imageBytes: Bitmap, apiKey: String): LiveData<DoorbellState> {
+        val firebaseStateMutableLiveData = MutableLiveData<DoorbellState>()
         val storageRef = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_DOORBELL_REF)
         val imageStorageRef = storageRef.child(Constants.DOORBELL_IMAGE_PREFIX + System.currentTimeMillis() + ".jpg")
         val stream = ByteArrayOutputStream()
@@ -27,19 +33,18 @@ class DoorbellLogsRepo {
         val uploadTask = imageStorageRef.putBytes(stream.toByteArray())
 
         uploadTask.addOnFailureListener {
-            firebaseStateMutableLiveData.value = FirebaseState("Failed to upload image : ${it.message}")
+            firebaseStateMutableLiveData.value = DoorbellState("Failed to upload image : ${it.message}",false)
         }.addOnSuccessListener {
             imageStorageRef.downloadUrl
                 .addOnSuccessListener {
                     downloadUrl = it.toString()
                     //upload storage to firebase
-                    val doorbellCollection = FirebaseFirestore.getInstance().collection(Constants.FIREBASE_DOORBELL_REF)
                     firebaseStateMutableLiveData.value =
                         annotateImage(
                             doorbellCollection,
                             stream.toByteArray(),
                             apiKey
-                        )?.let { responseString -> FirebaseState(responseString) }
+                        )?.let { responseString -> DoorbellState(responseString,true) }
 
                 }
         }
@@ -66,12 +71,35 @@ class DoorbellLogsRepo {
                     annotations = annotations
                 )
                 ref.add(imagesDoorbell)
-                    .addOnSuccessListener { responseString = "Image uploaded successfully" }
+                    .addOnSuccessListener {
+                        responseString = it.id
+                    }
             } catch (e: IOException) {
                 Log.e(TAG, "Cloud Vision API error: ", e)
             }
         }
         return responseString
+    }
+
+    fun observeRingAnswerChanges(ringId: String): LiveData<RingAnswerState> {
+        val ringAnswerMutableLiveData = MutableLiveData<RingAnswerState>()
+        val docRef = doorbellCollection.document()
+        docRef.addSnapshotListener(EventListener<DocumentSnapshot> { snapshot, e ->
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e)
+                return@EventListener
+            }
+
+            when {
+                snapshot != null && snapshot.exists() -> {
+                    val doorbelLogs = snapshot.toObject(DoorbelLogs::class.java)
+                    ringAnswerMutableLiveData.value = RingAnswerState(doorbelLogs, null)
+                }
+                else -> ringAnswerMutableLiveData.value = RingAnswerState(null, "Current data: null")
+            }
+        })
+
+        return ringAnswerMutableLiveData
     }
 
     companion object {
