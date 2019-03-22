@@ -15,11 +15,16 @@ import com.google.android.things.contrib.driver.button.Button
 import com.google.android.things.contrib.driver.button.ButtonInputDriver
 import com.google.android.things.pio.Gpio
 import com.google.android.things.pio.PeripheralManager
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestore
 import ke.co.appslab.smartthings.R
 import ke.co.appslab.smartthings.datastates.DoorbellState
 import ke.co.appslab.smartthings.datastates.RingAnswerState
-import ke.co.appslab.smartthings.ui.motionsensor.MotionSensorActivity
+import ke.co.appslab.smartthings.models.DoorbelLogs
+import ke.co.appslab.smartthings.repositories.DoorbellLogsRepo
 import ke.co.appslab.smartthings.utils.BoardDefaults
+import ke.co.appslab.smartthings.utils.Constants
 import ke.co.appslab.smartthings.utils.nonNull
 import ke.co.appslab.smartthings.utils.observe
 import kotlinx.android.synthetic.main.activity_doorbell.*
@@ -38,6 +43,7 @@ class DoorbellActivity : AppCompatActivity() {
         ViewModelProviders.of(this).get(DoorbellViewModel::class.java)
     }
     private lateinit var ledMotionIndicatorGpio: Gpio
+    val doorbellCollection = FirebaseFirestore.getInstance().collection(Constants.FIREBASE_DOORBELL_REF)
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,19 +75,20 @@ class DoorbellActivity : AppCompatActivity() {
             handleDoorbellResponse(it)
 
         }
-        doorbellViewModel.getRingAnswerResponse().nonNull().observe(this){
-            handleRingAnswerResponse(it)
-        }
     }
 
-    private fun handleRingAnswerResponse(it: RingAnswerState) {
-        it.doorbelLogs?.let {
+    private fun handleRingAnswerResponse(it: DoorbelLogs?) {
+        it?.let {
             it.answer?.let {
                 val answer = it.disposition
-                when{
-                    answer ->{
+                when {
+                    answer -> {
                         //blink led
+                        Log.d(TAG, "Changes detected")
                         ledMotionIndicatorGpio.value = true
+                    }
+                    else ->{
+                        ledMotionIndicatorGpio.value = false
                     }
                 }
             }
@@ -91,14 +98,17 @@ class DoorbellActivity : AppCompatActivity() {
 
     private fun handleDoorbellResponse(it: DoorbellState) {
         val success = it.success
-        when{
-            success ->{
+        when {
+            success -> {
                 statusText.visibility = View.VISIBLE
                 statusText.text = getString(R.string.image_uploaded)
                 viewDoorbellImage.visibility = View.GONE
 
                 //observe the ring answer changes
-                it.responseString?.let { response -> doorbellViewModel.observeRingAnswerChanges(response) }
+                it.responseString?.let { response ->
+                    observeRingAnswerChanges(response)
+                    Log.d(TAG, "Observing Changes")
+                }
             }
             else -> {
                 statusText.visibility = View.VISIBLE
@@ -107,6 +117,29 @@ class DoorbellActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun observeRingAnswerChanges(response: String) {
+        val docRef = doorbellCollection.document(response)
+        docRef.addSnapshotListener(
+            EventListener<DocumentSnapshot>
+            { snapshot, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@EventListener
+                }
+
+                when {
+                    snapshot != null && snapshot.exists() -> {
+                        Log.d(TAG, "Changes Detected")
+                        val doorbelLogs = snapshot.toObject(DoorbelLogs::class.java)
+                        handleRingAnswerResponse(doorbelLogs)
+                    }
+                    else -> {
+                        Log.d(TAG, "Current data: null")
+                    }
+                }
+            })
     }
 
     private fun initializeHandlers() {

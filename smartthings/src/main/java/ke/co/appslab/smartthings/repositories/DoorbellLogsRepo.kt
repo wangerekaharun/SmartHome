@@ -17,8 +17,10 @@ import ke.co.appslab.smartthings.datastates.RingAnswerState
 import ke.co.appslab.smartthings.utils.CloudVisionUtils
 import ke.co.appslab.smartthings.utils.Constants
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.io.ByteArrayOutputStream
 import java.io.IOException
+import java.time.LocalDate
 
 class DoorbellLogsRepo {
     private lateinit var downloadUrl: String
@@ -33,19 +35,24 @@ class DoorbellLogsRepo {
         val uploadTask = imageStorageRef.putBytes(stream.toByteArray())
 
         uploadTask.addOnFailureListener {
-            firebaseStateMutableLiveData.value = DoorbellState("Failed to upload image : ${it.message}",false)
+            firebaseStateMutableLiveData.value = DoorbellState("Failed to upload image : ${it.message}", false)
         }.addOnSuccessListener {
             imageStorageRef.downloadUrl
                 .addOnSuccessListener {
                     downloadUrl = it.toString()
                     //upload storage to firebase
-                    firebaseStateMutableLiveData.value =
-                        annotateImage(
-                            doorbellCollection,
-                            stream.toByteArray(),
-                            apiKey
-                        )?.let { responseString -> DoorbellState(responseString,true) }
 
+                    val imagesDoorbell = ImagesDoorbell(
+                        timestamp = System.currentTimeMillis(),
+                        image = downloadUrl
+                    )
+                    doorbellCollection.add(imagesDoorbell)
+                        .addOnSuccessListener { document ->
+                            firebaseStateMutableLiveData.value = DoorbellState(document.id, true)
+                            Log.d(TAG, document.id)
+
+
+                        }
                 }
         }
 
@@ -71,8 +78,12 @@ class DoorbellLogsRepo {
                     annotations = annotations
                 )
                 ref.add(imagesDoorbell)
-                    .addOnSuccessListener {
-                        responseString = it.id
+                    .addOnSuccessListener { document ->
+                        uiThread {
+                            responseString = document.id
+                            Log.d(TAG, document.id)
+                        }
+
                     }
             } catch (e: IOException) {
                 Log.e(TAG, "Cloud Vision API error: ", e)
@@ -83,7 +94,7 @@ class DoorbellLogsRepo {
 
     fun observeRingAnswerChanges(ringId: String): LiveData<RingAnswerState> {
         val ringAnswerMutableLiveData = MutableLiveData<RingAnswerState>()
-        val docRef = doorbellCollection.document()
+        val docRef = doorbellCollection.document(ringId)
         docRef.addSnapshotListener(EventListener<DocumentSnapshot> { snapshot, e ->
             if (e != null) {
                 Log.w(TAG, "Listen failed.", e)
@@ -92,10 +103,14 @@ class DoorbellLogsRepo {
 
             when {
                 snapshot != null && snapshot.exists() -> {
+                    Log.d(TAG, "Changes Detected")
                     val doorbelLogs = snapshot.toObject(DoorbelLogs::class.java)
                     ringAnswerMutableLiveData.value = RingAnswerState(doorbelLogs, null)
                 }
-                else -> ringAnswerMutableLiveData.value = RingAnswerState(null, "Current data: null")
+                else -> {
+                    ringAnswerMutableLiveData.value = RingAnswerState(null, "Current data: null")
+                    Log.d(TAG, "Current data: null")
+                }
             }
         })
 

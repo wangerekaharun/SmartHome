@@ -3,8 +3,11 @@ package ke.co.appslab.smarthome.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import ke.co.appslab.smarthome.datastates.DoorBellState
 import ke.co.appslab.smarthome.models.DoorbellEntry
+import ke.co.appslab.smarthome.utils.Constants
+import ke.co.appslab.smarthome.utils.Constants.TIMESTAMP
 import ke.co.appslab.smarthome.utils.Result
 
 class DoorbellRepo {
@@ -14,19 +17,16 @@ class DoorbellRepo {
         val doorbellMutableStateLiveData = MutableLiveData<DoorBellState>()
         val firebaseFirestore = FirebaseFirestore.getInstance()
         firebaseFirestore.collection("doorbell")
+            .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { querySnapshot ->
-                querySnapshot?.let { querySnapshot1 ->
-                    val entriesList = querySnapshot1.toObjects(DoorbellEntry::class.java)
-                    entriesList.forEach { doorBellEntry ->
-                        querySnapshot1.forEach {
-                            val newEntry = doorBellEntry.copy(documentId = it.id)
-                            doorBellEntriesList.add(newEntry)
-                            doorbellMutableStateLiveData.value = DoorBellState(null, doorBellEntriesList)
-                        }
-                    }
-
+                val list = ArrayList<DoorbellEntry>()
+                querySnapshot.forEach {
+                    val doorbellEntry = it.toObject(DoorbellEntry::class.java)
+                    doorbellEntry.documentId= it.id
+                    list.add(doorbellEntry)
                 }
+                doorbellMutableStateLiveData.value = DoorBellState(null, list)
 
             }
             .addOnFailureListener {
