@@ -5,4 +5,5 @@ object SharedPref {
     const val KEY_IS_LOGGEDIN = "isLoggedIn"
     const val KIT_SETUP = "kitSetup"
     const val HOME_NICKNAME = "homeNickname"
+    const val FIREBASE_TOKEN = "firebaseToken"
 }

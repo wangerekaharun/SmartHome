@@ -29,4 +29,22 @@ exports.sendPowerNotification = functions.database.ref("/online").onWrite((event
     return admin.messaging().sendToTopic("Power_Notifications", payload, options);
     });
 
+exports.motionDetectedNotification = functions.firestore
+    .document('/motions/{userId}')
+     .onCreate((snap, context) => {
+  
+  var usersRef = db.collection('users');
+  var getDoc = usersRef.get()
+  .then(doc => {
+    if (!doc.exists) {
+      console.log('No such document!');
+    } else {
+      console.log('Document data:', doc.data());
+    }
+  })
+  .catch(err => {
+    console.log('Error getting document', err);
+  });
+    
 
+  });

@@ -38,6 +38,15 @@
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_smarthome" />
 
+        <service
+            android:name=".ui.firebase.InstanceIdService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

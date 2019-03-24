@@ -26,7 +26,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        when (firebaseAuth) {
+        when (firebaseAuth.currentUser) {
             null -> {
                 findNavController().navigate(R.id.action_homeActivity_to_thingsActivity)
             }
