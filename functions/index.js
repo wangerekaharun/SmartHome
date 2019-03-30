@@ -1,16 +1,15 @@
 'use strict';
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-admin.initializeApp(functions.config().firebase);
+admin.initializeApp();
 
 
-exports.sendPowerNotification = functions.database.ref("/online").onWrite((event) => {
-    const data = event.data;
-    console.log('Power event triggered');
-    if (!data.changed()) {
+exports.sendPowerNotification = functions.database.ref("/online").onWrite((change,context) => {
+  console.log('Power event triggered');
+    if (!change.before.exists()) {
         return;
     }
-    const status = data.val();
+    const status = change.after.val();
     const onOff =  status ? "on": "off";
 
     const payload = {
@@ -26,8 +25,29 @@ exports.sendPowerNotification = functions.database.ref("/online").onWrite((event
         timeToLive: 60 * 60 * 24 //24 hours
     };
     console.log('Sending notifications');
-    admin.messaging().sendToTopic("Power_Notifications", payload, options);
-    });
+   
+    var db = admin.firestore();
+  
+    var usersRef = db.collection('users');
+    usersRef.get().then(doc => {
+     if (doc.empty) {
+       console.log('No matching documents.');
+       throw new Error("No such document!");
+     }
+     doc.forEach(doc => {
+    console.log('Document data:', doc.data());
+
+     console.log('Sending notifications');
+    admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
+ 
+     });   
+     return doc.data(); 
+     
+   })
+   .catch(err => {
+     console.log('Error getting document', err);
+   });
+ });
 
 exports.motionDetectedNotification = functions.firestore
     .document('/motions/{motionId}')
