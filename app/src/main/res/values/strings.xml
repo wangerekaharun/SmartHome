@@ -65,6 +65,9 @@
     <string name="doorbell_action_desc">Someone is at the door. Let them in?</string>
     <string name="doorbell_no">No</string>
     <string name="doorbell_yes">Yes</string>
+    <string name="firebase_groups">Firebase_Groups</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_name" translatable="true">SmartHome</string>
 
     <plurals name="hours_formatted">
         <item quantity="one">1 hour</item>
