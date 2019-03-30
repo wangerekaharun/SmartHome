@@ -26,21 +26,41 @@ exports.sendPowerNotification = functions.database.ref("/online").onWrite((event
         timeToLive: 60 * 60 * 24 //24 hours
     };
     console.log('Sending notifications');
-    return admin.messaging().sendToTopic("Power_Notifications", payload, options);
+    admin.messaging().sendToTopic("Power_Notifications", payload, options);
     });
 
 exports.motionDetectedNotification = functions.firestore
-    .document('/motions/{userId}')
+    .document('/motions/{motionId}')
      .onCreate((snap, context) => {
+
+   var db = admin.firestore();
   
-  var usersRef = db.collection('users');
-  var getDoc = usersRef.get()
-  .then(doc => {
-    if (!doc.exists) {
-      console.log('No such document!');
-    } else {
-      console.log('Document data:', doc.data());
+   var usersRef = db.collection('users');
+   usersRef.get().then(doc => {
+    if (doc.empty) {
+      console.log('No matching documents.');
+      throw new Error("No such document!");
     }
+    doc.forEach(doc => {
+      console.log('Document data:', doc.data());
+      const payload = {
+        notification: {
+            title: 'Intruder Notifications',
+            body: 'There is motion at your door',
+            sound: "default"
+        }
+    };
+
+    const options = {
+        priority: "high",
+        timeToLive: 60 * 60 * 24 //24 hours
+    };
+    console.log('Sending notifications');
+   admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
+
+    });   
+    return doc.data(); 
+    
   })
   .catch(err => {
     console.log('Error getting document', err);
