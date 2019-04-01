@@ -2,10 +2,12 @@ package ke.co.appslab.smarthome.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import ke.co.appslab.smarthome.datastates.OverviewState
 import ke.co.appslab.smarthome.datastates.PressureState
 import ke.co.appslab.smarthome.datastates.TemperatureState
 import ke.co.appslab.smarthome.models.ElectricityLog
 import ke.co.appslab.smarthome.repositories.ElectricityMonitorRepo
+import ke.co.appslab.smarthome.repositories.OverviewRepo
 import ke.co.appslab.smarthome.repositories.WeatherDataRepo
 import ke.co.appslab.smarthome.utils.NonNullMediatorLiveData
 
@@ -16,6 +18,10 @@ class HomeViewModel : ViewModel() {
     private val electricityMonitorRepo = ElectricityMonitorRepo()
     private val powerInfoMediatorLiveData = NonNullMediatorLiveData<Boolean>()
     private val electricityLogMediatorLiveData = NonNullMediatorLiveData<ElectricityLog>()
+    private val overviewRepo = OverviewRepo()
+    private val allowedPersonsMediatorLiveData = NonNullMediatorLiveData<OverviewState>()
+    private val disallowedPersonsMediatorLiveData = NonNullMediatorLiveData<OverviewState>()
+    private val motionsCountMediatorLiveData = NonNullMediatorLiveData<OverviewState>()
 
     fun getTemperatureLogResponse(): LiveData<TemperatureState> = temperatureLogMediatorLiveData
 
@@ -25,6 +31,12 @@ class HomeViewModel : ViewModel() {
     fun getElectricityMonitorLogsResponse(): LiveData<ElectricityLog> = electricityLogMediatorLiveData
 
     fun getPressureLogResponse(): LiveData<PressureState> = pressureLogMediatorLiveData
+
+    fun getAllowedPersonsResponse() : LiveData<OverviewState> = allowedPersonsMediatorLiveData
+
+    fun getDisallowedPersonsResponse() : LiveData<OverviewState> = disallowedPersonsMediatorLiveData
+
+    fun getMotionsCountResponse() : LiveData<OverviewState> = motionsCountMediatorLiveData
 
 
     fun getTemperatureLogs(){
@@ -81,6 +93,48 @@ class HomeViewModel : ViewModel() {
                 )
             }
             this.pressureLogMediatorLiveData.setValue(pressureLogMediatorLiveData)
+        }
+    }
+
+    fun getTotalVisitorsAllowed(){
+        val allowedVisitorsLiveData = overviewRepo.getTotalVisitorsAllowed()
+        allowedPersonsMediatorLiveData.addSource(
+            allowedVisitorsLiveData
+        ) { allowedPersonsMediatorLiveData ->
+            when {
+                this.allowedPersonsMediatorLiveData.hasActiveObservers() -> this.allowedPersonsMediatorLiveData.removeSource(
+                    allowedVisitorsLiveData
+                )
+            }
+            this.allowedPersonsMediatorLiveData.setValue(allowedPersonsMediatorLiveData)
+        }
+    }
+
+    fun getTotalVisitorsDisallowed(){
+        val disallowedVisitorsLiveData = overviewRepo.getTotalVisitorsDisallowed()
+        disallowedPersonsMediatorLiveData.addSource(
+            disallowedVisitorsLiveData
+        ) { disallowedPersonsMediatorLiveData ->
+            when {
+                this.disallowedPersonsMediatorLiveData.hasActiveObservers() -> this.disallowedPersonsMediatorLiveData.removeSource(
+                    disallowedVisitorsLiveData
+                )
+            }
+            this.disallowedPersonsMediatorLiveData.setValue(disallowedPersonsMediatorLiveData)
+        }
+    }
+
+    fun getTotalMotions(){
+        val motionCountLiveData = overviewRepo.getTotalMotions()
+        motionsCountMediatorLiveData.addSource(
+            motionCountLiveData
+        ) { motionsCountMediatorLiveData ->
+            when {
+                this.motionsCountMediatorLiveData.hasActiveObservers() -> this.motionsCountMediatorLiveData.removeSource(
+                    motionCountLiveData
+                )
+            }
+            this.motionsCountMediatorLiveData.setValue(motionsCountMediatorLiveData)
         }
     }
 }

@@ -41,11 +41,19 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        showProgressBar()
         fetchElectricityLogs()
         observeLiveData()
+        getActivitiesOverviews()
         firebaseAuth.currentUser?.let { setTextViews(it) }
 
         clickListeners()
+    }
+
+    private fun getActivitiesOverviews() {
+        homeViewModel.getTotalMotions()
+        homeViewModel.getTotalVisitorsAllowed()
+        homeViewModel.getTotalVisitorsDisallowed()
     }
 
     private fun fetchElectricityLogs() {
@@ -71,12 +79,25 @@ class HomeFragment : Fragment() {
         homeViewModel.getElectricityMonitorLogsResponse().nonNull().observe(this) {
             handleElectricityLogsResponse(it)
         }
-        homeViewModel.getPressureLogResponse().nonNull().observe(this){
+        homeViewModel.getPressureLogResponse().nonNull().observe(this) {
             showPressureReadings(it)
+        }
+        homeViewModel.getAllowedPersonsResponse().nonNull().observe(this) {
+            hideProgressBar()
+            allowedPersonsCountText.text = it.overviewCount.toString()
+        }
+        homeViewModel.getDisallowedPersonsResponse().nonNull().observe(this) {
+            hideProgressBar()
+            disallowedPersonsCountText.text = it.overviewCount.toString()
+        }
+        homeViewModel.getMotionsCountResponse().nonNull().observe(this) {
+            hideProgressBar()
+            motionsCountText.text = it.overviewCount.toString()
         }
     }
 
     private fun showPressureReadings(it: PressureState) {
+        hideProgressBar()
         it.pressureLogList?.let {
             pressureText.text = getString(R.string.pressure, it.first().pressure)
         }
@@ -84,6 +105,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun handleElectricityLogsResponse(it: ElectricityLog) {
+        hideProgressBar()
         when (it.timestampOff) {
             null -> powerDurationCountTextView.text = getString(R.string.power_on_status_desc,
                 it.timeStampOn?.let { timeStampOn -> getDurationFormatted(timeStampOn, context!!) })
@@ -95,7 +117,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun handlePowerInfoResponse(it: Boolean) {
-        when{
+        hideProgressBar()
+        when {
             it -> {
                 powerStatusImg.setImageResource(R.drawable.ic_idea)
                 powerStatusTextView.text = getString(R.string.power_is_on)
@@ -109,8 +132,19 @@ class HomeFragment : Fragment() {
     }
 
     private fun showTemperatureReadings(it: TemperatureState) {
+        hideProgressBar()
         it.temperatureLogList?.let {
             temperatureText.text = getString(R.string.temperature, it.first().temperature)
         }
+    }
+
+    private fun showProgressBar() {
+        progressBar.visibility = View.VISIBLE
+        overViewLinear.alpha = 0.6f
+    }
+
+    private fun hideProgressBar() {
+        progressBar.visibility = View.GONE
+        overViewLinear.alpha = 1f
     }
 }

@@ -1,12 +1,12 @@
 package ke.co.appslab.smartthings.ui.electicitymonitor
 
-import android.app.Activity
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
+import com.droidnet.DroidListener
+import com.droidnet.DroidNet
 import ke.co.appslab.smartthings.R
 import ke.co.appslab.smartthings.models.ElectricityMonitorLog
 import ke.co.appslab.smartthings.utils.getDurationFormatted
@@ -15,28 +15,31 @@ import ke.co.appslab.smartthings.utils.observe
 import kotlinx.android.synthetic.main.activity_electricity_monitor.*
 
 
-class ElectricityMonitorActivity : AppCompatActivity() {
+class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
     private var isPowerOn = true
     private val electricityLogViewModel: ElectricityLogViewModel by lazy {
         ViewModelProviders.of(this).get(ElectricityLogViewModel::class.java)
     }
+    lateinit var droidNet: DroidNet
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_electricity_monitor)
         setSupportActionBar(toolbar)
-        toolbar.navigationIcon = ContextCompat.getDrawable(applicationContext,R.drawable.ic_keyboard_backspace_black_24dp)
+        toolbar.navigationIcon =
+            ContextCompat.getDrawable(applicationContext, R.drawable.ic_keyboard_backspace_black_24dp)
         toolbar.setNavigationOnClickListener { onBackPressed() }
-        toolbar.setTitleTextColor(ContextCompat.getColor(applicationContext,R.color.colorWhite))
+        toolbar.setTitleTextColor(ContextCompat.getColor(applicationContext, R.color.colorWhite))
 
-        monitorElectricity()
+        droidNet = DroidNet.getInstance()
+        droidNet.addInternetConnectivityListener(this)
 
         fetchElectricityLogs()
         observeLiveData()
     }
 
-    private fun monitorElectricity() {
-        electricityLogViewModel.monitorElectricity()
+    private fun monitorElectricity(connected: Boolean, wasDisconnected: Int) {
+        electricityLogViewModel.monitorElectricity(connected, wasDisconnected)
     }
 
     private fun observeLiveData() {
@@ -127,5 +130,21 @@ class ElectricityMonitorActivity : AppCompatActivity() {
         electricityStatusImg.visibility = View.VISIBLE
         overallStatusText.visibility = View.VISIBLE
         timeElapsedTextView.visibility = View.VISIBLE
+    }
+
+    override fun onInternetConnectivityChanged(isConnected: Boolean) {
+        when {
+            isConnected -> {
+                monitorElectricity(isConnected, 0)
+            }
+            else -> {
+                monitorElectricity(isConnected, 1)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        droidNet.removeInternetConnectivityChangeListener(this)
     }
 }

@@ -37,7 +37,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.android.things.contrib:driver-rainbowhat:1.0'
     implementation 'com.google.firebase:firebase-firestore:18.1.0'
-    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1'
     implementation "android.arch.lifecycle:runtime:1.1.1"
@@ -53,5 +53,6 @@ dependencies {
     implementation 'org.jetbrains.anko:anko-common:0.10.4'
     implementation 'com.google.firebase:firebase-database:16.1.0'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
+    implementation 'com.job:droidnet:2.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

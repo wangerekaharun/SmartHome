@@ -11,7 +11,7 @@ import ke.co.appslab.smartthings.utils.Constants.FIREBASE_ONLINE_ENDPOINT
 
 class ElectricityLogRepo {
 
-    fun monitorElectricity() {
+    fun monitorElectricity(connected: Boolean, wasDisconnected: Int) {
         val firebaseDatabase = FirebaseDatabase.getInstance().reference
         val databaseKey = firebaseDatabase.child(FIREBASE_LOGS).push().key
 
@@ -20,7 +20,7 @@ class ElectricityLogRepo {
 
         onlineDatabaseRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
-                Log.d("ElectricityLogRepo","DatabaseError :$databaseError")
+                Log.d("ElectricityLogRepo", "DatabaseError :$databaseError")
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -28,7 +28,8 @@ class ElectricityLogRepo {
                 when {
                     value -> {
                         val electricityLog = ElectricityLog(
-                            timeStampOn = System.currentTimeMillis()
+                            timeStampOn = System.currentTimeMillis(),
+                            isConnected = connected
                         )
                         val currentLogDbRef = databaseKey?.let { firebaseDatabase.child(FIREBASE_LOGS).child(it) }
                         currentLogDbRef?.setValue(electricityLog)
@@ -37,6 +38,8 @@ class ElectricityLogRepo {
                         currentUserRef.onDisconnect().setValue(false)
 
                         electricityLog.timestampOff = System.currentTimeMillis()
+                        electricityLog.isConnected = connected
+                        electricityLog.wasDisconnected = wasDisconnected
                         currentLogDbRef?.onDisconnect()?.setValue(electricityLog)
                     }
                 }
