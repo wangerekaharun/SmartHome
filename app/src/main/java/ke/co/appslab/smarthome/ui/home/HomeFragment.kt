@@ -85,10 +85,10 @@ class HomeFragment : Fragment() {
 
     private fun handleElectricityLogsResponse(it: ElectricityLog) {
         when (it.timestampOff) {
-            null -> powerDurationCountTextView.text = getString(R.string.power_status_desc,
+            null -> powerDurationCountTextView.text = getString(R.string.power_on_status_desc,
                 it.timeStampOn?.let { timeStampOn -> getDurationFormatted(timeStampOn, context!!) })
             else -> {
-                powerDurationCountTextView.text = getString(R.string.power_status_desc,
+                powerDurationCountTextView.text = getString(R.string.power_off_status_desc,
                     it.timestampOff?.let { timeStampOff -> getDurationFormatted(timeStampOff, context!!) })
             }
         }
