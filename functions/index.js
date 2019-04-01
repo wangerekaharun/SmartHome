@@ -88,3 +88,43 @@ exports.motionDetectedNotification = functions.firestore
     
 
   });
+
+exports.doorBellRinging= functions.firestore
+  .document('/doorbell/{doorBellId}')
+   .onCreate((snap, context) => {
+
+ var db = admin.firestore();
+
+ var usersRef = db.collection('users');
+ usersRef.get().then(doc => {
+  if (doc.empty) {
+    console.log('No matching documents.');
+    throw new Error("No such document!");
+  }
+  doc.forEach(doc => {
+    console.log('Document data:', doc.data());
+    const payload = {
+      notification: {
+          title: 'DoorBell Notifications',
+          body: 'Someone is at the door',
+          sound: "default"
+      }
+  };
+
+  const options = {
+      priority: "high",
+      timeToLive: 60 * 60 * 24 //24 hours
+  };
+  console.log('Sending notifications');
+ admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
+
+  });   
+  return doc.data(); 
+  
+})
+.catch(err => {
+  console.log('Error getting document', err);
+});
+  
+
+});
