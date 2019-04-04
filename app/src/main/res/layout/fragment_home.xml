@@ -249,7 +249,7 @@
                             android:id="@+id/internetStatusImg"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            app:srcCompat="@drawable/ic_idea"
+                            app:srcCompat="@drawable/ic_wifi"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="@dimen/medium_margin"
                             android:layout_marginBottom="@dimen/card_margin"
