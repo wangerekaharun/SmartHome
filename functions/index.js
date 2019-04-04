@@ -4,8 +4,8 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 
-exports.sendPowerNotification = functions.database.ref("/online").onWrite((change,context) => {
-  console.log('Power event triggered');
+exports.sendInternetNotification = functions.database.ref("/connected").onWrite((change,context) => {
+  console.log('Internet event triggered');
     if (!change.before.exists()) {
         return;
     }
@@ -14,8 +14,8 @@ exports.sendPowerNotification = functions.database.ref("/online").onWrite((chang
 
     const payload = {
         notification: {
-            title: 'Electricity Monitor - Power status changed',
-            body: `Your electricity is now ${onOff}`,
+            title: 'SamrtHome - Internet Monitor',
+            body: `Your internet is now ${onOff}`,
             sound: "default"
         }
     };
@@ -65,7 +65,7 @@ exports.motionDetectedNotification = functions.firestore
       console.log('Document data:', doc.data());
       const payload = {
         notification: {
-            title: 'Intruder Notifications',
+            title: 'SmartHome -Intruder Notifications',
             body: 'There is motion at your door',
             sound: "default"
         }
@@ -105,7 +105,7 @@ exports.doorBellRinging= functions.firestore
     console.log('Document data:', doc.data());
     const payload = {
       notification: {
-          title: 'DoorBell Notifications',
+          title: 'SmartHome- DoorBell Notifications',
           body: 'Someone is at the door',
           sound: "default"
       }
