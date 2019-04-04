@@ -19,6 +19,17 @@
         <uses-library android:name="com.google.android.things"/>
 
         <activity
+            android:name=".ui.info.InfoActivity"
+            android:parentActivityName=".ui.dashboard.DashboardActivity"
+            android:theme="@style/AppTheme"
+        >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.weather.WeatherActivity"
             android:parentActivityName=".ui.dashboard.DashboardActivity"
             android:theme="@style/AppTheme"/>
@@ -43,11 +54,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN"/>
-                 <category android:name="android.intent.category.HOME"/>
-             <category android:name="android.intent.category.DEFAULT"/>
-             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.HOME"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.auth.ThingsConnectionActivity"

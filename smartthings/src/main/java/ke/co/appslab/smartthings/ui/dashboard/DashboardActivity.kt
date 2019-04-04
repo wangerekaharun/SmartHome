@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ke.co.appslab.smartthings.R
 import ke.co.appslab.smartthings.ui.camera.DoorbellActivity
+import ke.co.appslab.smartthings.ui.info.InfoActivity
 import ke.co.appslab.smartthings.ui.internetmonitor.InternetMonitorActivity
 import ke.co.appslab.smartthings.ui.motionsensor.MotionSensorActivity
 import ke.co.appslab.smartthings.ui.weather.WeatherActivity
@@ -41,6 +42,10 @@ class DashboardActivity : AppCompatActivity() {
             val weatherIntent = Intent(this, WeatherActivity::class.java)
             weatherIntent.putExtra("weatherType", "Pressure")
             startActivity(weatherIntent)
+        }
+        infoCardView.setOnClickListener {
+            val infoIntent = Intent(this,InfoActivity::class.java)
+            startActivity(infoIntent)
         }
     }
 }

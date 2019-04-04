@@ -28,6 +28,12 @@
     <string name="few_seconds">a few seconds</string>
     <string name="access_granted">Access granted, you can now enter</string>
     <string name="access_not_granted">Access not granted, you are not allowed to enter!!</string>
+    <string name="name_label">Full Name</string>
+    <string name="email_label">Email</string>
+    <string name="device_label">Device Name</string>
+    <string name="owner_name">John Doe</string>
+    <string name="owner_email">john@smarthome.com</string>
+    <string name="device_type">Google Pixel 2</string>
     <plurals name="hours_formatted">
         <item quantity="one">1 hour</item>
         <item quantity="other">%d hours</item>
