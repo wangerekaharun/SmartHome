@@ -39,7 +39,7 @@
 
 
     <activity android:id="@+id/authActivity"
-              android:name="ke.co.appslab.smarthome.ui.authentification.AuthActivity"
+              android:name="ke.co.appslab.smarthome.ui.authentication.AuthActivity"
               android:label="@string/title_auth_activity"
               tools:layout="@layout/activity_auth"
     />

@@ -11,7 +11,6 @@ import ke.co.appslab.smarthome.utils.Constants.TIMESTAMP
 import ke.co.appslab.smarthome.utils.Result
 
 class DoorbellRepo {
-    private val doorBellEntriesList = ArrayList<DoorbellEntry>()
 
     fun getDoorBellEntries(): LiveData<DoorBellState> {
         val doorbellMutableStateLiveData = MutableLiveData<DoorBellState>()

@@ -1,11 +1,10 @@
-package ke.co.appslab.smarthome.ui.authentification
+package ke.co.appslab.smarthome.ui.authentication
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -73,7 +72,7 @@ class AuthentificationFragment : Fragment() {
                 navigateThingsAuth()
             }
             false -> {
-                context?.toast("Authentification failed.")
+                context?.toast("Authentication failed.")
             }
         }
     }

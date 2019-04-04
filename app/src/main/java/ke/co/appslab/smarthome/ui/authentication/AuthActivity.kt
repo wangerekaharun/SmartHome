@@ -1,13 +1,8 @@
-package ke.co.appslab.smarthome.ui.authentification
+package ke.co.appslab.smarthome.ui.authentication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
-import androidx.navigation.ui.setupActionBarWithNavController
 import ke.co.appslab.smarthome.R
 
 class AuthActivity : AppCompatActivity() {

@@ -1,6 +1,9 @@
 package ke.co.appslab.smartthings.ui.electicitymonitor
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -9,6 +12,8 @@ import com.droidnet.DroidListener
 import com.droidnet.DroidNet
 import ke.co.appslab.smartthings.R
 import ke.co.appslab.smartthings.models.ElectricityMonitorLog
+import ke.co.appslab.smartthings.utils.SharedPref.IS_CONNECTED
+import ke.co.appslab.smartthings.utils.SharedPref.PREF_NAME
 import ke.co.appslab.smartthings.utils.getDurationFormatted
 import ke.co.appslab.smartthings.utils.nonNull
 import ke.co.appslab.smartthings.utils.observe
@@ -21,6 +26,9 @@ class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
         ViewModelProviders.of(this).get(ElectricityLogViewModel::class.java)
     }
     lateinit var droidNet: DroidNet
+    private val sharedPreferences: SharedPreferences by lazy {
+        getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +42,13 @@ class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
         droidNet = DroidNet.getInstance()
         droidNet.addInternetConnectivityListener(this)
 
+        monitorElectricity()
         fetchElectricityLogs()
         observeLiveData()
     }
 
-    private fun monitorElectricity(connected: Boolean, wasDisconnected: Int) {
-        electricityLogViewModel.monitorElectricity(connected, wasDisconnected)
+    private fun monitorElectricity() {
+        electricityLogViewModel.monitorElectricity()
     }
 
     private fun observeLiveData() {
@@ -135,10 +144,13 @@ class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
     override fun onInternetConnectivityChanged(isConnected: Boolean) {
         when {
             isConnected -> {
-                monitorElectricity(isConnected, 0)
+                sharedPreferences.edit().putBoolean(IS_CONNECTED, true).apply()
+                Log.d("ElectricityMonitorNetwork", "true")
             }
             else -> {
-                monitorElectricity(isConnected, 1)
+                sharedPreferences.edit().putBoolean(IS_CONNECTED, false).apply()
+                Log.d("ElectricityMonitorNetwork", "false")
+
             }
         }
     }

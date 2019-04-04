@@ -1,4 +1,4 @@
-package ke.co.appslab.smarthome.ui.authentification
+package ke.co.appslab.smarthome.ui.authentication
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

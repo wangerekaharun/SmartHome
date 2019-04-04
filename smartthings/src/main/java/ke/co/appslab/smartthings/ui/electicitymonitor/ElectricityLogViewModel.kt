@@ -47,8 +47,8 @@ class ElectricityLogViewModel : ViewModel() {
 
     }
 
-    fun monitorElectricity(connected: Boolean, wasDisconnected: Int) {
-        electricityLogRepo.monitorElectricity(connected,wasDisconnected)
+    fun monitorElectricity() {
+        electricityLogRepo.monitorElectricity()
     }
 
 

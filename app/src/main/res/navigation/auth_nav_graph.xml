@@ -10,7 +10,7 @@
             />
 
     <fragment android:id="@+id/authentificationFragment"
-              android:name="ke.co.appslab.smarthome.ui.authentification.AuthentificationFragment"
+              android:name="ke.co.appslab.smarthome.ui.authentication.AuthentificationFragment"
               android:label="@string/authentificationFragment"
               tools:layout="@layout/fragment_authentification"
     >
@@ -22,7 +22,7 @@
         />
     </fragment>
     <fragment android:id="@+id/thingsAuthFragment"
-              android:name="ke.co.appslab.smarthome.ui.authentification.ThingsAuthFragment"
+              android:name="ke.co.appslab.smarthome.ui.authentication.ThingsAuthFragment"
               android:label="@string/thingsAuthFragment"
               tools:layout="@layout/fragment_things_auth">
     </fragment>

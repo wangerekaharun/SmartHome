@@ -1,6 +1,7 @@
 package ke.co.appslab.smartthings.utils
 
 import android.app.Application
+import android.content.Context
 import com.droidnet.DroidNet
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
@@ -13,10 +14,15 @@ class SmartThingsApplications : Application() {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         AndroidThreeTen.init(this)
         DroidNet.init(this);
+        context = applicationContext;
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
         DroidNet.getInstance().removeAllInternetConnectivityChangeListeners();
+    }
+
+    companion object {
+        lateinit var context: Context
     }
 }
