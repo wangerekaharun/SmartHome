@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ke.co.appslab.smartthings.R
 import ke.co.appslab.smartthings.ui.camera.DoorbellActivity
-import ke.co.appslab.smartthings.ui.electicitymonitor.ElectricityMonitorActivity
+import ke.co.appslab.smartthings.ui.internetmonitor.InternetMonitorActivity
 import ke.co.appslab.smartthings.ui.motionsensor.MotionSensorActivity
 import ke.co.appslab.smartthings.ui.weather.WeatherActivity
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -28,8 +28,8 @@ class DashboardActivity : AppCompatActivity() {
             val doorbellIntent = Intent(this, DoorbellActivity::class.java)
             startActivity(doorbellIntent)
         }
-        powerCardView.setOnClickListener {
-            val electricityMonitorIntent = Intent(this, ElectricityMonitorActivity::class.java)
+        internetCardView.setOnClickListener {
+            val electricityMonitorIntent = Intent(this, InternetMonitorActivity::class.java)
             startActivity(electricityMonitorIntent)
         }
         temperatureCardView.setOnClickListener {

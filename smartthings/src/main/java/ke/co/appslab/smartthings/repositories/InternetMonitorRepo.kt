@@ -6,44 +6,44 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import ke.co.appslab.smartthings.models.ElectricityMonitorLog
+import ke.co.appslab.smartthings.models.InternetMonitorLog
 import ke.co.appslab.smartthings.utils.Constants.FIREBASE_LOGS
 import ke.co.appslab.smartthings.utils.Constants.FIREBASE_ONLINE
 
-class ElectricityMonitorRepo {
+class InternetMonitorRepo {
     private val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
 
-    fun loadPowerInfo(): LiveData<Boolean> {
-        val powerInfoMutableLiveData = MutableLiveData<Boolean>()
-        val onlineRef = firebaseDatabase.child(FIREBASE_ONLINE)
-        onlineRef.addValueEventListener(object : ValueEventListener {
+    fun loadInternetInfo(): LiveData<Boolean> {
+        val internetInfoMutableLiveData = MutableLiveData<Boolean>()
+        val connectedRef = firebaseDatabase.child(FIREBASE_ONLINE)
+        connectedRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {}
 
             override fun onDataChange(dataSnapShot: DataSnapshot) {
                 val isOnline = dataSnapShot.value as Boolean
-                powerInfoMutableLiveData.value = isOnline
+                internetInfoMutableLiveData.value = isOnline
 
             }
         })
-        return powerInfoMutableLiveData
+        return internetInfoMutableLiveData
     }
 
 
-    fun fetchElectricityMonitorLogs(): LiveData<ElectricityMonitorLog> {
-        val electricityLogMutableLiveData = MutableLiveData<ElectricityMonitorLog>()
-        val electricityLogsRef = firebaseDatabase.child(FIREBASE_LOGS);
-        electricityLogsRef.limitToLast(1).addValueEventListener(object : ValueEventListener {
+    fun fetchInternetMonitorLogs(): LiveData<InternetMonitorLog> {
+        val internetLogMutableLiveData = MutableLiveData<InternetMonitorLog>()
+        val internetyLogsRef = firebaseDatabase.child(FIREBASE_LOGS);
+        internetyLogsRef.limitToLast(1).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {}
 
             override fun onDataChange(dataSnapShot: DataSnapshot) {
                 dataSnapShot.children.forEach {
-                    val electricityLog = it.getValue(ElectricityMonitorLog::class.java)
-                    electricityLogMutableLiveData.value = electricityLog
+                    val electricityLog = it.getValue(InternetMonitorLog::class.java)
+                    internetLogMutableLiveData.value = electricityLog
                 }
             }
 
         })
-        return electricityLogMutableLiveData
+        return internetLogMutableLiveData
     }
 }

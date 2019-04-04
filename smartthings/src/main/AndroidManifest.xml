@@ -23,7 +23,7 @@
             android:parentActivityName=".ui.dashboard.DashboardActivity"
             android:theme="@style/AppTheme"/>
         <activity
-            android:name=".ui.electicitymonitor.ElectricityMonitorActivity"
+            android:name=".ui.internetmonitor.InternetMonitorActivity"
             android:parentActivityName=".ui.dashboard.DashboardActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity

@@ -55,9 +55,9 @@
         />
     </fragment>
     <fragment android:id="@+id/electricityMonitorFragment"
-              android:name="ke.co.appslab.smarthome.ui.electricitymonitor.InternetMonitorFragment"
+              android:name="ke.co.appslab.smarthome.ui.internetmonitor.InternetMonitorFragment"
               android:label="@string/title_internet_monitor"
-              tools:layout="@layout/fragment_electricity_monitor"/>
+              tools:layout="@layout/fragment_internet_monitor"/>
 
 
 </navigation>

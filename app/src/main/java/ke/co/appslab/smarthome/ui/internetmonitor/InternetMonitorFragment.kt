@@ -1,4 +1,4 @@
-package ke.co.appslab.smarthome.ui.electricitymonitor
+package ke.co.appslab.smarthome.ui.internetmonitor
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import ke.co.appslab.smarthome.R
 import ke.co.appslab.smarthome.models.InternetStatusLog
 import ke.co.appslab.smarthome.utils.nonNull
 import ke.co.appslab.smarthome.utils.observe
-import kotlinx.android.synthetic.main.fragment_electricity_monitor.*
+import kotlinx.android.synthetic.main.fragment_internet_monitor.*
 import androidx.appcompat.app.AppCompatActivity
 import ke.co.appslab.smarthome.utils.getDurationFormatted
 
@@ -26,7 +26,7 @@ class InternetMonitorFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_electricity_monitor, container, false)
+        return inflater.inflate(R.layout.fragment_internet_monitor, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

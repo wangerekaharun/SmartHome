@@ -1,24 +1,25 @@
-package ke.co.appslab.smarthome.ui.electricitymonitor
+package ke.co.appslab.smartthings.ui.internetmonitor
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import ke.co.appslab.smarthome.models.InternetStatusLog
-import ke.co.appslab.smarthome.repositories.InternetMonitorRepo
-import ke.co.appslab.smarthome.utils.NonNullMediatorLiveData
+import ke.co.appslab.smartthings.models.InternetMonitorLog
+import ke.co.appslab.smartthings.repositories.InternetLogRepo
+import ke.co.appslab.smartthings.repositories.InternetMonitorRepo
+import ke.co.appslab.smartthings.utils.NonNullMediatorLiveData
 
-class InternetMonitorViewModel : ViewModel() {
-    private val electricityMonitorRepo = InternetMonitorRepo()
+class InternetLogViewModel : ViewModel() {
+    private val internetLogRepo = InternetLogRepo()
+    private val internetMonitorRepo = InternetMonitorRepo()
     private val internetInfoMediatorLiveData = NonNullMediatorLiveData<Boolean>()
-    private val internetLogMediatorLiveData = NonNullMediatorLiveData<InternetStatusLog>()
-
+    private val internetLogMediatorLiveData = NonNullMediatorLiveData<InternetMonitorLog>()
 
     fun getInternetInfoResponse(): LiveData<Boolean> = internetInfoMediatorLiveData
 
-    fun getInternetMonitorLogsResponse(): LiveData<InternetStatusLog> = internetLogMediatorLiveData
+    fun getInternetMonitorLogsResponse(): LiveData<InternetMonitorLog> = internetLogMediatorLiveData
 
 
     fun loadInternetInfo() {
-        val internetInfoLiveData = electricityMonitorRepo.loadInternetInfo()
+        val internetInfoLiveData = internetMonitorRepo.loadInternetInfo()
         internetInfoMediatorLiveData.addSource(
             internetInfoLiveData
         ) { internetInfoMediatorLiveData ->
@@ -32,17 +33,22 @@ class InternetMonitorViewModel : ViewModel() {
     }
 
     fun fetchInternetMonitorLogs() {
-        val internetLogsLiveData = electricityMonitorRepo.fetchInternetMonitorLogs()
+        val internetLogLiveData = internetMonitorRepo.fetchInternetMonitorLogs()
         internetLogMediatorLiveData.addSource(
-            internetLogsLiveData
+            internetLogLiveData
         ) { internetLogMediatorLiveData ->
             when {
                 this.internetLogMediatorLiveData.hasActiveObservers() -> this.internetLogMediatorLiveData.removeSource(
-                    internetLogsLiveData
+                    internetLogLiveData
                 )
             }
             this.internetLogMediatorLiveData.setValue(internetLogMediatorLiveData)
         }
 
     }
+
+    fun monitorInternet() {
+        internetLogRepo.monitorInternetStatus()
+    }
+
 }

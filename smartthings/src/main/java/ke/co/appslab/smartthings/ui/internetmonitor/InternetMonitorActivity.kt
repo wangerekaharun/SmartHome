@@ -1,4 +1,4 @@
-package ke.co.appslab.smartthings.ui.electicitymonitor
+package ke.co.appslab.smartthings.ui.internetmonitor
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,19 +11,19 @@ import androidx.lifecycle.ViewModelProviders
 import com.droidnet.DroidListener
 import com.droidnet.DroidNet
 import ke.co.appslab.smartthings.R
-import ke.co.appslab.smartthings.models.ElectricityMonitorLog
+import ke.co.appslab.smartthings.models.InternetMonitorLog
 import ke.co.appslab.smartthings.utils.SharedPref.IS_CONNECTED
 import ke.co.appslab.smartthings.utils.SharedPref.PREF_NAME
 import ke.co.appslab.smartthings.utils.getDurationFormatted
 import ke.co.appslab.smartthings.utils.nonNull
 import ke.co.appslab.smartthings.utils.observe
-import kotlinx.android.synthetic.main.activity_electricity_monitor.*
+import kotlinx.android.synthetic.main.activity_internet_monitor.*
 
 
-class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
-    private var isPowerOn = true
-    private val electricityLogViewModel: ElectricityLogViewModel by lazy {
-        ViewModelProviders.of(this).get(ElectricityLogViewModel::class.java)
+class InternetMonitorActivity : AppCompatActivity(), DroidListener {
+    private var isInternetOn = true
+    private val internetLogViewModel: InternetLogViewModel by lazy {
+        ViewModelProviders.of(this).get(InternetLogViewModel::class.java)
     }
     lateinit var droidNet: DroidNet
     private val sharedPreferences: SharedPreferences by lazy {
@@ -32,7 +32,7 @@ class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_electricity_monitor)
+        setContentView(R.layout.activity_internet_monitor)
         setSupportActionBar(toolbar)
         toolbar.navigationIcon =
             ContextCompat.getDrawable(applicationContext, R.drawable.ic_keyboard_backspace_black_24dp)
@@ -42,56 +42,57 @@ class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
         droidNet = DroidNet.getInstance()
         droidNet.addInternetConnectivityListener(this)
 
-        monitorElectricity()
-        fetchElectricityLogs()
+        monitorInternet()
+        fetchInternetLogs()
         observeLiveData()
     }
 
-    private fun monitorElectricity() {
-        electricityLogViewModel.monitorElectricity()
+    private fun monitorInternet() {
+        internetLogViewModel.monitorInternet()
     }
 
     private fun observeLiveData() {
-        electricityLogViewModel.getPowerInfoResponse().nonNull().observe(this) {
-            handlePowerInfoResponse(it)
+        internetLogViewModel.getInternetInfoResponse().nonNull().observe(this) {
+            handleInternetInfoResponse(it)
         }
-        electricityLogViewModel.getElectricityMonitorLogsResponse().nonNull().observe(this) {
-            handleElectricityLogsResponse(it)
+        internetLogViewModel.getInternetMonitorLogsResponse().nonNull().observe(this) {
+            handleInternetLogsResponse(it)
         }
     }
 
-    private fun fetchElectricityLogs() {
+    private fun fetchInternetLogs() {
         showDialog()
-        electricityLogViewModel.loadPowerInfo()
-        electricityLogViewModel.fetchElectricityMonitorLogs()
+        internetLogViewModel.loadInternetInfo()
+        internetLogViewModel.fetchInternetMonitorLogs()
     }
 
-    private fun handleElectricityLogsResponse(it: ElectricityMonitorLog) {
+    private fun handleInternetLogsResponse(it: InternetMonitorLog) {
         hideDialog()
         when (it.timestampOff) {
-            null -> timeElapsedTextView.text = getString(R.string.power_has_been_on_for,
+            null -> timeElapsedTextView.text = getString(R.string.internet_has_been_on_for,
                 it.timeStampOn?.let { timeStampOn -> getDurationFormatted(timeStampOn, applicationContext) })
             else -> {
-                timeElapsedTextView.text = getString(R.string.power_has_been_off_for,
+                timeElapsedTextView.text = getString(R.string.internet_has_been_off_for,
                     it.timestampOff?.let { timeStampOff -> getDurationFormatted(timeStampOff, applicationContext) })
             }
         }
 
     }
 
-    private fun handlePowerInfoResponse(it: Boolean) {
+    private fun handleInternetInfoResponse(it: Boolean) {
         hideDialog()
         when {
             it -> {
-                isPowerOn = true
+                isInternetOn = true
                 constraintLayoutContainer.setBackgroundColor(
                     ContextCompat.getColor(
                         applicationContext,
                         R.color.colorLightsOnBackground
                     )
                 )
-                electricityStatusImg.setImageResource(R.drawable.lights_on_house)
-                overallStatusText.text = getString(R.string.power_is_on)
+                internetStatusImg.setImageResource(R.drawable.lights_on_house)
+                internetConnectionStatusImg.setImageResource(R.drawable.ic_wifi)
+                overallStatusText.text = getString(R.string.internet_is_on)
                 window.statusBarColor =
                     ContextCompat.getColor(applicationContext, R.color.colorLightsOnBackgroundDarker)
                 toolbar.setBackgroundColor(
@@ -103,15 +104,16 @@ class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
 
             }
             else -> {
-                isPowerOn = false
+                isInternetOn = false
                 constraintLayoutContainer.setBackgroundColor(
                     ContextCompat.getColor(
                         applicationContext,
                         R.color.colorLightsOffBackground
                     )
                 )
-                electricityStatusImg.setImageResource(R.drawable.lights_off_house)
-                overallStatusText.text = getString(R.string.power_is_off)
+                internetStatusImg.setImageResource(R.drawable.lights_off_house)
+                internetConnectionStatusImg.setImageResource(R.drawable.ic_no_wifi)
+                overallStatusText.text = getString(R.string.internet_is_off)
                 window.statusBarColor =
                     ContextCompat.getColor(applicationContext, R.color.colorLightsOffBackgroundDarker)
 
@@ -128,7 +130,7 @@ class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
 
     private fun showDialog() {
         progressBar.visibility = View.VISIBLE
-        electricityStatusImg.visibility = View.GONE
+        internetStatusImg.visibility = View.GONE
         overallStatusText.visibility = View.GONE
         timeElapsedTextView.visibility = View.GONE
 
@@ -136,7 +138,7 @@ class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
 
     private fun hideDialog() {
         progressBar.visibility = View.GONE
-        electricityStatusImg.visibility = View.VISIBLE
+        internetStatusImg.visibility = View.VISIBLE
         overallStatusText.visibility = View.VISIBLE
         timeElapsedTextView.visibility = View.VISIBLE
     }
@@ -144,11 +146,11 @@ class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
     override fun onInternetConnectivityChanged(isConnected: Boolean) {
         when {
             isConnected -> {
-                Log.d("ElectricityMonitorNetwork", "true")
+                Log.d("InternetMonitorNetwork", "true")
             }
             else -> {
                 sharedPreferences.edit().putInt(IS_CONNECTED, 1).apply()
-                Log.d("ElectricityMonitorNetwork", "false")
+                Log.d("InternetMonitorNetwork", "false")
 
             }
         }
@@ -156,7 +158,7 @@ class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("ElectricityMonitorNetwork", "onDestroy")
+        Log.d("InternetMonitorNetwork", "onDestroy")
         droidNet.removeInternetConnectivityChangeListener(this)
     }
 }

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">smartthings</string>
-    <string name="waiting_authentification">Waiting to authenticate</string>
+    <string name="waiting_authentication">Waiting to authenticate</string>
     <string name="device_name">Device Name,%1$s</string>
     <string name="home_owner_name">Home Owner,%1$s</string>
     <string name="home_owner_email">Email,%1$s</string>
@@ -10,21 +10,21 @@
     <string name="door_bell_text">Waiting for doorbell to ring</string>
     <string name="door_bell_ringing">Doorbell ringing</string>
     <string name="image_uploaded">Image upload successful</string>
-    <string name="power_label">Power</string>
+    <string name="internet_label">Internet</string>
     <string name="motion_label">Motion</string>
-    <string name="temparature_label">Temperature</string>
+    <string name="temperature_label">Temperature</string>
     <string name="doorbell_label">Doorbell</string>
     <string name="pressure_label">Pressure</string>
     <string name="info_label">Info</string>
     <string name="current_temperature">Current %s</string>
     <string name="temperature">%1$f °C</string>
     <string name="pressure">%1$f Pa</string>
-    <string name="power_is_on">Power is on!</string>
-    <string name="power_is_off">Power is off…</string>
-    <string name="time_on_formatted" formatted="false">Your power has been on for %s.</string>
-    <string name="time_off_formatted" formatted="false">Oh no. Your power has been off for %s.</string>
-    <string name="power_has_been_on_for">Yay! Your power has been on for %s</string>
-    <string name="power_has_been_off_for">Oh no! Your power has been off for %s</string>
+    <string name="internet_is_on">Internet is on!</string>
+    <string name="internet_is_off">Internet is off…</string>
+    <string name="time_on_formatted" formatted="false">Your internet has been on for %s.</string>
+    <string name="time_off_formatted" formatted="false">Oh no. Your internet has been off for %s.</string>
+    <string name="internet_has_been_on_for">Yay! Your internet has been on for %s</string>
+    <string name="internet_has_been_off_for">Oh no! Your internet has been off for %s</string>
     <string name="few_seconds">a few seconds</string>
     <string name="access_granted">Access granted, you can now enter</string>
     <string name="access_not_granted">Access not granted, you are not allowed to enter!!</string>
