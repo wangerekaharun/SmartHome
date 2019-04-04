@@ -6,44 +6,44 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import ke.co.appslab.smarthome.models.ElectricityLog
+import ke.co.appslab.smarthome.models.InternetStatusLog
 import ke.co.appslab.smarthome.utils.Constants.FIREBASE_LOGS
 import ke.co.appslab.smarthome.utils.Constants.FIREBASE_ONLINE
 
-class ElectricityMonitorRepo {
+class InternetMonitorRepo {
     private val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
 
-    fun loadPowerInfo(): LiveData<Boolean> {
-        val powerInfoMutableLiveData = MutableLiveData<Boolean>()
+    fun loadInternetInfo(): LiveData<Boolean> {
+        val internetInfoMutableLiveData = MutableLiveData<Boolean>()
         val onlineRef = firebaseDatabase.child(FIREBASE_ONLINE)
         onlineRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {}
 
             override fun onDataChange(dataSnapShot: DataSnapshot) {
                 val isOnline = dataSnapShot.value as Boolean
-                powerInfoMutableLiveData.value = isOnline
+                internetInfoMutableLiveData.value = isOnline
 
             }
         })
-        return powerInfoMutableLiveData
+        return internetInfoMutableLiveData
     }
 
 
-    fun fetchElectricityMonitorLogs(): LiveData<ElectricityLog> {
-        val electricityLogMutableLiveData = MutableLiveData<ElectricityLog>()
-        val electricityLogsRef = firebaseDatabase.child(FIREBASE_LOGS);
-        electricityLogsRef.limitToLast(1).addValueEventListener(object : ValueEventListener {
+    fun fetchInternetMonitorLogs(): LiveData<InternetStatusLog> {
+        val internetLogMutableLiveData = MutableLiveData<InternetStatusLog>()
+        val internetLogsRef = firebaseDatabase.child(FIREBASE_LOGS);
+        internetLogsRef.limitToLast(1).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {}
 
             override fun onDataChange(dataSnapShot: DataSnapshot) {
                 dataSnapShot.children.forEach {
-                    val electricityLog = it.getValue(ElectricityLog::class.java)
-                    electricityLogMutableLiveData.value = electricityLog
+                    val electricityLog = it.getValue(InternetStatusLog::class.java)
+                    internetLogMutableLiveData.value = electricityLog
                 }
             }
 
         })
-        return electricityLogMutableLiveData
+        return internetLogMutableLiveData
     }
 }

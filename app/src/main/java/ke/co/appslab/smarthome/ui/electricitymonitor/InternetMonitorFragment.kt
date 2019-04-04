@@ -1,31 +1,25 @@
 package ke.co.appslab.smarthome.ui.electricitymonitor
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import ke.co.appslab.smarthome.R
-import ke.co.appslab.smarthome.models.ElectricityLog
+import ke.co.appslab.smarthome.models.InternetStatusLog
 import ke.co.appslab.smarthome.utils.nonNull
 import ke.co.appslab.smarthome.utils.observe
 import kotlinx.android.synthetic.main.fragment_electricity_monitor.*
-import org.threeten.bp.Duration
-import org.threeten.bp.Instant
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.ZoneId
 import androidx.appcompat.app.AppCompatActivity
 import ke.co.appslab.smarthome.utils.getDurationFormatted
 
 
-class ElectricityMonitorFragment : Fragment() {
-    private var isPowerOn = true
-    private val electricityMonitorViewModel: ElectricityMonitorViewModel by lazy {
-        ViewModelProviders.of(this).get(ElectricityMonitorViewModel::class.java)
+class InternetMonitorFragment : Fragment() {
+    private var isInternetOn = true
+    private val internetMonitorViewModel: InternetMonitorViewModel by lazy {
+        ViewModelProviders.of(this).get(InternetMonitorViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -43,21 +37,21 @@ class ElectricityMonitorFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        electricityMonitorViewModel.getPowerInfoResponse().nonNull().observe(this) {
+        internetMonitorViewModel.getInternetInfoResponse().nonNull().observe(this) {
             handlePowerInfoResponse(it)
         }
-        electricityMonitorViewModel.getElectricityMonitorLogsResponse().nonNull().observe(this) {
+        internetMonitorViewModel.getInternetMonitorLogsResponse().nonNull().observe(this) {
             handleElectricityLogsResponse(it)
         }
     }
 
-    private fun handleElectricityLogsResponse(it: ElectricityLog) {
+    private fun handleElectricityLogsResponse(it: InternetStatusLog) {
         hideDialog()
         when (it.timestampOff) {
-            null -> timeElapsedTextView.text = getString(R.string.power_has_been_on_for,
+            null -> timeElapsedTextView.text = getString(R.string.internet_has_been_on_for,
                 it.timeStampOn?.let { timeStampOn -> getDurationFormatted(timeStampOn, context!!) })
             else -> {
-                timeElapsedTextView.text = getString(R.string.power_has_been_off_for,
+                timeElapsedTextView.text = getString(R.string.internet_has_been_off_for,
                     it.timestampOff?.let { timeStampOff -> getDurationFormatted(timeStampOff, context!!) })
             }
         }
@@ -68,29 +62,31 @@ class ElectricityMonitorFragment : Fragment() {
         hideDialog()
         when {
             it -> {
-                isPowerOn = true
+                isInternetOn = true
                 constraintLayoutContainer.setBackgroundColor(
                     ContextCompat.getColor(
                         activity!!,
                         R.color.colorLightsOnBackground
                     )
                 )
-                electricityStatusImg.setImageResource(R.drawable.lights_on_house)
-                overallStatusText.text = getString(R.string.power_is_on)
+                internetStatusImg.setImageResource(R.drawable.lights_on_house)
+                internetConnectionStatusImg.setImageResource(R.drawable.ic_wifi)
+                overallStatusText.text = getString(R.string.internet_is_on)
                 activity?.window?.statusBarColor =
                     ContextCompat.getColor(activity!!, R.color.colorLightsOnBackgroundDarker)
 
             }
             else -> {
-                isPowerOn = false
+                isInternetOn = false
                 constraintLayoutContainer.setBackgroundColor(
                     ContextCompat.getColor(
                         activity!!,
                         R.color.colorLightsOffBackground
                     )
                 )
-                electricityStatusImg.setImageResource(R.drawable.lights_off_house)
-                overallStatusText.text = getString(R.string.power_is_off)
+                internetStatusImg.setImageResource(R.drawable.lights_off_house)
+                internetConnectionStatusImg.setImageResource(R.drawable.ic_no_wifi)
+                overallStatusText.text = getString(R.string.internet_is_off)
                 activity?.window?.statusBarColor =
                     ContextCompat.getColor(activity!!, R.color.colorLightsOffBackgroundDarker)
             }
@@ -100,14 +96,14 @@ class ElectricityMonitorFragment : Fragment() {
 
     private fun fetchElectricityLogs() {
         showDialog()
-        electricityMonitorViewModel.loadPowerInfo()
-        electricityMonitorViewModel.fetchElectricityMonitorLogs()
+        internetMonitorViewModel.loadInternetInfo()
+        internetMonitorViewModel.fetchInternetMonitorLogs()
     }
 
 
     private fun showDialog() {
         progressBar.visibility = View.VISIBLE
-        electricityStatusImg.visibility = View.GONE
+        internetStatusImg.visibility = View.GONE
         overallStatusText.visibility = View.GONE
         timeElapsedTextView.visibility = View.GONE
 
@@ -115,7 +111,7 @@ class ElectricityMonitorFragment : Fragment() {
 
     private fun hideDialog() {
         progressBar.visibility = View.GONE
-        electricityStatusImg.visibility = View.VISIBLE
+        internetStatusImg.visibility = View.VISIBLE
         overallStatusText.visibility = View.VISIBLE
         timeElapsedTextView.visibility = View.VISIBLE
     }

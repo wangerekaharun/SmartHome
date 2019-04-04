@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import ke.co.appslab.smarthome.datastates.OverviewState
 import ke.co.appslab.smarthome.datastates.PressureState
 import ke.co.appslab.smarthome.datastates.TemperatureState
-import ke.co.appslab.smarthome.models.ElectricityLog
-import ke.co.appslab.smarthome.repositories.ElectricityMonitorRepo
+import ke.co.appslab.smarthome.models.InternetStatusLog
+import ke.co.appslab.smarthome.repositories.InternetMonitorRepo
 import ke.co.appslab.smarthome.repositories.OverviewRepo
 import ke.co.appslab.smarthome.repositories.WeatherDataRepo
 import ke.co.appslab.smarthome.utils.NonNullMediatorLiveData
@@ -15,9 +15,9 @@ class HomeViewModel : ViewModel() {
     private val temperatureLogMediatorLiveData = NonNullMediatorLiveData<TemperatureState>()
     private val pressureLogMediatorLiveData = NonNullMediatorLiveData<PressureState>()
     private val weatherDataRepo = WeatherDataRepo()
-    private val electricityMonitorRepo = ElectricityMonitorRepo()
+    private val electricityMonitorRepo = InternetMonitorRepo()
     private val powerInfoMediatorLiveData = NonNullMediatorLiveData<Boolean>()
-    private val electricityLogMediatorLiveData = NonNullMediatorLiveData<ElectricityLog>()
+    private val electricityLogMediatorLiveData = NonNullMediatorLiveData<InternetStatusLog>()
     private val overviewRepo = OverviewRepo()
     private val allowedPersonsMediatorLiveData = NonNullMediatorLiveData<OverviewState>()
     private val disallowedPersonsMediatorLiveData = NonNullMediatorLiveData<OverviewState>()
@@ -28,7 +28,7 @@ class HomeViewModel : ViewModel() {
 
     fun getPowerInfoResponse(): LiveData<Boolean> = powerInfoMediatorLiveData
 
-    fun getElectricityMonitorLogsResponse(): LiveData<ElectricityLog> = electricityLogMediatorLiveData
+    fun getElectricityMonitorLogsResponse(): LiveData<InternetStatusLog> = electricityLogMediatorLiveData
 
     fun getPressureLogResponse(): LiveData<PressureState> = pressureLogMediatorLiveData
 
@@ -54,7 +54,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun loadPowerInfo() {
-        val powerInfoLiveData = electricityMonitorRepo.loadPowerInfo()
+        val powerInfoLiveData = electricityMonitorRepo.loadInternetInfo()
         powerInfoMediatorLiveData.addSource(
             powerInfoLiveData
         ) { powerInfoMediatorLiveData ->
@@ -68,7 +68,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun fetchElectricityMonitorLogs() {
-        val electricityLogLiveData = electricityMonitorRepo.fetchElectricityMonitorLogs()
+        val electricityLogLiveData = electricityMonitorRepo.fetchInternetMonitorLogs()
         electricityLogMediatorLiveData.addSource(
             electricityLogLiveData
         ) { electricityLogMediatorLiveData ->

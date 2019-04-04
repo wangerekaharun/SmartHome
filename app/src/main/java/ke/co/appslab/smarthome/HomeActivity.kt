@@ -3,13 +3,8 @@ package ke.co.appslab.smarthome
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -42,7 +37,7 @@ class HomeActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.label){
                 getString(R.string.title_edit_account) -> navigation.visibility = View.GONE
-                getString(R.string.title_electricity_monitor) -> navigation.visibility = View.GONE
+                getString(R.string.title_internet_monitor) -> navigation.visibility = View.GONE
                 else -> navigation.visibility = View.VISIBLE
             }
         }

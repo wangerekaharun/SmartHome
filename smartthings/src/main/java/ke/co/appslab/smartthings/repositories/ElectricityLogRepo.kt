@@ -34,13 +34,11 @@ class ElectricityLogRepo {
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val isConnected = sharedPreferences.getBoolean(IS_CONNECTED, true)
                 val value = dataSnapshot.value as Boolean
                 when {
                     value -> {
                         val electricityLog = ElectricityLog(
-                            timeStampOn = System.currentTimeMillis(),
-                            isConnected = isConnected
+                            timeStampOn = System.currentTimeMillis()
                         )
                         val currentLogDbRef = databaseKey?.let { firebaseDatabase.child(FIREBASE_LOGS).child(it) }
                         currentLogDbRef?.setValue(electricityLog)
@@ -49,7 +47,6 @@ class ElectricityLogRepo {
                         currentUserRef.onDisconnect().setValue(false)
 
                         electricityLog.timestampOff = System.currentTimeMillis()
-                        electricityLog.isConnected = isConnected
                         currentLogDbRef?.onDisconnect()?.setValue(electricityLog)
                     }
                 }

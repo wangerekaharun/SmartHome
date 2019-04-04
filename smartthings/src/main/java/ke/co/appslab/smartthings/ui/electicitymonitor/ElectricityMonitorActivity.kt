@@ -144,11 +144,10 @@ class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
     override fun onInternetConnectivityChanged(isConnected: Boolean) {
         when {
             isConnected -> {
-                sharedPreferences.edit().putBoolean(IS_CONNECTED, true).apply()
                 Log.d("ElectricityMonitorNetwork", "true")
             }
             else -> {
-                sharedPreferences.edit().putBoolean(IS_CONNECTED, false).apply()
+                sharedPreferences.edit().putInt(IS_CONNECTED, 1).apply()
                 Log.d("ElectricityMonitorNetwork", "false")
 
             }
@@ -157,6 +156,7 @@ class ElectricityMonitorActivity : AppCompatActivity(), DroidListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d("ElectricityMonitorNetwork", "onDestroy")
         droidNet.removeInternetConnectivityChangeListener(this)
     }
 }

@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseUser
 import ke.co.appslab.smarthome.R
 import ke.co.appslab.smarthome.datastates.PressureState
 import ke.co.appslab.smarthome.datastates.TemperatureState
-import ke.co.appslab.smarthome.models.ElectricityLog
+import ke.co.appslab.smarthome.models.InternetStatusLog
 import ke.co.appslab.smarthome.utils.getDurationFormatted
 import ke.co.appslab.smarthome.utils.nonNull
 import ke.co.appslab.smarthome.utils.observe
@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         showProgressBar()
-        fetchElectricityLogs()
+        fetchInternetLogsLogs()
         observeLiveData()
         getActivitiesOverviews()
         firebaseAuth.currentUser?.let { setTextViews(it) }
@@ -56,7 +56,7 @@ class HomeFragment : Fragment() {
         homeViewModel.getTotalVisitorsDisallowed()
     }
 
-    private fun fetchElectricityLogs() {
+    private fun fetchInternetLogsLogs() {
         homeViewModel.loadPowerInfo()
         homeViewModel.fetchElectricityMonitorLogs()
         homeViewModel.getPressureLogs()
@@ -64,7 +64,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun clickListeners() {
-        electricityMonitorCardView.setOnClickListener {
+        internetMonitorCardView.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_electricityMonitorFragment)
         }
     }
@@ -74,10 +74,10 @@ class HomeFragment : Fragment() {
             showTemperatureReadings(it)
         }
         homeViewModel.getPowerInfoResponse().nonNull().observe(this) {
-            handlePowerInfoResponse(it)
+            handleInternetInfoResponse(it)
         }
         homeViewModel.getElectricityMonitorLogsResponse().nonNull().observe(this) {
-            handleElectricityLogsResponse(it)
+            handleInternetLogsResponse(it)
         }
         homeViewModel.getPressureLogResponse().nonNull().observe(this) {
             showPressureReadings(it)
@@ -104,28 +104,28 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun handleElectricityLogsResponse(it: ElectricityLog) {
+    private fun handleInternetLogsResponse(it: InternetStatusLog) {
         hideProgressBar()
         when (it.timestampOff) {
-            null -> powerDurationCountTextView.text = getString(R.string.power_on_status_desc,
+            null -> internetDurationCountTextView.text = getString(R.string.internet_on_status_desc,
                 it.timeStampOn?.let { timeStampOn -> getDurationFormatted(timeStampOn, context!!) })
             else -> {
-                powerDurationCountTextView.text = getString(R.string.power_off_status_desc,
+                internetDurationCountTextView.text = getString(R.string.internet_off_status_desc,
                     it.timestampOff?.let { timeStampOff -> getDurationFormatted(timeStampOff, context!!) })
             }
         }
     }
 
-    private fun handlePowerInfoResponse(it: Boolean) {
+    private fun handleInternetInfoResponse(it: Boolean) {
         hideProgressBar()
         when {
             it -> {
-                powerStatusImg.setImageResource(R.drawable.ic_idea)
-                powerStatusTextView.text = getString(R.string.power_is_on)
+                internetStatusImg.setImageResource(R.drawable.ic_wifi)
+                internetStatusTextView.text = getString(R.string.internet_is_on)
             }
             else -> {
-                powerStatusImg.setImageResource(R.drawable.ic_flash_off)
-                powerStatusTextView.text = getString(R.string.power_is_off)
+                internetStatusImg.setImageResource(R.drawable.ic_no_wifi)
+                internetStatusTextView.text = getString(R.string.internet_is_off)
             }
         }
 

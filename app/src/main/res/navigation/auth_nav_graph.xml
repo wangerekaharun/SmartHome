@@ -11,13 +11,13 @@
 
     <fragment android:id="@+id/authentificationFragment"
               android:name="ke.co.appslab.smarthome.ui.authentication.AuthentificationFragment"
-              android:label="@string/authentificationFragment"
+              android:label="@string/authenticationFragment"
               tools:layout="@layout/fragment_authentification"
     >
         <action
             android:id="@+id/action_authFragment_to_thingsAuthFragment"
             app:destination="@+id/thingsAuthFragment"
-            app:popUpTo="@string/authentificationFragment"
+            app:popUpTo="@string/authenticationFragment"
             app:popUpToInclusive="true"
         />
     </fragment>

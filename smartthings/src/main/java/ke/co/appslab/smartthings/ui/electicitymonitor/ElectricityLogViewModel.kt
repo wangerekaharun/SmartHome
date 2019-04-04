@@ -51,5 +51,4 @@ class ElectricityLogViewModel : ViewModel() {
         electricityLogRepo.monitorElectricity()
     }
 
-
 }
