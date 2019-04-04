@@ -14,7 +14,7 @@ exports.sendInternetNotification = functions.database.ref("/connected").onWrite(
 
     const payload = {
         notification: {
-            title: 'SamrtHome - Internet Monitor',
+            title: 'SmartHome - Internet Monitor',
             body: `Your internet is now ${onOff}`,
             sound: "default"
         }
