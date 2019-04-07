@@ -37,7 +37,7 @@ class HomeActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.label){
                 getString(R.string.title_edit_account) -> navigation.visibility = View.GONE
-                getString(R.string.title_internet_monitor) -> navigation.visibility = View.GONE
+                getString(R.string.title_internet_monitor) -> navigation.visibility = View.INVISIBLE
                 else -> navigation.visibility = View.VISIBLE
             }
         }

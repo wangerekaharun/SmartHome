@@ -16,6 +16,8 @@
         <action
             android:id="@+id/action_homeFragment_to_electricityMonitorFragment"
             app:destination="@id/electricityMonitorFragment"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left"
         />
     </fragment>
     <fragment android:id="@+id/doorBellFragment"
