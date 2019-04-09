@@ -40,6 +40,8 @@ exports.sendInternetNotification = functions.database.ref("/connected").onWrite(
      console.log('Sending notifications');
     if (doc.data().allowNotifications && doc.data().accessSystemRemotely() && doc.data().armSystem) {
     	admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
+    }else{
+    	console.log('Conditions not met');
     }
      });   
      return doc.data(); 
@@ -79,6 +81,8 @@ exports.motionDetectedNotification = functions.firestore
     console.log('Sending notifications');
     if (doc.data().allowNotifications && doc.data().accessSystemRemotely() && doc.data().armSystem) {
     	admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
+    }else{
+    	console.log('Conditions not met');
     }
    
     });   
@@ -121,6 +125,8 @@ exports.doorBellRinging= functions.firestore
   console.log('Sending notifications');
   if (doc.data().allowNotifications && doc.data().accessSystemRemotely() && doc.data().armSystem) {
     	admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
+    }else{
+    	console.log('Conditions not met');
     }
 
   });   
@@ -131,5 +137,4 @@ exports.doorBellRinging= functions.firestore
   console.log('Error getting document', err);
 });
   
-
 });
