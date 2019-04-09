@@ -63,7 +63,9 @@
         </activity>
         <activity
             android:name=".ui.auth.ThingsConnectionActivity"
-            android:parentActivityName=".ui.auth.WelcomeActivity">
+            android:parentActivityName=".ui.auth.WelcomeActivity"
+            android:theme="@style/AppTheme"
+        >
         </activity>
         <activity android:name=".HomeActivity">
             <intent-filter>

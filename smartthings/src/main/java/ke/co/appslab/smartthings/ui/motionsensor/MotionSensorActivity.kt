@@ -56,6 +56,7 @@ class MotionSensorActivity : AppCompatActivity(), MotionSensor.MotionListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        ledMotionIndicatorGpio.value = false
         ledArmedIndicatorGpio.close()
         ledMotionIndicatorGpio.close()
         camera.close()

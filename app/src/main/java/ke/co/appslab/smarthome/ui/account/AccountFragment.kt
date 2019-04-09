@@ -59,7 +59,6 @@ class AccountFragment : Fragment() {
 
     private fun setupSwitchCheckListeners() {
         val documentId = sharedPreferences.getString(USER_DOCUMENT_ID, null)
-        context?.toast(documentId)
         armSystemSwitch.setOnCheckedChangeListener { _, isChecked ->
             accountViewModel.updateSettings("armSystem", isChecked, documentId)
         }

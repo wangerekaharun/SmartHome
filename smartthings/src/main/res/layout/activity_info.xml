@@ -62,6 +62,7 @@
 
             />
             <TextView
+                android:id="@+id/fullNameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/owner_name"
@@ -85,6 +86,7 @@
                 android:layout_marginTop="@dimen/medium_margin"
             />
             <TextView
+                android:id="@+id/emailTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/owner_email"
@@ -107,6 +109,7 @@
                 android:textColor="@color/colorBlack"
             />
             <TextView
+                android:id="@+id/deviceNameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/device_type"
