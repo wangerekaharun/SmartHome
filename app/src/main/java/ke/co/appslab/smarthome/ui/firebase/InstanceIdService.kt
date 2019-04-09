@@ -3,6 +3,7 @@ package ke.co.appslab.smarthome.ui.firebase
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
@@ -13,8 +14,14 @@ import com.google.firebase.messaging.RemoteMessage
 import ke.co.appslab.smarthome.R
 import ke.co.appslab.smarthome.models.UserLog
 import ke.co.appslab.smarthome.utils.Constants.USER_LOGS
+import ke.co.appslab.smarthome.utils.SharedPref.PREF_NAME
+import ke.co.appslab.smarthome.utils.SharedPref.USER_DOCUMENT_ID
 
 class InstanceIdService : FirebaseMessagingService() {
+    private val sharedPreferences: SharedPreferences by lazy {
+        getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    }
+
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         saveToken(token)
@@ -25,7 +32,9 @@ class InstanceIdService : FirebaseMessagingService() {
         val userLog = UserLog(
             firebaseToken = token
         )
-        firebaseFirestore.collection(USER_LOGS).add(userLog)
+        firebaseFirestore.collection(USER_LOGS).add(userLog).addOnSuccessListener {
+            sharedPreferences.edit().putString(USER_DOCUMENT_ID, it.id).apply()
+        }
 
     }
 

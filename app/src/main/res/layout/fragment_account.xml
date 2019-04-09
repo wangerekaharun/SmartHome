@@ -161,6 +161,7 @@
                     android:textSize="@dimen/text_size_small"
                 />
                 <Switch
+                    android:id="@+id/armSystemSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -188,10 +189,11 @@
                     android:textSize="@dimen/text_size_small"
                 />
                 <Switch
+                    android:id="@+id/accessRemotelySwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:checked="false"
+                    android:checked="true"
                 />
             </RelativeLayout>
             <View
@@ -213,6 +215,7 @@
                     android:textSize="@dimen/text_size_small"
                 />
                 <Switch
+                    android:id="@+id/notificationsSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"

@@ -6,4 +6,5 @@ object SharedPref {
     const val KIT_SETUP = "kitSetup"
     const val HOME_NICKNAME = "homeNickname"
     const val FIREBASE_TOKEN = "firebaseToken"
+    const val USER_DOCUMENT_ID = "documentId"
 }
