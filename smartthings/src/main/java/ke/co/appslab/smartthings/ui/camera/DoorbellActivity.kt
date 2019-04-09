@@ -106,6 +106,7 @@ class DoorbellActivity : AppCompatActivity() {
                 statusText.text = getString(R.string.image_uploaded)
                 viewDoorbellImage.visibility = View.GONE
 
+
                 //observe the ring answer changes
                 it.responseString?.let { response ->
                     observeRingAnswerChanges(response)
@@ -194,15 +195,8 @@ class DoorbellActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        ledMotionIndicatorGpio.value = false
-        mCameraThread?.quitSafely()
-        mCloudThread?.quitSafely()
-        try {
-            mButtonInputDriver?.close()
-        } catch (e: IOException) {
-            Log.e(TAG, "button driver error", e)
-        }
-
+        mCamera?.close()
+        reInitiateSensors()
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
@@ -226,6 +220,19 @@ class DoorbellActivity : AppCompatActivity() {
         runOnUiThread {
             doorbellViewModel.uploadDoorbellImage(imageBytes, getString(R.string.cloud_vision_key))
         }
+    }
+
+    fun reInitiateSensors(){
+        ledMotionIndicatorGpio.value = false
+        ledMotionIndicatorGpio.close()
+        mCameraThread?.quitSafely()
+        mCloudThread?.quitSafely()
+        try {
+            mButtonInputDriver?.close()
+        } catch (e: IOException) {
+            Log.e(TAG, "button driver error", e)
+        }
+
     }
 
     companion object {

@@ -22,9 +22,9 @@ class WelcomeActivity : Activity() {
         setContentView(R.layout.activity_welcome)
 
         getStartedRel.setOnClickListener {
-            //go to dashboard
-            val dashboardIntent = Intent(this, DashboardActivity::class.java)
-            startActivity(dashboardIntent)
+            //go to things connection activity
+            val thingsConnectionIntent = Intent(this, ThingsConnectionActivity::class.java)
+            startActivity(thingsConnectionIntent)
         }
     }
 }

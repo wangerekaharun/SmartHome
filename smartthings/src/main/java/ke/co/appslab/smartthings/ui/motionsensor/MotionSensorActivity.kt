@@ -58,6 +58,7 @@ class MotionSensorActivity : AppCompatActivity(), MotionSensor.MotionListener {
         super.onDestroy()
         ledArmedIndicatorGpio.close()
         ledMotionIndicatorGpio.close()
+        camera.close()
     }
 
     private fun observeLiveData() {
