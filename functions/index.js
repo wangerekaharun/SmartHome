@@ -38,8 +38,9 @@ exports.sendInternetNotification = functions.database.ref("/connected").onWrite(
     console.log('Document data:', doc.data());
 
      console.log('Sending notifications');
-    admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
- 
+    if (doc.data().allowNotifications && doc.data().accessSystemRemotely() && doc.data().armSystem) {
+    	admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
+    }
      });   
      return doc.data(); 
      
@@ -76,8 +77,10 @@ exports.motionDetectedNotification = functions.firestore
         timeToLive: 60 * 60 * 24 //24 hours
     };
     console.log('Sending notifications');
-   admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
-
+    if (doc.data().allowNotifications && doc.data().accessSystemRemotely() && doc.data().armSystem) {
+    	admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
+    }
+   
     });   
     return doc.data(); 
     
@@ -116,7 +119,9 @@ exports.doorBellRinging= functions.firestore
       timeToLive: 60 * 60 * 24 //24 hours
   };
   console.log('Sending notifications');
- admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
+  if (doc.data().allowNotifications && doc.data().accessSystemRemotely() && doc.data().armSystem) {
+    	admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
+    }
 
   });   
   return doc.data(); 
