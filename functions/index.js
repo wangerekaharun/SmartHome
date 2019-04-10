@@ -38,7 +38,7 @@ exports.sendInternetNotification = functions.database.ref("/connected").onWrite(
     console.log('Document data:', doc.data());
 
      console.log('Sending notifications');
-    if (doc.data().allowNotifications && doc.data().accessSystemRemotely() && doc.data().armSystem) {
+    if (doc.data().allowNotifications && doc.data().accessSystemRemotely && doc.data().armSystem) {
     	admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
     }else{
     	console.log('Conditions not met');
@@ -79,7 +79,7 @@ exports.motionDetectedNotification = functions.firestore
         timeToLive: 60 * 60 * 24 //24 hours
     };
     console.log('Sending notifications');
-    if (doc.data().allowNotifications && doc.data().accessSystemRemotely() && doc.data().armSystem) {
+    if (doc.data().allowNotifications && doc.data().accessSystemRemotely && doc.data().armSystem) {
     	admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
     }else{
     	console.log('Conditions not met');
@@ -123,7 +123,7 @@ exports.doorBellRinging= functions.firestore
       timeToLive: 60 * 60 * 24 //24 hours
   };
   console.log('Sending notifications');
-  if (doc.data().allowNotifications && doc.data().accessSystemRemotely() && doc.data().armSystem) {
+  if (doc.data().allowNotifications && doc.data().accessSystemRemotely && doc.data().armSystem) {
     	admin.messaging().sendToDevice(doc.data().firebaseToken,payload, options);
     }else{
     	console.log('Conditions not met');
