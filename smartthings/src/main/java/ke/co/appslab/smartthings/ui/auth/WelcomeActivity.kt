@@ -13,6 +13,7 @@ import android.content.Context.WIFI_SERVICE
 import androidx.core.content.ContextCompat.getSystemService
 import android.net.wifi.WifiManager
 import android.util.Log
+import com.crashlytics.android.Crashlytics
 
 
 class WelcomeActivity : Activity() {
@@ -20,6 +21,7 @@ class WelcomeActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
+
 
         getStartedRel.setOnClickListener {
             //go to things connection activity
