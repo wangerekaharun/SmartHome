@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/card_radius"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/card_margin"
+        android:layout_margin="@dimen/medium_margin"
+        app:cardBackgroundColor="@color/colorWhite"
     >
 
         <LinearLayout
@@ -27,25 +29,55 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-            >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/feed_name_text"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_normal"
-                />
-                <TextView
-                    android:id="@+id/timestampText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/feed_time"
+                android:layout_margin="@dimen/activity_horizontal_margin">
+                <ImageView
+                    android:id="@+id/answerImg"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_error"
                     android:layout_alignParentEnd="true"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textColor="@color/colorBlack"
+                    android:layout_centerVertical="true"
                 />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                >
+                    <TextView
+                        android:id="@+id/activityLabelText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/feed_name_text"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/text_size_small"
+                        android:layout_marginBottom="@dimen/medium_margin"
+                    />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/medium_margin"
+                    >
+                        <ImageView
+                            android:id="@+id/timerImg"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            app:srcCompat="@drawable/ic_timer_black_24dp"
+                            android:layout_centerVertical="true"
+                        />
+                        <TextView
+                            android:id="@+id/timestampText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/feed_time"
+                            android:layout_toEndOf="@id/timerImg"
+                            android:textSize="@dimen/text_size_extra_small"
+                            android:layout_marginStart="@dimen/medium_margin"
+                            android:layout_centerVertical="true"
+                        />
+                    </RelativeLayout>
+                </LinearLayout>
             </RelativeLayout>
+
         </LinearLayout>
 
 

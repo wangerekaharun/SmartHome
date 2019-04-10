@@ -2,29 +2,45 @@ package ke.co.appslab.smartthings.ui.weather
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import ke.co.appslab.smartthings.datastates.WeatherState
-import ke.co.appslab.smartthings.models.Weather
+import ke.co.appslab.smartthings.datastates.PressureState
+import ke.co.appslab.smartthings.datastates.TemperatureState
 import ke.co.appslab.smartthings.repositories.WeatherRepo
 import ke.co.appslab.smartthings.utils.NonNullMediatorLiveData
-import ke.co.appslab.smartthings.utils.Result
 
 class WeatherViewModel : ViewModel() {
-    private val weatherMediatorLiveData = NonNullMediatorLiveData<WeatherState>()
-    private val weatherRepo = WeatherRepo()
+    private val temperatureLogMediatorLiveData = NonNullMediatorLiveData<TemperatureState>()
+    private val pressureLogMediatorLiveData = NonNullMediatorLiveData<PressureState>()
+    private val weatherDataRepo = WeatherRepo()
 
-    fun getSendWeatherResponse(): LiveData<WeatherState> = weatherMediatorLiveData
+    fun getTemperatureLogResponse(): LiveData<TemperatureState> = temperatureLogMediatorLiveData
 
-    fun sendWeatherData(weather: Weather) {
-        val weatherLiveData = weatherRepo.sendWeatherData(weather)
-        weatherMediatorLiveData.addSource(
-            weatherLiveData
+    fun getPressureLogResponse(): LiveData<PressureState> = pressureLogMediatorLiveData
+
+    fun getTemperatureLogs(){
+        val temperatureLogLiveData = weatherDataRepo.getTemperatureLogs()
+        temperatureLogMediatorLiveData.addSource(
+            temperatureLogLiveData
         ) { weatherMediatorLiveData ->
             when {
-                this.weatherMediatorLiveData.hasActiveObservers() -> this.weatherMediatorLiveData.removeSource(
-                    weatherLiveData
+                this.temperatureLogMediatorLiveData.hasActiveObservers() -> this.temperatureLogMediatorLiveData.removeSource(
+                    temperatureLogLiveData
                 )
             }
-            this.weatherMediatorLiveData.setValue(weatherMediatorLiveData)
+            this.temperatureLogMediatorLiveData.setValue(weatherMediatorLiveData)
+        }
+    }
+
+    fun getPressureLogs(){
+        val pressureLogLiveData = weatherDataRepo.getPressureLogs()
+        pressureLogMediatorLiveData.addSource(
+            pressureLogLiveData
+        ) { pressureLogMediatorLiveData ->
+            when {
+                this.pressureLogMediatorLiveData.hasActiveObservers() -> this.pressureLogMediatorLiveData.removeSource(
+                    pressureLogLiveData
+                )
+            }
+            this.pressureLogMediatorLiveData.setValue(pressureLogMediatorLiveData)
         }
     }
 }

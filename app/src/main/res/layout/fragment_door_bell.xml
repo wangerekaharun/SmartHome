@@ -2,16 +2,77 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
+                                                   android:layout_marginBottom="60dp"
                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
                                                    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cameraFeedRv"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:listitem="@layout/item_camera_feed_details"
-    />
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cameraFeedRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                tools:listitem="@layout/item_camera_feed_details"
+                android:visibility="visible"
+            />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+            />
+            <LinearLayout
+                android:id="@+id/emptyViewLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+            >
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/ic_image"
+                />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty_view_label"
+                    android:textSize="@dimen/text_size_small"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty_view_desc"
+                    android:textSize="@dimen/text_size_small"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                />
+
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

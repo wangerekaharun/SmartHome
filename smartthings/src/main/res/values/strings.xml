@@ -1,10 +1,50 @@
 <resources>
     <string name="app_name">smartthings</string>
-    <string name="waiting_authentification">Waiting to authenticate</string>
+    <string name="waiting_authentication">Waiting to authenticate</string>
     <string name="device_name">Device Name,%1$s</string>
     <string name="home_owner_name">Home Owner,%1$s</string>
     <string name="home_owner_email">Email,%1$s</string>
     <string name="welcome_text">Welcome</string>
     <string name="welcome__desc_text">Get updates real time updates of your home in your mobile phone</string>
     <string name="get_started">Get Started</string>
+    <string name="door_bell_text">Waiting for doorbell to ring</string>
+    <string name="door_bell_ringing">Doorbell ringing</string>
+    <string name="image_uploaded">Image upload successful</string>
+    <string name="internet_label">Internet</string>
+    <string name="motion_label">Motion</string>
+    <string name="temperature_label">Temperature</string>
+    <string name="doorbell_label">Doorbell</string>
+    <string name="pressure_label">Pressure</string>
+    <string name="info_label">Info</string>
+    <string name="current_temperature">Current %s</string>
+    <string name="temperature">%1$f °C</string>
+    <string name="pressure">%1$f Pa</string>
+    <string name="internet_is_on">Internet is on!</string>
+    <string name="internet_is_off">Internet is off…</string>
+    <string name="time_on_formatted" formatted="false">Your internet has been on for %s.</string>
+    <string name="time_off_formatted" formatted="false">Oh no. Your internet has been off for %s.</string>
+    <string name="internet_has_been_on_for">Yay! Your internet has been on for %s</string>
+    <string name="internet_has_been_off_for">Oh no! Your internet has been off for %s</string>
+    <string name="few_seconds">a few seconds</string>
+    <string name="access_granted">Access granted, you can now enter</string>
+    <string name="access_not_granted">Access not granted, you are not allowed to enter!!</string>
+    <string name="name_label">Full Name</string>
+    <string name="email_label">Email</string>
+    <string name="device_label">Device Name</string>
+    <string name="owner_name">John Doe</string>
+    <string name="owner_email">john@smarthome.com</string>
+    <string name="device_type">Google Pixel 2</string>
+    <plurals name="hours_formatted">
+        <item quantity="one">1 hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="mins_formatted">
+        <item quantity="zero">a few seconds</item>
+        <item quantity="one">1 minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="days_formatted">
+        <item quantity="one">1 day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
 </resources>

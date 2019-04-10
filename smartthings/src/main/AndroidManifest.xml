@@ -9,28 +9,62 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="com.google.android.things.permission.MANAGE_INPUT_DRIVERS" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="com.google.android.things.permission.MANAGE_INPUT_DRIVERS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
-    <application android:label="@string/app_name">
+    <application
+        android:name=".utils.SmartThingsApplications"
+        android:label="@string/app_name">
         <uses-library android:name="com.google.android.things"/>
 
-        <activity android:name=".ui.auth.WelcomeActivity">
+        <activity
+            android:name=".ui.info.InfoActivity"
+            android:parentActivityName=".ui.dashboard.DashboardActivity"
+            android:theme="@style/AppTheme"
+        >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
+        </activity>
+        <activity
+            android:name=".ui.weather.WeatherActivity"
+            android:parentActivityName=".ui.dashboard.DashboardActivity"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".ui.internetmonitor.InternetMonitorActivity"
+            android:parentActivityName=".ui.dashboard.DashboardActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.motionsensor.MotionSensorActivity"
+            android:parentActivityName=".ui.dashboard.DashboardActivity"
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity
+            android:name=".ui.dashboard.DashboardActivity"
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity
+            android:name=".ui.auth.WelcomeActivity"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
-                <!--<category android:name="android.intent.category.HOME"/>-->
-                <!--<category android:name="android.intent.category.DEFAULT"/>-->
-            <!--</intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.HOME"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.auth.ThingsConnectionActivity"
             android:parentActivityName=".ui.auth.WelcomeActivity"
+            android:theme="@style/AppTheme"
         >
         </activity>
         <activity android:name=".HomeActivity">
@@ -39,7 +73,10 @@
                 <action android:name="android.intent.action.VIEW"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.camera.DoorbellActivity"/>
+        <activity
+            android:name=".ui.camera.DoorbellActivity"
+            android:parentActivityName=".ui.dashboard.DashboardActivity"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

@@ -1,1 +1,1 @@
-include ':app', ':smartthings'
+include ':app', ':smartthings', ':smartweather'

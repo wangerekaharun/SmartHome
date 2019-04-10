@@ -3,6 +3,7 @@ package ke.co.appslab.smarthome
 import org.junit.Test
 
 import org.junit.Assert.*
+import kotlin.system.measureNanoTime
 
 /**
  * Example local unit test, which will execute on the development machine (host).

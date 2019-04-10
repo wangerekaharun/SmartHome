@@ -4,7 +4,7 @@
     <string name="title_dashboard">Doorbell</string>
     <string name="title_notifications">Account</string>
     <string name="action_notifications">Notifications</string>
-    <string name="feed_name_text">Living Room</string>
+    <string name="feed_name_text">Doorbell</string>
     <string name="feed_time">16s ago</string>
     <string name="app_caption">Home on your hands</string>
     <string name="home_owner_name">John Doe</string>
@@ -15,29 +15,72 @@
     <string name="remote_access">Access Remotely</string>
     <string name="account_info">General</string>
     <string name="home_nickname">Home nickname</string>
-    <string name="home_name">John Home</string>
+    <string name="home_name">Not set</string>
     <string name="home_members">Home members</string>
-    <string name="welcome_greetings">Hi John</string>
+    <string name="welcome_greetings">Hi %1$s</string>
     <string name="welcome_text">Welcome Home</string>
     <string name="camera_feed">Camera \nFeed</string>
     <string name="activity_date">Thur, 14th Feb 2019</string>
     <string name="visitors_count">34</string>
-    <string name="visitors_label">visitors</string>
+    <string name="visitors_label">allowed</string>
     <string name="motions_count">12</string>
     <string name="motion_label">motions</string>
-    <string name="streams_label">streams</string>
+    <string name="streams_label">denied</string>
     <string name="streams_count">4</string>
-    <string name="electricity_monitor">Electricity \nMonitor</string>
-    <string name="power_status">Power is off</string>
-    <string name="power_status_desc">Power has been off for 30 minutes</string>
+    <string name="internet_monitor">Internet \nMonitor</string>
+    <string name="internet_status">Internet is off</string>
+    <string name="internet_off_status_desc">Internet has been off for \n%s</string>
+    <string name="internet_on_status_desc">Internet has been on for \n%s</string>
     <string name="temp_pressure_label">Climate</string>
     <string name="temperature_label">Temperature</string>
     <string name="temperature">%1$f °C</string>
     <string name="pressure_label">Pressure</string>
     <string name="pressure">%1$f Pa</string>
-    <string name="authentificationFragment">AuthentificationFragment</string>
+    <string name="authenticationFragment">AuthenticationFragment</string>
     <string name="homeFragment">Home</string>
     <string name="thingsAuthFragment">Setup kit</string>
     <string name="authenticating">Waiting to connect</string>
     <string name="things_auth_desc">Kindly wait as you phone pairs with the SmartHome AndroidThings Kit</string>
+    <string name="empty_view_label">Woops!</string>
+    <string name="empty_view_desc">You have no entries at your door bell</string>
+    <string name="title_motion">Motions</string>
+    <string name="empty__motion_view_desc">You have no motion entries</string>
+    <string name="proceed">Proceed</string>
+    <string name="title_auth_activity">Sign In</string>
+    <string name="title_account">Account</string>
+    <string name="title_doorbell">Doorbell</string>
+    <string name="home_name_hint">Home name</string>
+    <string name="title_save">Save</string>
+    <string name="title_edit_account">Edit name</string>
+    <string name="name_empty_error">Name cannot be empty</string>
+    <string name="internet_is_on">Internet is on!</string>
+    <string name="internet_is_off">Internet is off…</string>
+    <string name="time_on_formatted" formatted="false">Your internet has been on for %s.</string>
+    <string name="time_off_formatted" formatted="false">Oh no. Your internet has been off for %s.</string>
+    <string name="internet_has_been_on_for">Yay! Your internet has been on for %s</string>
+    <string name="internet_has_been_off_for">Oh no! Your internet has been off for %s</string>
+    <string name="few_seconds">a few seconds</string>
+    <string name="title_internet_monitor">Internet</string>
+    <string name="notifications">Notificatons</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="doorbell_action_desc">Someone is at the door. Let them in?</string>
+    <string name="doorbell_no">No</string>
+    <string name="doorbell_yes">Yes</string>
+    <string name="firebase_groups">Firebase_Groups</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_name" translatable="true">SmartHome</string>
+
+    <plurals name="hours_formatted">
+        <item quantity="one">1 hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="mins_formatted">
+        <item quantity="zero">a few seconds</item>
+        <item quantity="one">1 minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="days_formatted">
+        <item quantity="one">1 day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
 </resources>

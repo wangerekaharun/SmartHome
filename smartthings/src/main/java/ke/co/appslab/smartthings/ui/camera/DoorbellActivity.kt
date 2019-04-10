@@ -1,104 +1,181 @@
 package ke.co.appslab.smartthings.ui.camera
 
 import android.Manifest
-import ke.co.appslab.smartthings.utils.CloudVisionUtils
-import com.google.android.gms.tasks.OnSuccessListener
-import android.media.ImageReader.OnImageAvailableListener
-import ke.co.appslab.smartthings.utils.BoardDefaults
-import com.google.android.things.contrib.driver.button.ButtonInputDriver
-import android.os.HandlerThread
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.app.Activity
 import android.os.Handler
+import android.os.HandlerThread
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.things.contrib.driver.button.Button
-import com.google.firebase.firestore.CollectionReference
+import com.google.android.things.contrib.driver.button.ButtonInputDriver
+import com.google.android.things.pio.Gpio
+import com.google.android.things.pio.PeripheralManager
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import ke.co.appslab.smartthings.R
-import ke.co.appslab.smartthings.models.ImagesDoorbell
+import ke.co.appslab.smartthings.datastates.DoorbellState
+import ke.co.appslab.smartthings.datastates.RingAnswerState
+import ke.co.appslab.smartthings.models.DoorbelLogs
+import ke.co.appslab.smartthings.repositories.DoorbellLogsRepo
+import ke.co.appslab.smartthings.utils.BoardDefaults
+import ke.co.appslab.smartthings.utils.Constants
+import ke.co.appslab.smartthings.utils.nonNull
+import ke.co.appslab.smartthings.utils.observe
 import kotlinx.android.synthetic.main.activity_doorbell.*
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 
-class DoorbellActivity : Activity() {
-
-    lateinit var firestore: FirebaseFirestore
-    lateinit var firebaseStorage: FirebaseStorage
+class DoorbellActivity : AppCompatActivity() {
     private var mCamera: DoorbellCamera? = null
-    private var image: String? = null
-
-    /**
-     * Driver for the doorbell button;
-     */
     private var mButtonInputDriver: ButtonInputDriver? = null
-
-    /**
-     * A [Handler] for running Camera tasks in the background.
-     */
     private var mCameraHandler: Handler? = null
-
-    /**
-     * An additional thread for running Camera tasks that shouldn't block the UI.
-     */
     private var mCameraThread: HandlerThread? = null
-
-    /**
-     * A [Handler] for running Cloud tasks in the background.
-     */
     private var mCloudHandler: Handler? = null
-
-    /**
-     * An additional thread for running Cloud tasks that shouldn't block the UI.
-     */
     private var mCloudThread: HandlerThread? = null
-
-    /**
-     * Listener for new camera images.
-     */
-    private val mOnImageAvailableListener = OnImageAvailableListener { reader ->
-        val image = reader.acquireLatestImage()
-        // get image bytes
-        val imageBuf = image.getPlanes()[0].getBuffer()
-        val imageBytes = ByteArray(imageBuf.remaining())
-        imageBuf.get(imageBytes)
-        image.close()
-
-        onPictureTaken(imageBytes)
+    private val doorbellViewModel: DoorbellViewModel by lazy {
+        ViewModelProviders.of(this).get(DoorbellViewModel::class.java)
     }
+    private lateinit var ledMotionIndicatorGpio: Gpio
+    val doorbellCollection = FirebaseFirestore.getInstance().collection(Constants.FIREBASE_DOORBELL_REF)
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_doorbell)
-        Log.d(TAG, "Doorbell Activity created.")
 
-        // We need permission to access the camera
-        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            // A problem occurred auto-granting the permission
-            Log.e(TAG, "No permission")
-            return
-        }
+        checkPermissions()
+        initializeHandlers()
+        setupActuators()
 
-        firestore = FirebaseFirestore.getInstance()
-        firebaseStorage = FirebaseStorage.getInstance()
-
-        // Creates new handlers and associated threads for camera and networking operations.
-        mCameraThread = HandlerThread("CameraBackground")
-        mCameraThread!!.start()
-        mCameraHandler = Handler(mCameraThread!!.looper)
-
-        mCloudThread = HandlerThread("CloudThread")
-        mCloudThread!!.start()
-        mCloudHandler = Handler(mCloudThread!!.looper)
-
-        // Initialize the doorbell button driver
+        //Initialize the doorbell button driver
         initPIO()
 
-        // Camera code is complicated, so we've shoved it all in this closet class for you.
-        mCamera = DoorbellCamera.instance
-        mCamera!!.initializeCamera(this, mCameraHandler!!, mOnImageAvailableListener)
+        //observe live data emitted by view model
+        observerLiveData()
+
+
+        mCamera = DoorbellCamera.getInstance()
+        mCamera?.initializeCamera(this, mCameraHandler!!, imageAvailableListener)
+    }
+
+    private fun setupActuators() {
+        val peripheralManagerService = PeripheralManager.getInstance()
+        ledMotionIndicatorGpio = peripheralManagerService.openGpio(LED_GPIO_PIN)
+        ledMotionIndicatorGpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW)
+    }
+
+    private fun observerLiveData() {
+        doorbellViewModel.getDoorbellLogsResponse().nonNull().observe(this) {
+            handleDoorbellResponse(it)
+
+        }
+    }
+
+    private fun handleRingAnswerResponse(it: DoorbelLogs?) {
+        it?.let {
+            it.answer?.let {
+                val answer = it.disposition
+                when {
+                    answer -> {
+                        //blink led
+                        Log.d(TAG, "Changes detected")
+                        ledMotionIndicatorGpio.value = true
+                        statusText.text = getString(R.string.access_granted)
+                    }
+                    else ->{
+                        ledMotionIndicatorGpio.value = false
+                        statusText.text = getString(R.string.access_not_granted)
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun handleDoorbellResponse(it: DoorbellState) {
+        val success = it.success
+        when {
+            success -> {
+                statusText.visibility = View.VISIBLE
+                statusText.text = getString(R.string.image_uploaded)
+                viewDoorbellImage.visibility = View.GONE
+
+
+                //observe the ring answer changes
+                it.responseString?.let { response ->
+                    observeRingAnswerChanges(response)
+                    Log.d(TAG, "Observing Changes")
+                }
+            }
+            else -> {
+                statusText.visibility = View.VISIBLE
+                statusText.text = it.responseString
+                viewDoorbellImage.visibility = View.GONE
+            }
+        }
+
+    }
+
+    private fun observeRingAnswerChanges(response: String) {
+        val docRef = doorbellCollection.document(response)
+        docRef.addSnapshotListener(
+            EventListener<DocumentSnapshot>
+            { snapshot, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@EventListener
+                }
+
+                when {
+                    snapshot != null && snapshot.exists() -> {
+                        Log.d(TAG, "Changes Detected")
+                        val doorbelLogs = snapshot.toObject(DoorbelLogs::class.java)
+                        handleRingAnswerResponse(doorbelLogs)
+                    }
+                    else -> {
+                        Log.d(TAG, "Current data: null")
+                    }
+                }
+            })
+    }
+
+    private fun initializeHandlers() {
+        // Creates new handlers and associated threads for camera and networking operations.
+        mCameraThread = HandlerThread("CameraBackground")
+        mCameraThread?.start()
+        mCameraHandler = Handler(mCameraThread?.looper)
+
+        mCloudThread = HandlerThread("CloudThread")
+        mCloudThread?.start()
+        mCloudHandler = Handler(mCloudThread?.looper)
+    }
+
+    private fun checkPermissions() {
+        when {
+            checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED -> {
+                Log.e(TAG, "No permission")
+                return
+            }
+        }
+    }
+
+    private val imageAvailableListener = object : DoorbellCamera.ImageCapturedListener {
+        override fun onImageCaptured(bitmap: Bitmap) {
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            runOnUiThread {
+                statusText.visibility = View.GONE
+                viewDoorbellImage.visibility = View.VISIBLE
+                viewDoorbellImage.setImageBitmap(bitmap)
+            }
+            onPictureTaken(bitmap)
+        }
     }
 
     private fun initPIO() {
@@ -118,75 +195,50 @@ class DoorbellActivity : Activity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mCamera!!.shutDown()
+        mCamera?.close()
+        reInitiateSensors()
+    }
 
-        mCameraThread!!.quitSafely()
-        mCloudThread!!.quitSafely()
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_ENTER -> {
+                // Doorbell rang!
+                Log.d(TAG, "button pressed")
+                statusText.visibility = View.VISIBLE
+                viewDoorbellImage.visibility = View.GONE
+                statusText.text = getString(R.string.door_bell_ringing)
+                mCamera?.takePicture()
+                true
+            }
+            else -> super.onKeyUp(keyCode, event)
+        }
+    }
+
+    // Upload image data to Firebase as a doorbell event.
+
+    private fun onPictureTaken(imageBytes: Bitmap) {
+        runOnUiThread {
+            doorbellViewModel.uploadDoorbellImage(imageBytes, getString(R.string.cloud_vision_key))
+        }
+    }
+
+    fun reInitiateSensors(){
+        ledMotionIndicatorGpio.value = false
+        ledMotionIndicatorGpio.close()
+        mCameraThread?.quitSafely()
+        mCloudThread?.quitSafely()
         try {
-            mButtonInputDriver!!.close()
+            mButtonInputDriver?.close()
         } catch (e: IOException) {
             Log.e(TAG, "button driver error", e)
         }
 
     }
 
-    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_ENTER) {
-            // Doorbell rang!
-            Log.d(TAG, "button pressed")
-            statusText.text = "Doorbell ringing"
-            mCamera!!.takePicture()
-            return true
-        }
-        return super.onKeyUp(keyCode, event)
-    }
-
-    /**
-     * Upload image data to Firebase as a doorbell event.
-     */
-    private fun onPictureTaken(imageBytes: ByteArray?) {
-        if (imageBytes != null) {
-            val log = firestore.collection("logs")
-            val imageRef = firebaseStorage.reference.child(log.path)
-
-            // upload image to storage
-            val task = imageRef.putBytes(imageBytes)
-            task.addOnSuccessListener(OnSuccessListener<Any> { taskSnapshot ->
-                // mark image in the database
-                image = imageRef.downloadUrl.toString()
-                Log.i(TAG, "Image upload successful")
-                // process image annotations
-                annotateImage(log, imageBytes)
-            }).addOnFailureListener {
-                // clean up this entry
-                Log.w(TAG, "Unable to upload image to Firebase")
-            }
-        }
-    }
-
-    /**
-     * Process image contents with Cloud Vision.
-     */
-    private fun annotateImage(ref: CollectionReference, imageBytes: ByteArray?) {
-        mCloudHandler!!.post(Runnable {
-            Log.d(TAG, "sending image to cloud vision")
-            // annotate image by uploading to Cloud Vision API
-            try {
-                val annotations = CloudVisionUtils.annotateImage(imageBytes!!)
-                Log.d(TAG, "cloud vision annotations:$annotations")
-                val imagesDoorbell = ImagesDoorbell(
-                    timestamp = "now",
-                    image = image!!,
-                    annotations = annotations
-                )
-                ref.add(imagesDoorbell)
-            } catch (e: IOException) {
-                Log.e(TAG, "Cloud Vision API error: ", e)
-            }
-        })
-    }
-
     companion object {
         private val TAG = DoorbellActivity::class.java.simpleName
+        val LED_GPIO_PIN = "GPIO6_IO14"
     }
+
+
 }

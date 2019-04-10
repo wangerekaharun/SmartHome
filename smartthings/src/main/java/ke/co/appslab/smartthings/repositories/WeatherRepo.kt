@@ -3,20 +3,55 @@ package ke.co.appslab.smartthings.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
-import ke.co.appslab.smartthings.datastates.WeatherState
-import ke.co.appslab.smartthings.models.Weather
-import ke.co.appslab.smartthings.utils.Result
+import com.google.firebase.firestore.Query
+import ke.co.appslab.smartthings.datastates.PressureState
+import ke.co.appslab.smartthings.datastates.TemperatureState
+import ke.co.appslab.smartthings.models.PressureLog
+import ke.co.appslab.smartthings.models.TemperatureLog
 
 class WeatherRepo {
+    private val firebaseFirestore = FirebaseFirestore.getInstance()
 
-    fun sendWeatherData(weather: Weather): LiveData<WeatherState> {
-        val weatherMutableLiveData = MutableLiveData<WeatherState>()
-        val firebaseFirestore = FirebaseFirestore.getInstance()
-        firebaseFirestore.collection("weather")
-            .add(weather)
-            .addOnSuccessListener { weatherMutableLiveData.setValue(WeatherState("Weather updated")) }
-            .addOnFailureListener { weatherMutableLiveData.setValue(WeatherState(it.message.toString())) }
+    fun getTemperatureLogs(): LiveData<TemperatureState> {
+        val temperatureLogMutableLiveData = MutableLiveData<TemperatureState>()
+        firebaseFirestore.collection("temperature")
+            .orderBy("time", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener {
+                when {
+                    !it.isEmpty -> {
+                        val temperatureLogList = it.toObjects(TemperatureLog::class.java)
+                        temperatureLogMutableLiveData.value = TemperatureState(temperatureLogList, null)
+                    }
+                }
 
-        return weatherMutableLiveData
+            }
+            .addOnFailureListener {
+                temperatureLogMutableLiveData.value = TemperatureState(null, it.message)
+            }
+
+        return temperatureLogMutableLiveData
+    }
+
+    fun getPressureLogs(): LiveData<PressureState> {
+        val pressureStateMutableLiveData = MutableLiveData<PressureState>()
+        firebaseFirestore.collection("pressure")
+            .orderBy("time", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener {
+                when{
+                    !it.isEmpty ->{
+                        val pressureLogList = it.toObjects(PressureLog::class.java)
+                        pressureStateMutableLiveData.value = PressureState(pressureLogList, null)
+                    }
+                }
+            }
+            .addOnFailureListener {
+                pressureStateMutableLiveData.value = PressureState(null, it.message)
+            }
+
+        return pressureStateMutableLiveData
     }
 }

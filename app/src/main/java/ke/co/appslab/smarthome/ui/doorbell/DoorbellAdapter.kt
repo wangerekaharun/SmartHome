@@ -1,13 +1,18 @@
 package ke.co.appslab.smarthome.ui.doorbell
 
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
+import ke.co.appslab.smarthome.R
 import ke.co.appslab.smarthome.models.DoorbellEntry
 import kotlinx.android.synthetic.main.item_camera_feed_details.view.*
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class DoorbellAdapter(
@@ -17,21 +22,31 @@ class DoorbellAdapter(
 
     inner class MyViewHolder(itemView: View, itemClickListener: (DoorbellEntry) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
-        val doorbellImg = itemView.doorbellImg
+        private val doorbellImg = itemView.doorbellImg
         private val timestampText = itemView.timestampText
+        private val answerImg = itemView.answerImg
 
         fun bindDoorBell(doorbellEntry: DoorbellEntry) {
             with(doorbellEntry) {
-                timestampText.text = timestamp
+                timestamp?.let {
+                    val timeDifference =
+                        DateUtils.getRelativeTimeSpanString(it, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)
+                    timestampText.text = timeDifference
+                }
+                Glide.with(itemView.context).load(image).into(doorbellImg)
+                itemView.setOnClickListener {
+                    itemClickListener(this)
+                }
 
-                // Display the image
-                val mFirebaseStorage = FirebaseStorage.getInstance()
-                val imageRef = mFirebaseStorage.getReferenceFromUrl(image)
+                val answer =answer
+                answer?.let {
+                    val disposition = it.disposition
+                    when{
+                        disposition -> answerImg.setImageResource(R.drawable.ic_checked)
+                        else -> answerImg.setImageResource(R.drawable.ic_error)
+                    }
+                }
 
-
-                GlideApp.with(itemView.context)
-                    .load(imageRef)
-                    .into(doorbellImg)
             }
         }
 

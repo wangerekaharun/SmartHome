@@ -12,6 +12,11 @@
         android:title="@string/title_dashboard" />
 
     <item
+        android:id="@+id/motionFragment"
+        android:icon="@drawable/ic_motion"
+        android:title="@string/title_motion"/>
+
+    <item
         android:id="@+id/accountFragment"
         android:icon="@drawable/ic_person_outline_black_24dp"
         android:title="@string/title_notifications" />

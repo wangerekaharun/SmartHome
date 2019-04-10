@@ -1,24 +1,36 @@
 package ke.co.appslab.smartthings.ui.auth
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import ke.co.appslab.smartthings.R
+import ke.co.appslab.smartthings.ui.dashboard.DashboardActivity
+import ke.co.appslab.smartthings.utils.SharedPref.DEVICE_NAME
+import ke.co.appslab.smartthings.utils.SharedPref.EMAIL
+import ke.co.appslab.smartthings.utils.SharedPref.FULL_NAME
+import ke.co.appslab.smartthings.utils.SharedPref.PREF_NAME
 import kotlinx.android.synthetic.main.activity_things_connection.*
 
-class ThingsConnectionActivity : Activity() {
+class ThingsConnectionActivity : AppCompatActivity() {
     private lateinit var connectivityManager: ConnectivityManager
     private lateinit var connectionsClient: ConnectionsClient
     private var token: String? = null
-    private var deviceName : String?=null
+    private var deviceName: String? = null
+    private val sharedPreferences: SharedPreferences by lazy {
+        getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +40,13 @@ class ThingsConnectionActivity : Activity() {
         connectivityManager = getSystemService(ConnectivityManager::class.java)
         connectivityManager.registerDefaultNetworkCallback(networkCallback)
 
-        FirebaseAuth.getInstance().signOut()
+        val firebaseAuth = FirebaseAuth.getInstance().currentUser
+        when {
+            firebaseAuth != null -> navigateToDashboard()
+            else -> return
+        }
+
+//        FirebaseAuth.getInstance().signOut()
     }
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
@@ -127,7 +145,7 @@ class ThingsConnectionActivity : Activity() {
                 waitingLinear.visibility = View.GONE
                 detailsLinear.visibility = View.VISIBLE
                 setUpViews(user)
-                // finish()
+                navigateToDashboard()
             }
             .addOnFailureListener(this) { e ->
                 Log.e(TAG, "signInWithCredential onFailure", e)
@@ -136,11 +154,19 @@ class ThingsConnectionActivity : Activity() {
 
     private fun setUpViews(user: FirebaseUser?) {
         user?.let {
-            ownerEmailText.text= it.email
+            ownerEmailText.text = it.email
             ownerNameText.text = it.displayName
             deviceNameText.text = deviceName
+            sharedPreferences.edit().putString(EMAIL, it.email).apply()
+            sharedPreferences.edit().putString(DEVICE_NAME, deviceName).apply()
+            sharedPreferences.edit().putString(FULL_NAME, it.displayName).apply()
         }
 
+    }
+
+    fun navigateToDashboard() {
+        val dashboardIntent = Intent(this, DashboardActivity::class.java)
+        startActivity(dashboardIntent)
     }
 
 
